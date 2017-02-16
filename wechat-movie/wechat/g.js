@@ -13,6 +13,7 @@ module.exports = function(opts) {
     let str = [token, timestamp, nonce].sort().join('');
     let sha = sha1(str);
     if (sha === signature) {
+      console.log(signature)
       this.body = echostr + '';
     }
   }
