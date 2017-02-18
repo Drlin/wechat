@@ -5,6 +5,8 @@ const api = {
 const Promise = require('bluebird');
 const request = Promise.promisify(require('request'));
 
+const Util = require('./lib/Util')
+
 class Wechat {
   constructor(opts) {
     this.appID = opts.appID;
@@ -55,6 +57,15 @@ class Wechat {
           resolve(data);
         })
       })
+    }
+
+    reply() {
+      let content = this.body;
+      let message = this.weixin;
+      let xml = Util.tpl(content, message);
+      this.status = 200;
+      this.type = 'application/xml';
+      this.body = xml;
     }
 }
 

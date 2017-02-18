@@ -3,6 +3,7 @@
 const fs = require('fs');
 const Promise = require('bluebird');
 const xml2js = require('xml2js');	
+const tpl = require('../tpl')
 
 module.exports = {
 	readFileAsync(fpath, encoding) {
@@ -63,5 +64,21 @@ module.exports = {
 		    }
 		 }
 		return message
+	},
+	tpl(content, message) {
+		const info = {};
+		const TYPE = 'text';
+		const FromUserName = message.FromUserName;
+		const ToUserName = message.ToUserName;
+		if (Array.isArray(content)) {
+			type = 'news'
+		}
+		type = content.type || type;
+		info.Content = content;
+		info.CreateTime = Date.now();
+		info.MsgType = type;
+		info.FromUserName = FromUserName;
+		info.ToUserName = ToUserName;
+		return tpl.compiled(info);
 	}
 }	

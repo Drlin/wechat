@@ -7,7 +7,7 @@ const getRawBody = require('raw-Body');
 const Wechat = require('./wechat.js')
 const Util = require('./lib/Util')
 
-module.exports = function(opts) {
+module.exports = function(opts, hanlder) {
   const wechat = new Wechat(opts);
 
   return function *(next){
@@ -28,9 +28,15 @@ module.exports = function(opts) {
         }) //yield 在某些点暂停函数的执行
 
         const content = yield Util.parseXMLAsync(data);
-
         const message = yield Util.formatMessage(content.xml);
-        console.log(message)
+
+        this.weixin = message;
+
+        yield hanlder.call(this, next);
+
+        wechat.reply.call(this);
+        
+        return;
       }
       this.body = echostr + '';
     }
