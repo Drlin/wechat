@@ -67,7 +67,7 @@ module.exports = {
 	},
 	tpl(content, message) {
 		const info = {};
-		const TYPE = 'text';
+		let type = 'text';
 		const FromUserName = message.FromUserName;
 		const ToUserName = message.ToUserName;
 		if (Array.isArray(content)) {

@@ -1,8 +1,6 @@
 const path = require('path')
 const Util = require('../lib/Util')
-const wechat_file = path.join(__dirname, './wechat/config/wechat.txt');
-
-const app = koa();
+const wechat_file = path.join(__dirname, './wechat.txt');
 
 const config = {
   wechat: {
@@ -16,5 +14,8 @@ const config = {
       data = JSON.stringify(data)
       return Util.writeFileAsync(wechat_file, data);
     }
-  }
+  },
+  timeUp: 1487434365
 }
+
+module.exports = config;

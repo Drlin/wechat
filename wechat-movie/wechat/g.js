@@ -35,8 +35,7 @@ module.exports = function(opts, hanlder) {
         yield hanlder.call(this, next);
 
         wechat.reply.call(this);
-        
-        return;
+        return
       }
       this.body = echostr + '';
     }
