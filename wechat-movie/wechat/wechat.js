@@ -2,7 +2,15 @@ const fs = require('fs');
 const prefix = 'https://api.weixin.qq.com/cgi-bin';
 const api = {
   access_token: `${prefix}/token?grant_type=client_credential`,
-  upload: `${prefix}/media/upload`
+  temporary: {
+    upload: `${prefix}/media/upload`
+  },
+  permanent: {
+    upload: `${prefix}/material/add_material?`,
+    uploadNews: `${prefix}/material/add_news?`,
+    uploadNewsPic: `${prefix}/media/uploadimg?`
+
+  }
 }
 const Promise = require('bluebird');
 const request = Promise.promisify(require('request'));
@@ -19,7 +27,6 @@ class Wechat {
   }
 
   fetchAccessToken() {
-
     if (this.access_token && this.expires_in) {
       if (this.isValidAccessToken(this)) {
         return Promise.resolve(this)
@@ -72,15 +79,48 @@ class Wechat {
     })
   }
 
-  uploadMaterial(type, filepath) {
-    const form = {
+  uploadMaterial(type, material, permanent) {
+    let form = {
       media: fs.createReadStream(filepath)
     }
+
+    let uploadUrl = api.temporary.upload;
+
+    if (permanent) {
+      // 上传永久素材
+      uploadUrl = api.permanent.upload;
+      form = {...form, ...permanent}
+      }
+
+    if (type === 'pic') {
+      uploadUrl = api.permanent.uploadNewsPic
+    }
+
+    if (type === 'news') {
+      uploadUrl = api.permanent.uploadNews;
+      form = material;
+    }
+
     return new Promise((resolve, reject) => {
       this.fetchAccessToken()
         .then((data) => {
-          const url = `${api.upload}?access_token=${data.access_token}&type=${type}`
-          request({method: 'POST', url: url, formData: form, json: true}).then((response) => {
+          let url = `${uploadUrl}access_token=${data.access_token}`;
+          url = permanent ? url : `${url}&type=${type}`;
+
+          const options = {
+            method: 'POST',
+            url: url,
+            json: true
+          }
+  
+          if (type === 'news') {
+            options.body = form
+          }
+          else {
+            options.formData = form
+          }
+
+          request(options).then((response) => {
             let _data = response[1];
             if (_data) {
               resolve(_data)
