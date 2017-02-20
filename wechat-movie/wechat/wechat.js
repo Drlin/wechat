@@ -1,9 +1,10 @@
 const fs = require('fs');
 const prefix = 'https://api.weixin.qq.com/cgi-bin';
+const _ = require('lodash')
 const api = {
   access_token: `${prefix}/token?grant_type=client_credential`,
   temporary: {
-    upload: `${prefix}/media/upload`
+    upload: `${prefix}/media/upload?`
   },
   permanent: {
     upload: `${prefix}/material/add_material?`,
@@ -81,7 +82,7 @@ class Wechat {
 
   uploadMaterial(type, material, permanent) {
     let form = {
-      media: fs.createReadStream(filepath)
+      media: fs.createReadStream(material)
     }
 
     let uploadUrl = api.temporary.upload;
@@ -89,8 +90,8 @@ class Wechat {
     if (permanent) {
       // 上传永久素材
       uploadUrl = api.permanent.upload;
-      form = {...form, ...permanent}
-      }
+      _.extend(form, permanent)
+    }
 
     if (type === 'pic') {
       uploadUrl = api.permanent.uploadNewsPic
@@ -106,13 +107,13 @@ class Wechat {
         .then((data) => {
           let url = `${uploadUrl}access_token=${data.access_token}`;
           url = permanent ? url : `${url}&type=${type}`;
-
+          console.log(url)
           const options = {
             method: 'POST',
             url: url,
             json: true
           }
-  
+
           if (type === 'news') {
             options.body = form
           }
