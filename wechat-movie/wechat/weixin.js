@@ -15,7 +15,6 @@ const reply = function* (next) {
 		switch (Content) {
 			case '裸照': 
 				data = yield wechat.uploadMaterial('image',  `${__dirname}/裸照.jpg`);
-				
 			this.body = {
 				type: 'image',
 				media_id: data.media_id
@@ -30,7 +29,8 @@ const reply = function* (next) {
 			}
 			break;
 			default: 
-				this.body = message.Content;
+				data = yield wechat.getUsers( message.FromUserName );
+				this.body = `${data.nickname}, 你说的是${message.Content}`;
 			break;
 		}
 	} else {

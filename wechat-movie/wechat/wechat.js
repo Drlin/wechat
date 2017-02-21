@@ -10,7 +10,10 @@ const api = {
     upload: `${prefix}/material/add_material?`,
     uploadNews: `${prefix}/material/add_news?`,
     uploadNewsPic: `${prefix}/media/uploadimg?`
-
+  },
+  user: {
+    get: `${prefix}/user/info`,
+    batchget: `${prefix}/user/info/batchget`
   }
 }
 const Promise = require('bluebird');
@@ -132,6 +135,39 @@ class Wechat {
           .catch((err) => {
             reject(err)
           })
+        })
+    })
+  }
+
+  getUsers(openIds, lang) {
+    lang = lang || 'zh-CN'
+    return new Promise((resolve, reject) => {
+      this.fetchAccessToken()
+        .then((data) => {
+          let url = `${api.user.get}&access_token=${data.access_token}&openid=${openIds}&lang=${lang}`;
+          const options = {
+            url,
+            json: true
+          }
+          if (Array.isArray(openIds)) {
+            url = `${api.user.batchget}&access_token=${data.access_token}`;
+            options.body = {
+              user_list: openIds
+            }
+            options.method = 'POST'
+          }
+          request({options})
+            .then((response) => {
+              let _data = response[1];
+              if (_data) {
+                resolve(_data) 
+              } else {
+                throw new Error('获取失败')
+              }
+            })
+            .catch((err) => {
+              reject(err)
+            })
         })
     })
   }
