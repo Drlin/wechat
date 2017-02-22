@@ -15,10 +15,6 @@ module.exports = {
 					'name': '跳转url',
 					'type': 'view',
 					'url': 'http://github.com'
-				}, {
-					'name': '扫码推送事件',
-					'type': 'scancode_push',
-					'key': 'qr_scan'
 				},
 				{
 					'name': '弹出系统拍照',
@@ -30,10 +26,6 @@ module.exports = {
 					'key': 'pic_photo_album'
 				}
 			]
-		}, {
-			'name': '微信相册发图',
-			'type': 'pic_weixin',
-			'key': 'pic_weixin'
 		},{
 			'name': '地理位置选择',
 			'type': 'location_select',
