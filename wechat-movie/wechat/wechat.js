@@ -14,6 +14,11 @@ const api = {
   user: {
     get: `${prefix}/user/info`,
     batchget: `${prefix}/user/info/batchget`
+  },
+  menu: {
+    create: `${prefix}/menu/create`,
+    del: `${prefix}/menu/delete`,
+    get: `${prefix}/menu/get`
   }
 }
 const Promise = require('bluebird');
@@ -144,25 +149,103 @@ class Wechat {
     return new Promise((resolve, reject) => {
       this.fetchAccessToken()
         .then((data) => {
-          let url = `${api.user.get}&access_token=${data.access_token}&openid=${openIds}&lang=${lang}`;
+          let url = `${api.user.get}?access_token=${data.access_token}&openid=${openIds}&lang=${lang}`;
           const options = {
             url,
             json: true
           }
           if (Array.isArray(openIds)) {
-            url = `${api.user.batchget}&access_token=${data.access_token}`;
+            url = `${api.user.batchget}?access_token=${data.access_token}`;
             options.body = {
               user_list: openIds
             }
             options.method = 'POST'
           }
-          request({options})
+          request(options)
             .then((response) => {
               let _data = response[1];
               if (_data) {
                 resolve(_data) 
               } else {
                 throw new Error('获取失败')
+              }
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        })
+    })
+  }
+
+
+  createMenu(menu) {
+    return new Promise((resolve, reject) => {
+      this.fetchAccessToken()
+        .then((data) => {
+          let url = `${api.menu.create}?access_token=${data.access_token}`;
+          const options = {
+            url,
+            json: true,
+            body: menu,
+            method: 'POST'
+          }
+          request(options)
+            .then((response) => {
+              let _data = response[1];
+              if (_data) {
+                resolve(_data) 
+              } else {
+                throw new Error('创建失败')
+              }
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        })
+    })
+  }
+
+  getMenu() {
+    return new Promise((resolve, reject) => {
+      this.fetchAccessToken()
+        .then((data) => {
+          let url = `${api.menu.get}?access_token=${data.access_token}`;
+          const options = {
+            url,
+            json: true
+          }
+          request(options)
+            .then((response) => {
+              let _data = response[1];
+              if (_data) {
+                resolve(_data) 
+              } else {
+                throw new Error('获取失败')
+              }
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        })
+    })
+  }
+
+  deleteMenu() {
+    return new Promise((resolve, reject) => {
+      this.fetchAccessToken()
+        .then((data) => {
+          let url = `${api.menu.del}?access_token=${data.access_token}`;
+          const options = {
+            url,
+            json: true
+          }
+          request(options)
+            .then((response) => {
+              let _data = response[1];
+              if (_data) {
+                resolve(_data) 
+              } else {
+                throw new Error('删除失败')
               }
             })
             .catch((err) => {

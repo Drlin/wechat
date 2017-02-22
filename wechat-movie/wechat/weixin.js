@@ -2,10 +2,20 @@
 
 const config = require('./config/config');
 const Wechat = require('./wechat.js');
-const fs = require('fs')
+const fs = require('fs');
+const menu = require('./lib/menu.js');
+
+const wechat = new Wechat(config.wechat);
+
+wechat.deleteMenu().then(() => {
+	return wechat.createMenu(menu)
+})
+.then((msg) => {
+	console.log(msg)
+})
 
 const reply = function* (next) {
-	const wechat = new Wechat(config.wechat);
+	
 	let data = '';
 	let message = this.weixin;
 	if (message.MsgType === 'event' && message.Event === 'subscribe') {
