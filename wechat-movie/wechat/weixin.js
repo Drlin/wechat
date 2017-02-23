@@ -15,7 +15,6 @@ wechat.deleteMenu().then(() => {
 })
 
 const reply = function* (next) {
-	
 	let data = '';
 	let message = this.weixin;
 	if (message.MsgType === 'event' && message.Event === 'subscribe') {
@@ -48,6 +47,7 @@ const reply = function* (next) {
 	}
 	yield next;
 }
+
 module.exports = {
 	reply 
 }
