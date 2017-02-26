@@ -19,6 +19,9 @@ const api = {
     create: `${prefix}/menu/create`,
     del: `${prefix}/menu/delete`,
     get: `${prefix}/menu/get`
+  },
+  ticket: {
+    get: prefix + 'ticket/getticket'
   }
 }
 const Promise = require('bluebird');
@@ -32,15 +35,58 @@ class Wechat {
     this.appSecret = opts.appSecret;
     this.getAccessToken = opts.getAccessToken;
     this.saveAccessToken = opts.saveAccessToken;
+    this.getTicket = opts.getTicket;
+    this.saveTicket = opts.saveTicket;
     this.fetchAccessToken();
   }
 
-  fetchAccessToken() {
-    if (this.access_token && this.expires_in) {
-      if (this.isValidAccessToken(this)) {
-        return Promise.resolve(this)
+  fetchTicket(access_token) {
+    return this.getTicket()
+    .then((data) => {
+      try {
+        data = JSON.parse(data)
+      } catch(e) {
+        return this.updateTicket(access_token);
       }
+
+      if (this.isValidTicket(data)) {
+        return Promise.resolve(data)
+      } else {
+        return this.updateTicket(access_token);
+      }
+    })
+    .then((data) => {
+      this.saveTicket(data)
+      return Promise.resolve(data)
+    })
+  }
+
+  updateTicket(access_token) {
+    let url = `${api.ticket.get}&access_token=${access_token}&type=jsapi`;
+    return new Promise((resolve, reject) => {
+      request({url: url, json: true}).then((response) => {
+        let data = response[1];
+        let now = Date.now();
+        let expires_in = now + (data.expires_in - 20) * 1000;
+        data.expires_in = expires_in
+        resolve(data);
+      })
+    })
+  }
+
+  isValidTicket(data) {
+    if(!data || !data.ticket || !data.expires_in) {
+      return false;
     }
+    let expires_in = data.expires_in;
+    let now = Date.now();
+    if (now > expires_in) {
+      return false
+    } 
+    return true;
+  }
+
+  fetchAccessToken() {
     return this.getAccessToken()
     .then((data) => {
       try {
@@ -56,8 +102,6 @@ class Wechat {
       }
     })
     .then((data) => {
-      this.access_token = data.access_token;
-      this.expires_in = data.expires_in;
       this.saveAccessToken(data)
       return Promise.resolve(data)
     })

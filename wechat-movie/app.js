@@ -2,11 +2,14 @@
 
 const koa = require('koa')
 const sha1 = require('sha1')
+const ejs = require('ejs')
+const crypto = require('crypto')
+const heredoc = require('heredoc')
+
 const config = require('./wechat/config/config')
 const wechat = require('./wechat/g')
 const weixin = require('./wechat/weixin')
-const ejs = require('ejs')
-const heredoc = require('heredoc')
+const Wechat = require('./wechat/wechat')
 
 
 const app = koa();
@@ -23,15 +26,65 @@ const tpl = heredoc(() => {/*
         <p id="title"></p>
         <div id=post""></div>
 
+        <script>
+          wx.config({
+              debug: true,
+              appId: 'wxf850ce602b6ff3f3',
+              timestamp: '<%= timestamp %>', 
+              nonceStr: '<%= nonceStr %>', 
+              signature: '<%= signature %>',
+              jsApiList: [
+                'startRecord',
+                'stopRecord',
+                'onVoiceRecordEnd',
+                'translateVoice'
+              ] 
+          }); 
+        </script>
         <script src="http://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
       </body>
     </html>
 */})
+let _sign(noncestr, ticket, timestamp, url) {
+  const params = [
+    `noncestr=${noncestr}`,
+    `jsapi_ticket=${ticket}`,
+    `timestamp=${timestamp}`,
+    `url=${url}`
+  ]
+  let str = params.sort().join('&')
+  let shanum = crypto .createHash('sha1')
+  shanum.update(str)
+
+  return shanum.digest('hex')
+}
+
+let createNonce = function() {
+  return Math.random().toString(36).substr(2, 15);
+}
+
+let createTimestamp = function() {
+  return parseInt(new Date().getTime() / 1000, 10) + '';
+}
+
+function sign(ticket, url) {
+  let noncestr = createNonce();
+  let timestamp = createTimestamp();
+  let signature = _sign(noncestr, ticket, timestamp, url);
+  return {
+    noncestr, timestamp, signature
+  }
+}
 
 app.use(function *(next) {
   if (this.url.indexOf('movie') > -1) {
-    this.body = ejs.render(tpl, {})
+    const wechatApi = new Wechat(config.wechat);
+    const data = yield wechatApi.fecthAccessToken();
+    const access_token = data.access_token;
+    const ticketData = yield wechatApi.fecthTicket(ticketData);
+    const params = sign(ticketData.ticket, this.href)
+    this.body = ejs.render(tpl, params)
     return next;
   }
   yield next;

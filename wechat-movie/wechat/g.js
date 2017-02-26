@@ -2,7 +2,7 @@
 
 const sha1 = require('sha1')
 const Promise = require('bluebird');
-const getRawBody = require('raw-Body');
+const getRawBody = require('raw-body');
 
 const Wechat = require('./wechat.js')
 const Util = require('./lib/Util')
@@ -35,7 +35,7 @@ module.exports = function(opts, hanlder) {
         yield hanlder.call(this, next);
 
         wechat.reply.call(this);
-        
+
         return
       }
       this.body = echostr + '';

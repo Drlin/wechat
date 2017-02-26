@@ -73,7 +73,7 @@ module.exports = {
 		if (Array.isArray(content)) {
 			type = 'news'
 		}
-		type = content.type || type;
+		type = (content && content.type) || type;
 		info.Content = content;
 		info.CreateTime = Date.now();
 		info.MsgType = type;
