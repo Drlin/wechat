@@ -21,7 +21,7 @@ const api = {
     get: `${prefix}/menu/get`
   },
   ticket: {
-    get: prefix + 'ticket/getticket'
+    get: `${prefix}/ticket/getticket?`
   }
 }
 const Promise = require('bluebird');
@@ -62,8 +62,10 @@ class Wechat {
   }
 
   updateTicket(access_token) {
-    let url = `${api.ticket.get}&access_token=${access_token}&type=jsapi`;
+    let url = `${api.ticket.get}access_token=${access_token}&type=jsapi`;
+    console.log(url)
     return new Promise((resolve, reject) => {
+      console.log(url)
       request({url: url, json: true}).then((response) => {
         let data = response[1];
         let now = Date.now();

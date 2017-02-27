@@ -31,7 +31,7 @@ const tpl = heredoc(() => {/*
               debug: true,
               appId: 'wxf850ce602b6ff3f3',
               timestamp: '<%= timestamp %>', 
-              nonceStr: '<%= nonceStr %>', 
+              noncestr: '<%= noncestr %>', 
               signature: '<%= signature %>',
               jsApiList: [
                 'startRecord',
@@ -46,7 +46,7 @@ const tpl = heredoc(() => {/*
       </body>
     </html>
 */})
-let _sign(noncestr, ticket, timestamp, url) {
+function _sign(noncestr, ticket, timestamp, url) {
   const params = [
     `noncestr=${noncestr}`,
     `jsapi_ticket=${ticket}`,
@@ -80,13 +80,14 @@ function sign(ticket, url) {
 app.use(function *(next) {
   if (this.url.indexOf('movie') > -1) {
     const wechatApi = new Wechat(config.wechat);
-    const data = yield wechatApi.fecthAccessToken();
+    const data = yield wechatApi.fetchAccessToken();
     const access_token = data.access_token;
-    const ticketData = yield wechatApi.fecthTicket(ticketData);
+    const ticketData = yield wechatApi.fetchTicket(access_token);
     const params = sign(ticketData.ticket, this.href)
+    console.log(params)
     this.body = ejs.render(tpl, params)
-    return next;
-  }
+    return;
+  };
   yield next;
 });
 
