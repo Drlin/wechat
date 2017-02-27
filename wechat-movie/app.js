@@ -40,6 +40,32 @@ const tpl = heredoc(() => {/*
                 'translateVoice'
               ] 
           }); 
+          alert(111)
+          wx.ready(function() {
+            $('h1').on('tap', function(){
+              alert(11)
+              wx.startRecord({
+                cancel: function() {
+                  alert('老铁，咋取消了呢')
+                }
+              });
+
+              wx.stopRecord({
+                success: function (res) {
+                  const localId = res.localId;
+
+                  wx.translateVoice({
+                    localId,
+                    isShowProgressTips: 1, 
+                    success: function (res) {
+                      alert(res.translateResult); 
+                    }
+                  });
+                }
+              })
+
+            })
+          })
         </script>
         <script src="http://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
