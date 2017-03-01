@@ -4,6 +4,9 @@ const crypto = require('crypto')
 const heredoc = require('heredoc')
 const sha1 = require('sha1')
 
+const config = require('../../wechat/config/config')
+const Wechat = require('../../wechat/wechat')
+
 const tpl = heredoc(() => {/*
   <!DOCTYPE html>
     <html>
@@ -90,7 +93,7 @@ function sign(ticket, url) {
   }
 }
 
-module.exports = function *() {
+exports.movie = function *() {
 	const wechatApi = new Wechat(config.wechat);
     const data = yield wechatApi.fetchAccessToken();
     const access_token = data.access_token;
