@@ -26,6 +26,10 @@ WechatApi.deleteMenu().then(() => {
 const app = koa();
 const router = new Router();
 
+
+app.use(router.routes())
+   .use(router.allowedMethods())
+
 router.get('/movie', game.movie)
 router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
@@ -37,10 +41,6 @@ app.use(function*(next){
   }
   yield next;
 })
-
-app.use(router.routes())
-   .use(router.allowedMethods())
-
 
 app.listen(3000)
 console.log('成功启动服务，端口是 3000')

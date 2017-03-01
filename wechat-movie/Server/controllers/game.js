@@ -18,8 +18,8 @@ const tpl = heredoc(() => {/*
         <h1>点击标题，开始录音翻译恩</h1>
         <p id="title"></p>
         <div id=post""></div>
-        <script src="https://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
-        <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script src="http://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
+        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
           wx.config({
               debug: true,
@@ -64,16 +64,14 @@ const tpl = heredoc(() => {/*
 */})
 function _sign(nonceStr, ticket, timestamp, url) {
   const params = [
-    `nonceStr=${nonceStr}`,
+    `noncestr=${nonceStr}`,
     `jsapi_ticket=${ticket}`,
     `timestamp=${timestamp}`,
     `url=${url}`
   ]
+  console.log(params)
   let str = params.sort().join('&')
-  let shanum = crypto .createHash('sha1')
-  shanum.update(str)
-
-  return shanum.digest('hex')
+  return sha1(str)
 }
 
 let createNonce = function() {
@@ -81,7 +79,7 @@ let createNonce = function() {
 }
 
 let createTimestamp = function() {
-  return parseInt(new Date().getTime() / 1000, 10) + '';
+  return parseInt(new Date().getTime()/1000, 10);
 }
 
 function sign(ticket, url) {
