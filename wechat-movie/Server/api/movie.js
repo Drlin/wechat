@@ -11,5 +11,30 @@ const Category = mongoose.model('Category')
 
 
 function* findAll() {
-	const 
+	const categories = 
+		yield Category.find({})
+		.populate({
+			path: 'movies',
+			select: 'title poster',
+			options: {limit: 6}
+		})
+		.exec()
+	return categories;
+}
+
+function* searchByCatagory(cataId) {
+	const categories = yield Category
+	.find({_id: cataId})
+	.populate({
+		path: 'movies',
+		select: 'title poster'
+	}).exec()
+	return categories;
+}
+
+function* searchByName(q) {
+	const movies = yield Movie
+	.find({title: new RegExp(`${1}.*`, 'i')})
+	.exec()
+	return movies;
 }
