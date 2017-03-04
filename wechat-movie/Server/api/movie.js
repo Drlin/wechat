@@ -38,3 +38,19 @@ function* searchByName(q) {
 	.exec()
 	return movies;
 }
+
+function* findMoviesByCate(cat) {
+  var category = yield Category
+      .findOne({name: cat})
+      .populate({
+        path: 'movies',
+        select: 'title poster _id'
+      })
+      .exec()
+
+  return category
+}
+
+module.exports = {
+	findAll, searchByCatagory, searchByName, findMoviesByCate
+}
