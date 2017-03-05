@@ -5,8 +5,9 @@ const co = require('co');
 const koa_request = require('koa-request');
 const _ = require('lodash')
 
-const Movie = mongoose.model('Movie');
-const Category = mongoose.model('Category');
+const Movie = require('../models/movie');
+const Category = require('../models/category');
+mongoose.Promise = require('bluebird');
 
 function* findAll() {
 	const categories = 
@@ -32,7 +33,7 @@ function* searchByCatagory(cataId) {
 
 function* searchByName(q) {
 	const movies = yield Movie
-	.find({title: new RegExp(`${1}.*`, 'i')})
+	.find({title: new RegExp(q + '.*', 'i')})
 	.exec()
 	return movies;
 }
@@ -50,13 +51,14 @@ function* findMoviesByCate(cat) {
 }
 
 function* searchByDouban(content) {
-	let url = `https://api.douban.com/v2/movie/search?q=${content}`;
+	let url = `https://api.douban.com/v2/movie/search?q=${encodeURIComponent(content)}`;
 	const response = yield koa_request(url);
 	const data = JSON.parse(response.body)
 	const subjects = [];
 	if (data && data.subjects) {
-		return subjects;
+		return data.subjects.splice(0, 4);
 	}
+	return [];
 }
 
 module.exports = {

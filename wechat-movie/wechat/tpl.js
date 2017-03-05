@@ -42,6 +42,7 @@ const tpl = heredoc(() => {/*
 		<ThumbMediaId><![CDATA[<%= Content.media_id %>]]></ThumbMediaId>
 		</Music>
 	<% } else if(MsgType === 'news') { %>
+		<ArticleCount><%= Content.length %></ArticleCount>
 		<Articles>
 		<% Content.forEach(function(item) { %>
 			<item>

@@ -30,29 +30,32 @@ const reply = function* (next) {
 				media_id: data.media_id
 			}
 			break;
+			case '2': 
+			this.body = message.Content;
+			break;
 			default: 
 				// data = yield wechat.getUsers( message.FromUserName );
 				// this.body = `${data.nickname}, 你说的是${message.Content}`;
 				let content = message.Content;
-				let movies = yield Movie.searchByName(content);
-				let reply = []
-
+				let movies = ''
+				let replyNews = []
+				movies = yield Movie.searchByName(content);
 				if (!movies || movies.length === 0) {
 					movies = yield Movie.searchByDouban(content);
-				}
-				if (!movies) {
-					reply = '没有找到， 老铁，要不要换个词试试'
+				};
+				if (!movies || movies.length === 0) {
+					replyNews = '没有找到，老铁，要不要换个词试试'
 					return;
-				}
+				};
 				movies.map((item) => {
-					reply.push({
+					replyNews.push({
 						title: item.title,
 			            description: item.title,
-			            picUrl: item.poster,
+			            picurl: item.images.large,
 			            url: item.alt
 					})
-				})
-
+				});
+				this.body = replyNews;
 			break;
 		}
 	} else {

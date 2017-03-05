@@ -79,6 +79,7 @@ module.exports = {
 		info.MsgType = type;
 		info.FromUserName = FromUserName;
 		info.ToUserName = ToUserName;
+		console.log(tpl.compiled(info))
 		return tpl.compiled(info);
 	}
 }	

@@ -2,22 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const CatagorySchema = new Schema({
-    name: String,
-    movies: [{type: ObjectId, ref: 'Moive'}],
+const MoiveSchema = new Schema({
+    title: String,
+    content: String,
+    catagory: {type: 'ObjectId', ref: 'Catagory'},
     meta:{
-        createAt: {
-            type: Date,
+        createAt:{
+            type:Date,
             default:Date.now()
         },
-        updateAt: {
-            type: Date,
-            default: Date.now()
+        updateAt:{
+            type:Date,
+            default:Date.now()
         }
     }
 });
 
-CatagorySchema.pre('save', function (next) {
+MoiveSchema.pre('save', function (next) {
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now()
 	} else {
@@ -26,4 +27,4 @@ CatagorySchema.pre('save', function (next) {
     next()
 })
 
-module.exports = CatagorySchema;
+module.exports = MoiveSchema;
