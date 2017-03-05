@@ -2,13 +2,11 @@
 
 const mongoose = require('mongoose');
 const co = require('co');
-const koa_request = require('koa-request')
-const request = Promise.promisify(require('request'))
+const koa_request = require('koa-request');
 const _ = require('lodash')
 
 const Movie = mongoose.model('Movie');
-const Category = mongoose.model('Category')
-
+const Category = mongoose.model('Category');
 
 function* findAll() {
 	const categories = 
@@ -16,7 +14,7 @@ function* findAll() {
 		.populate({
 			path: 'movies',
 			select: 'title poster',
-			options: {limit: 6}
+			options: {limit: 10}
 		})
 		.exec()
 	return categories;
@@ -51,6 +49,20 @@ function* findMoviesByCate(cat) {
   return category
 }
 
+function* searchByDouban(content) {
+	let url = `https://api.douban.com/v2/movie/search?q=${content}`;
+	const response = yield koa_request(url);
+	const data = JSON.parse(response.body)
+	const subjects = [];
+	if (data && data.subjects) {
+		return subjects;
+	}
+}
+
 module.exports = {
-	findAll, searchByCatagory, searchByName, findMoviesByCate
+	findAll, 
+	searchByCatagory, 
+	searchByName, 
+	findMoviesByCate,
+	searchByDouban
 }

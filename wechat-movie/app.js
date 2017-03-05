@@ -26,7 +26,6 @@ WechatApi.deleteMenu().then(() => {
 const app = koa();
 const router = new Router();
 
-
 app.use(router.routes())
    .use(router.allowedMethods())
 
