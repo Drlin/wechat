@@ -7,7 +7,7 @@ const _ = require('lodash')
 
 const Movie = require('../models/movie');
 const Category = require('../models/category');
-mongoose.Promise = require('bluebird');
+
 
 function* findAll() {
 	const categories = 
@@ -18,6 +18,7 @@ function* findAll() {
 			options: {limit: 10}
 		})
 		.exec()
+
 	return categories;
 }
 
@@ -32,22 +33,15 @@ function* searchByCatagory(cataId) {
 }
 
 function* searchByName(q) {
-	const movies = yield Movie
-	.find({title: new RegExp(q + '.*', 'i')})
-	.exec()
-	return movies;
-}
-
-function* findMoviesByCate(cat) {
-  var category = yield Category
-      .findOne({name: cat})
-      .populate({
-        path: 'movies',
-        select: 'title poster _id'
-      })
-      .exec()
-
-  return category
+	try {
+		const movies = yield Movie
+		.find({title: new RegExp(q + '.*', 'i')})
+		.exec()
+		return movies;
+	} catch(e) {
+		console.log(e)
+	}
+	
 }
 
 function* searchByDouban(content) {

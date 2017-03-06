@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const MoiveSchema = require('../schemas/blog')
-const Moive = mongoose.model('Moive', MoiveSchema)
+const MovieSchema = require('../schemas/movie')
+const Movie = mongoose.model('Moive', MovieSchema)
 
-module.exports = Moive
+module.exports = Movie

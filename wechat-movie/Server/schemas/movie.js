@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const MoiveSchema = new Schema({
+const MovieSchema = new Schema({
     title: String,
     content: String,
     catagory: {type: 'ObjectId', ref: 'Catagory'},
@@ -18,7 +18,7 @@ const MoiveSchema = new Schema({
     }
 });
 
-MoiveSchema.pre('save', function (next) {
+MovieSchema.pre('save', function (next) {
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now()
 	} else {
@@ -27,4 +27,4 @@ MoiveSchema.pre('save', function (next) {
     next()
 })
 
-module.exports = MoiveSchema;
+module.exports = MovieSchema;
