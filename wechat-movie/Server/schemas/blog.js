@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
 const BlogSchema = new Schema({
     title: String,
     content: String,
-    catagory: {type: 'ObjectId', ref: 'Catagory'},
+    catagory: {type: ObjectId, ref: 'Catagory'},
     meta:{
         createAt:{
             type:Date,

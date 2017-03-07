@@ -3,9 +3,14 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const MovieSchema = new Schema({
+    director: String,
     title: String,
     content: String,
-    catagory: {type: 'ObjectId', ref: 'Catagory'},
+    catagory: {type: ObjectId, ref: 'Catagory'},
+    description: String,
+    picurl: String,
+    url: String,
+    doubanId: String,
     meta:{
         createAt:{
             type:Date,

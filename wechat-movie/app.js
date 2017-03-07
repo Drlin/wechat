@@ -11,7 +11,6 @@ const game = require('./Server/controllers/game.js');
 const wx = require('./Server/controllers/wechat.js')
 const dbUrl = 'mongodb://localhost/imooc'
 
-mongoose.Promise = require('bluebird');
 mongoose.connect(dbUrl)
 
 const WechatApi = new Wechat(config.wechat);

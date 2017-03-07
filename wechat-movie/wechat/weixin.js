@@ -1,8 +1,8 @@
 'use strict'
-
 const config = require('./config/config');
 const Wechat = require('./wechat.js');
 const Movie = require('../Server/api/movie.js');
+const MovieModel = require('../Server/models/movie.js')
 const fs = require('fs');
 const wechat = new Wechat(config.wechat);
 
@@ -39,7 +39,7 @@ const reply = function* (next) {
 				let content = message.Content;
 				let movies = ''
 				let replyNews = []
-				movies = yield Movie.searchByName(content);
+				//movies = yield Movie.searchByName(content);
 				if (!movies || movies.length === 0) {
 					movies = yield Movie.searchByDouban(content);
 				};
