@@ -59,7 +59,7 @@ function* searchByDouban(content) {
 		let queryArray = [];
 		subjects.forEach((item) => {
 			queryArray.push(function *() {
-				let movie = yield Movie.findOne({doubanId: item.id})
+				let movie = yield Movie.findOne({doubanId: item.id}).exec()
 				if (movie) {
 					movies.push(movie);
 				} else {

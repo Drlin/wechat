@@ -2,7 +2,6 @@
 const config = require('./config/config');
 const Wechat = require('./wechat.js');
 const Movie = require('../Server/api/movie.js');
-const MovieModel = require('../Server/models/movie.js')
 const fs = require('fs');
 const wechat = new Wechat(config.wechat);
 
