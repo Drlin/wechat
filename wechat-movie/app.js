@@ -29,25 +29,16 @@ const MovieModel = require('./Server/models/movie.js')
 
 const router = new Router();
 
+require('./Server/routes/route')(router);
+
 app.use(router.routes())
    .use(router.allowedMethods())
 
 router.get('/movie', game.movie)
 router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
-router.post('/save', function *(next) {
-	let movie = new MovieModel({
-		director: '',
-		title: 1,
-		doubanId: 2,
-		poster: 3,
-		year: 2,
-		genres: 1
-	})
-	yield movie.save()
-	console.log(movie)
-	yield next;
-})
+
+
 
 app.use(function*(next){  
   if(parseInt(this.status) === 404){

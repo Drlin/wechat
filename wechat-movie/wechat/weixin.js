@@ -38,7 +38,7 @@ const reply = function* (next) {
 				let content = message.Content;
 				let movies = ''
 				let replyNews = []
-				//movies = yield Movie.searchByName(content);
+				movies = yield Movie.searchByName(content);
 				if (!movies || movies.length === 0) {
 					movies = yield Movie.searchByDouban(content);
 				};
@@ -50,7 +50,7 @@ const reply = function* (next) {
 					replyNews.push({
 						title: item.title,
 			            description: item.title,
-			            picurl: item.images.large,
+			            picurl: item.picurl,
 			            url: item.alt
 					})
 				});

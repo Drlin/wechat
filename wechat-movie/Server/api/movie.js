@@ -31,24 +31,18 @@ function* searchByCatagory(cataId) {
 	return categories;
 }
 
-function searchByName(q) {
-	return function(next) {
-		console.log(next)
-		Movie
-		.find({title: new RegExp(q + '.*', 'i')})
-		.exec((err, docs) => {
-			console.log(docs)
-			if (err) {
-				return next(err)
-			}
-			next(null, docs)
-		})	
-	}
+function* searchByName(q) {
+	const movies = yield Movie
+	.find({title: q + '.*'})
+	.exec
+	return movies;
 }
 
 function* searchByDouban(content) {
-	let url = `https://api.douban.com/v2/movie/search?q=${encodeURIComponent(content)}`;
-	let response = yield koa_request(url);
+	let baseUrl = 'https://api.douban.com/v2/movie/';
+	let detailUrl = `${baseUrl}subject/`
+	let searchUrl = `${baseUrl}search?q=${encodeURIComponent(content)}`;
+	let response = yield koa_request(searchUrl);
 	let data = JSON.parse(response.body)
 	let subjects = [];
 	let movies = [];
@@ -63,6 +57,9 @@ function* searchByDouban(content) {
 				if (movie) {
 					movies.push(movie);
 				} else {
+					let detailData = yield koa_request(`${detailUrl}${item.id}`)
+					item = JSON.parse(detailData.body);
+					console.log(item)
 					let directors = item.directors || []
 					let director = directors[0] || {}
 					let {title, year} = item
@@ -70,16 +67,18 @@ function* searchByDouban(content) {
 						director: director.name || '',
 						title,
 						doubanId: item.id,
-						poster: item.images.large,
+						picurl: item.images.large,
 						year,
-						genres: item.genres || []
+						rating: item.rating.average,
+						genres: item.genres || [],
+						summary: item.summary
 					})
 
 					movie = yield movie.save()
 					movies.push(movie)
 				}
 			})
-		})
+		});
 		yield queryArray;
 	}
 	return movies;

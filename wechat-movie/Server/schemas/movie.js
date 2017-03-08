@@ -11,6 +11,8 @@ const MovieSchema = new Schema({
     picurl: String,
     url: String,
     doubanId: String,
+    rating: String,
+    summary: String,
     meta:{
         createAt:{
             type:Date,
