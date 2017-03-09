@@ -1,6 +1,6 @@
-# wechat
+# html
 
-> wechat
+> A Vue.js project
 
 ## Build Setup
 

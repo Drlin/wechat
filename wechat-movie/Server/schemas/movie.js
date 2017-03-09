@@ -13,6 +13,8 @@ const MovieSchema = new Schema({
     doubanId: String,
     rating: String,
     summary: String,
+    year: String,
+    genres: [String],
     meta:{
         createAt:{
             type:Date,

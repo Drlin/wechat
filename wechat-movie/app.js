@@ -4,6 +4,10 @@ const koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
 const promise = require('promise')
+const path = require('path');
+const fs = require('fs')
+const render = require('koa-swig');
+const serve = require('koa-static')
 
 const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
@@ -17,6 +21,7 @@ const app = koa();
 mongoose.connect(dbUrl)
 mongoose.Promise = require('bluebird')
 const WechatApi = new Wechat(config.wechat);
+const router = new Router();
 
 WechatApi.deleteMenu().then(() => {
   return WechatApi.createMenu(menu)
@@ -25,20 +30,18 @@ WechatApi.deleteMenu().then(() => {
   console.log(msg)
 })
 
-const MovieModel = require('./Server/models/movie.js')
-
-const router = new Router();
 
 require('./Server/routes/route')(router);
+
 
 app.use(router.routes())
    .use(router.allowedMethods())
 
-router.get('/movie', game.movie)
+//router.get('/movie', game.movie)
 router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
 
-
+app.use(serve(path.resolve('html/dist')));
 
 app.use(function*(next){  
   if(parseInt(this.status) === 404){
