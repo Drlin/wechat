@@ -59,7 +59,6 @@ function* searchByDouban(content) {
 				} else {
 					let detailData = yield koa_request(`${detailUrl}${item.id}`)
 					item = JSON.parse(detailData.body);
-					console.log(item)
 					let directors = item.directors || []
 					let director = directors[0] || {}
 					let {title, year} = item
@@ -71,7 +70,9 @@ function* searchByDouban(content) {
 						year,
 						rating: item.rating.average,
 						genres: item.genres || [],
-						summary: item.summary
+						summary: item.summary,
+						collect_count: item.collect_count,
+						alt: `http://www.danshengou.pro/#/?id=${item.id}`
 					})
 
 					movie = yield movie.save()

@@ -15,6 +15,8 @@ const MovieSchema = new Schema({
     summary: String,
     year: String,
     genres: [String],
+    collect_count: String,
+    alt: String,
     meta:{
         createAt:{
             type:Date,

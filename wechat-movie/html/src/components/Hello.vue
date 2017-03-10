@@ -21,6 +21,26 @@
         </span>
       </div>
     </div>
+    <div class="details-section movies">
+      <h1 class="heading">评价</h1>
+      <div class="score">
+        <div class="score-container">
+          <div class="score">{{(+data.rating).toFixed(1)}}</div>
+          <div class="reviews-stats">
+            <span class="reviewers-small"></span> 共 
+            <span class="reviews-num">398</span> 条评价</div>
+        </div>
+        <div class="rating-histogram">
+          <div class="rating-bar-container">
+            <span class="bar-label"> 
+              <span class="star-tiny star-full"></span>{{data.rating}}
+            </span>
+            <span class="bar" v-bind:style="{width: `${data.rating/10*100}%`}"></span>
+            <span class="bar-number"></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,7 +50,10 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      data: {}
+      data: {
+        genres: [],
+        rating: 0
+      }
     }
   },
   created () {
@@ -71,7 +94,7 @@ export default {
 }
 .details-section {
   background-color: #f5f5f5;
-  padding: 15px 15px 0 15px;
+  padding: 15px;
 }
 .details-section h1 {
   font-size: 22px;
@@ -82,5 +105,58 @@ export default {
 .details-section .multicol-column {
   color: #777777;
 }
-
+.movies {
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
+}
+.score {
+  display: flex;
+  justify-content: center;
+}
+.score-container {
+  flex: 1;
+  padding: 20px;
+  width: 160px;
+  text-align: center;
+}
+.score-container .score {
+  color: #333;
+  font-size: 64px;
+  font-weight: 100;
+  line-height: 64px;
+}
+.rating-histogram {
+  flex: 1;
+  padding: 20px 20px 20px 30px;
+  width: 170px;
+}
+.rating-box .bar-label .star-tiny {
+  left: -2px;
+  position: relative;
+  top: -2px;
+}
+.rating-bar-container {
+  width: 100%;
+  height: 23px;
+  position: relative;
+}
+.bar-label {
+  font-size: 11px;
+  left: -28px;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 4px;
+}
+.rating-bar-container .bar {
+  background: #88b131;
+  display: inline-block;
+  height: 100%;
+}
+.bar-number {
+  color: #333;
+  font-size: 11px;
+  left: 5px;
+  position: absolute;
+  top: 4px;
+}
 </style>
