@@ -8,6 +8,9 @@ const path = require('path');
 const fs = require('fs')
 const render = require('koa-swig');
 const serve = require('koa-static')
+const logger = require('koa-logger')
+const bodyParser = require('koa-bodyparser')
+const session = require('session')
 
 const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
@@ -17,9 +20,8 @@ const wx = require('./Server/controllers/wechat.js')
 const dbUrl = 'mongodb://localhost/wechat'
 
 const app = koa();
-
-mongoose.connect(dbUrl)
 mongoose.Promise = require('bluebird')
+mongoose.connect(dbUrl)
 const WechatApi = new Wechat(config.wechat);
 const router = new Router();
 
@@ -33,7 +35,9 @@ WechatApi.deleteMenu().then(() => {
 
 require('./Server/routes/route')(router);
 
-
+app.use(logger())
+app.use(session(app))
+app.use(bodyParser())
 app.use(router.routes())
    .use(router.allowedMethods())
 

@@ -11,6 +11,12 @@ const UserSchema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	phoneNum: {
+		unique: true,
+		type: Number
+	},
+	accessToken: String,
+	verifyCode: String,
 	meta:{
         createAt:{
             type:Date,
