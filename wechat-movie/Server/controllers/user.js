@@ -1,24 +1,38 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const Sms = require('../api/sms.js')
 
 module.exports = {
-	signup: function(req, res, next) {
-		var name = req.body.name;
-		var password = req.body.password;
-		var user = new User({
-			name: name,
-			password: password
-		});
-
-		user.save(function(err, user) {
-			if (err) {
-				return next(err)
+	verify: function *(next) {
+		const phoneNum = this.request.body.phoneNum;
+		const user = yield User.findOne({phoneNum}).exec();
+		if (!phoneNum) {
+			this.body = {
+				status: 1,
+				msg: '手机号不存在'
 			}
-			return res.json({
+			return next;
+		}
+		if (user) {
+			this.body = {
+				status: 1,
+				msg: '手机号已存在'
+			}
+			return next;
+		};
+		let code = Sms.getCode();
+		Sms.send(code, phoneNum).then(() => {
+			this.body = {
 				status: 0,
-				msg: 'OK'
-			});
-		})
+				msg: '发送成功'
+			}
+		}).catch((err) => {
+			this.body = {
+				status: 1,
+				msg: err
+			}
+		});
+		yield next
 	},
 	signin: function(req, res, next) {
 		var name = req.body.name;

@@ -35,8 +35,7 @@ WechatApi.deleteMenu().then(() => {
 
 require('./Server/routes/route')(router);
 
-app.use(logger())
-app.use(session(app))
+//app.use(session(app))
 app.use(bodyParser())
 app.use(router.routes())
    .use(router.allowedMethods())
@@ -55,6 +54,6 @@ app.use(function*(next){
   yield next;
 })
 
-app.listen(80)
-console.log('成功启动服务，端口是 80')
+app.listen(3000)
+console.log('成功启动服务，端口是 3000')
 

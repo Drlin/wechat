@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "bcrypt": "^0.8.7",
+    "alidayu-node": "^1.0.3",
+    "alidayujs": "^1.0.5",
+    "bcrypt": "^1.0.2",
     "bluebird": "^2.10.2",
     "co": "^4.6.0",
     "ejs": "^2.3.4",
@@ -30,7 +32,9 @@
     "mongoose": "^4.8.5",
     "raw-body": "^2.1.4",
     "request": "^2.65.0",
+    "session": "^0.1.0",
     "sha1": "^1.1.1",
+    "speakeasy": "^2.0.0",
     "xml2js": "^0.4.13",
     "xss": "^0.3.3"
   },
