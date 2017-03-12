@@ -3,8 +3,8 @@ const speakeasy = require('speakeasy');
 const Alidayu = require('alidayujs');
 
 const config = {
-        app_key: '23300111',
-        secret: '3403636b338e1003999dd946111111' 
+        app_key: '23692268',
+        secret: 'da427ade157528bce572c8c23ed6a0fe' 
     };
 
 const app = new Alidayu(config);
@@ -20,16 +20,14 @@ exports.getCode = function() {
 exports.send = function (code, phoneNum) {
 	return new Promise((resolve, reject) => {
 		app.sms({
-		    sms_free_sign_name: '小花',
+		    sms_free_sign_name: '李小花',
 		    sms_param: {"code": code},
 		    rec_num: phoneNum,
 		    sms_template_code: 'SMS_53875163'
-		}, (err,result) => {
+		}, (err, result) => {
+			console.log(err)
 	        if (!err) {
 				resolve(res);
-			} else {
-				console.log(err)
-				reject(new Error(err))
 			}
 		});
     });

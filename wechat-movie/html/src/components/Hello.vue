@@ -7,7 +7,7 @@
         </div>
         <div class="info">
           <p>{{data.title}}</br>{{data.year}}</p>
-          <h5>{{data.genres.join(' ')}}</h5>
+          <!-- <h5>{{data.genres.join(' ')}}</h5> -->
           <button class="want_btn btn">想看</button>
           <button class="watched_btn btn">看过</button>
         </div>

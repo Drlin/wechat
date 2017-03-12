@@ -11,28 +11,26 @@ module.exports = {
 				status: 1,
 				msg: '手机号不存在'
 			}
-			return next;
+			return;
 		}
 		if (user) {
 			this.body = {
 				status: 1,
 				msg: '手机号已存在'
 			}
-			return next;
+			return;
 		};
 		let code = Sms.getCode();
-		Sms.send(code, phoneNum).then(() => {
-			this.body = {
-				status: 0,
-				msg: '发送成功'
-			}
-		}).catch((err) => {
+		try {
+			Sms.send(code, phoneNum)
+		}
+		catch(e) {
 			this.body = {
 				status: 1,
-				msg: err
+				msg: '发送失败'
 			}
-		});
-		yield next
+			console.log(e)
+		}
 	},
 	signin: function(req, res, next) {
 		var name = req.body.name;

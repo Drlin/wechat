@@ -11,6 +11,7 @@ const serve = require('koa-static')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const session = require('session')
+const socket_io = require('socket.io')
 
 const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
@@ -18,6 +19,7 @@ const menu = require('./wechat/lib/menu.js');
 const game = require('./Server/controllers/game.js');
 const wx = require('./Server/controllers/wechat.js')
 const dbUrl = 'mongodb://localhost/wechat'
+
 
 const app = koa();
 mongoose.Promise = require('bluebird')
@@ -54,6 +56,11 @@ app.use(function*(next){
   yield next;
 })
 
-app.listen(3000)
+const io = socket_io.listen(app.listen(3000));
+
+io.sockets.on('connection', (socket)=> {
+  socket.emit('connected')
+})
+
 console.log('成功启动服务，端口是 3000')
 
