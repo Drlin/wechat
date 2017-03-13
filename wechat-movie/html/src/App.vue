@@ -15,6 +15,9 @@ body, p, div, h1, h2, h3, h4, h5 {
   margin: 0;
   padding: 0;
 }
+html {
+  font-size: 62.5%;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

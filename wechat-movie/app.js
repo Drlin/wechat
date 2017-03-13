@@ -59,7 +59,14 @@ app.use(function*(next){
 const io = socket_io.listen(app.listen(3000));
 
 io.sockets.on('connection', (socket)=> {
-  socket.emit('connected')
+  var messages = []
+  socket.on('getAllMessages', ()=> {
+    socket.emit('allMessages', messages)
+  })
+  socket.on('createMessage', (message)=> {
+    messages.push(message)
+    io.sockets.emit('allMessages', messages)
+  })
 })
 
 console.log('成功启动服务，端口是 3000')

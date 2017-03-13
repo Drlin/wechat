@@ -29,7 +29,6 @@ module.exports = {
 				status: 1,
 				msg: '发送失败'
 			}
-			console.log(e)
 		}
 	},
 	signin: function(req, res, next) {

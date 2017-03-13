@@ -5,7 +5,7 @@
         某某: {{item}}
       </div>
       <input v-model="message" placeholder="edit me"/>
-      <button >发送</button>
+      <button @click="submit">发送</button>
     </div>
   </div>
 </template>
@@ -20,11 +20,19 @@ export default {
     }
   },
   created () {
-
+    this.$socket.emit('getAllMessages')
+  },
+  methods: {
+    submit () {
+      this.$socket.emit('createMessage', this.message)
+    }
   },
   sockets: {
     connected () {
       console.log('socket connected')
+    },
+    allMessages (messages) {
+      this.messages = messages
     }
   }
 }

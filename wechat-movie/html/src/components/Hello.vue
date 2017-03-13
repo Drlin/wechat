@@ -27,12 +27,12 @@
         <div class="score-container">
           <div class="score">{{(+data.rating).toFixed(1)}}</div>
           <div class="reviews-stats">
-            <span class="reviewers-small"></span> 共 
+            <span class="reviewers-small"></span> 共
             <span class="reviews-num">398</span> 条评价</div>
         </div>
         <div class="rating-histogram">
           <div class="rating-bar-container">
-            <span class="bar-label"> 
+            <span class="bar-label">
               <span class="star-tiny star-full"></span>{{data.rating}}
             </span>
             <span class="bar" v-bind:style="{width: `${data.rating/10*100}%`}"></span>
