@@ -1,39 +1,57 @@
 const https = require('https');
 const speakeasy = require('speakeasy');
-const Alidayu = require('alidayujs');
+const Promise = require('bluebird')
+const querystring = require('querystring');
 
-var https = require('https');
-var querystring = require('querystring');
 
-var postData = {
-    mobile:'13761428267',
-    message:'验证码:28261【铁壳测试】'
-};
+exports.getCode = function() {
+	let code = speakeasy.totp({
+		secret: 'lin',
+		digits: 6
+	})
+	return code;
+}
 
-var content = querystring.stringify(postData);
+exports.send = function (code, phoneNum) {
+	return new Promise((resolve, reject) => {
+		const postData = {
+	    mobile: phoneNum,
+	    message: `您的验证码为: ${code},打死不能说哦。【李小花】`
+	};
 
-var options = {
-    host:'sms-api.luosimao.com',
-    path:'/v1/send.json',
-    method:'POST',
-    auth:'api:key-12312389d10fe16c98896ced5a09945188',
-    agent:false,
-    rejectUnauthorized : false,
-    headers:{
-    'Content-Type' : 'application/x-www-form-urlencoded',
-    'Content-Length' :content.length
-    }
-};
+	const content = querystring.stringify(postData);
 
-var req = https.request(options,function(res){
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-    console.log(JSON.parse(chunk));
-    });
-    res.on('end',function(){
-    console.log('over');
-    });
-});
+	const options = {
+	    host: 'sms-api.luosimao.com',
+	    path: '/v1/send.json',
+	    method: 'POST',
+	    auth: 'api: dcb780337ed66586f5d3aa6ac4606334',
+	    agent: false,
+	    rejectUnauthorized: false,
+	    headers: {
+	    'Content-Type': 'application/x-www-form-urlencoded',
+	    'Content-Length': content.length
+	    }
+	};
+	let json = ''
+	const req = https.request(options, (res) => {
+	    res.setEncoding('utf8');
+	    res.on('data',  (chunk)=> {
+	    	json = chunk;
+	    });
+	    res.on('end', ()=> {
+	    	let data = JSON.parse(json);
+	    	if (data.error === 0) {
+	    		resolve();
+	    	} else {
+	    		reject(new Error(data))
+	    	}
+	    });
+	});
 
-    req.write(content);
-    req.end();
+	    req.write(content);
+	    req.end();
+	})
+}
+
+

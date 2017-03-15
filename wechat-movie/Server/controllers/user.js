@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Sms = require('../api/sms.js')
+const uuid = require('uuid')
 
 module.exports = {
 	verify: function *(next) {
@@ -21,35 +22,28 @@ module.exports = {
 			return;
 		};
 		let verifyCode = Sms.getCode();
-		
-		Sms.send(verifyCode, phoneNum, (err) => {
-			if (err) {
-				return this.body = {
-					status: 1,
-					msg: '发送失败'
-				}
-			}
-			user = new User({
-				phoneNum,
-				verifyCode
-			})
-			user.save((err, docs) => {
-				this.body = {
-					status: 0,
-					msg: '发送成功'
-				}
-			});
-		})
-		
 		user = new User({
+			name: '赵铁柱',
 			phoneNum,
-			verifyCode
+			verifyCode,
+			accessToken: uuid.v4()
 		})
-		yield user.save();
+		user = yield user.save();
+
+		try {
+			Sms.send(verifyCode, phoneNum)
+		} catch(e) {
+			this.body = {
+				status: 1,
+				msg: e
+			}
+			return;
+		}
 		this.body = {
 			status: 0,
 			msg: '发送成功'
 		}
+		
 	},
 	signin: function(req, res, next) {
 		var name = req.body.name;
