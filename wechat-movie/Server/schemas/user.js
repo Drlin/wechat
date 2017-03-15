@@ -41,6 +41,9 @@ UserSchema.methods = {
 }
 
 UserSchema.pre('save', function (next) {
+	if (!this.password) {
+		next()
+	}
 	var that = this
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now()

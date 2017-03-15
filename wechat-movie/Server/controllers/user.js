@@ -5,7 +5,7 @@ const Sms = require('../api/sms.js')
 module.exports = {
 	verify: function *(next) {
 		const phoneNum = this.request.body.phoneNum;
-		const user = yield User.findOne({phoneNum}).exec();
+		let user = yield User.findOne({phoneNum}).exec();
 		if (!phoneNum) {
 			this.body = {
 				status: 1,
@@ -20,15 +20,35 @@ module.exports = {
 			}
 			return;
 		};
-		let code = Sms.getCode();
-		try {
-			Sms.send(code, phoneNum)
-		}
-		catch(e) {
-			this.body = {
-				status: 1,
-				msg: '发送失败'
+		let verifyCode = Sms.getCode();
+		
+		Sms.send(verifyCode, phoneNum, (err) => {
+			if (err) {
+				return this.body = {
+					status: 1,
+					msg: '发送失败'
+				}
 			}
+			user = new User({
+				phoneNum,
+				verifyCode
+			})
+			user.save((err, docs) => {
+				this.body = {
+					status: 0,
+					msg: '发送成功'
+				}
+			});
+		})
+		
+		user = new User({
+			phoneNum,
+			verifyCode
+		})
+		yield user.save();
+		this.body = {
+			status: 0,
+			msg: '发送成功'
 		}
 	},
 	signin: function(req, res, next) {

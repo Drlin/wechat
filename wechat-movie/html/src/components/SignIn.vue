@@ -1,14 +1,19 @@
 <template>
   <div class="form-wrapper">
     <img class="logo-dom" src="../../static/time.jpg" alt="logo">
-    <input class="text-input input" maxlength="13" placeholder="输入手机号" v-model="phoneNum">
-    <input 
-      value="获取手机验证码" 
-      class="pass-button-full input" 
-      type="button" 
-      :disabled='isDisabled'
-      @click="submit"
-    >
+    <div v-if="!verifyed">
+      <input class="text-input input" maxlength="13" placeholder="输入手机号" v-model="phoneNum">
+      <input 
+        value="获取手机验证码" 
+        class="pass-button-full input" 
+        type="button" 
+        :disabled='isDisabled'
+        @click="submit"
+      >
+    </div>
+    <div v-else>
+      1
+    </div>
   </div>
 </template>
 
@@ -17,7 +22,8 @@ export default {
   name: 'signIn',
   data () {
     return {
-      phoneNum: ''
+      phoneNum: '',
+      verifyed: false
     }
   },
   computed: {
@@ -30,7 +36,9 @@ export default {
       this.$http.post(`/api/user/verify`, {
         phoneNum: this.phoneNum
       }).then((res) => {
-        this.data = res.body
+        if (res.data === 0) {
+          this.verifyed = true
+        }
       })
     }
   }

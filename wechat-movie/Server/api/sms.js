@@ -2,33 +2,38 @@ const https = require('https');
 const speakeasy = require('speakeasy');
 const Alidayu = require('alidayujs');
 
-const config = {
-        app_key: '23692268',
-        secret: 'da427ade157528bce572c8c23ed6a0fe' 
-    };
+var https = require('https');
+var querystring = require('querystring');
 
-const app = new Alidayu(config);
+var postData = {
+    mobile:'13761428267',
+    message:'验证码:28261【铁壳测试】'
+};
 
-exports.getCode = function() {
-	let code = speakeasy.totp({
-		secret: 'lin',
-		digits: 6
-	})
-	return code;
-}
+var content = querystring.stringify(postData);
 
-exports.send = function (code, phoneNum) {
-	return new Promise((resolve, reject) => {
-		app.sms({
-		    sms_free_sign_name: '李小花',
-		    sms_param: {"code": code},
-		    rec_num: phoneNum,
-		    sms_template_code: 'SMS_53875163'
-		}, (err, result) => {
-			console.log(err)
-	        if (!err) {
-				resolve(res);
-			}
-		});
+var options = {
+    host:'sms-api.luosimao.com',
+    path:'/v1/send.json',
+    method:'POST',
+    auth:'api:key-12312389d10fe16c98896ced5a09945188',
+    agent:false,
+    rejectUnauthorized : false,
+    headers:{
+    'Content-Type' : 'application/x-www-form-urlencoded',
+    'Content-Length' :content.length
+    }
+};
+
+var req = https.request(options,function(res){
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+    console.log(JSON.parse(chunk));
     });
-}
+    res.on('end',function(){
+    console.log('over');
+    });
+});
+
+    req.write(content);
+    req.end();
