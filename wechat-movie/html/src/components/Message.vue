@@ -34,6 +34,9 @@ export default {
     allMessages (messages) {
       this.messages = messages
     }
+  },
+  beforeDestroy () {
+
   }
 }
 </script>

@@ -11,8 +11,32 @@
         @click="submit"
       >
     </div>
-    <div v-else>
-      1
+    <div class="vcode-wrapper" v-else>
+      <p class="checkTip">已发送验证码短信到</p>
+      <p class="checkPhone">{{phoneNum}}</p>
+      <div class="form-input-vcode">
+        <div class="form-input-wrapper">
+          <label 
+            class="text-label"
+          >
+            验证码
+          </label>
+          <input
+            class="text-input-code" 
+            value="" 
+            placeholder="请输入验证码" 
+            autocomplete="off" 
+            maxlength="6" 
+          >
+          <span class="input-clearValue"></span>
+        </div>
+        <input 
+          type="button" 
+          value="重新获取验证码" 
+          class="pass-button-vcode"
+        >
+      </div>
+      <input type="submit" value="提交" class="pass-button-full pass-button-submit">
     </div>
   </div>
 </template>
@@ -23,7 +47,7 @@ export default {
   data () {
     return {
       phoneNum: '',
-      verifyed: false
+      verifyed: true
     }
   },
   computed: {
@@ -83,5 +107,62 @@ export default {
   }
   .pass-button-full:disabled {
     color: #90b6ff;
+  }
+  .vcode-wrapper {
+    width: 100%;
+  }
+  .checkTip {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 15px;
+    line-height: 25px;
+    color: #979797;
+  }
+  .checkPhone {
+    width: 100%;
+    font-size: 26px;
+    text-align: center;
+    line-height: 35px;
+    padding-bottom: 10px;
+  }
+  .form-input-vcode {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .form-input-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 0 0 61%;
+    flex-direction: row;
+    height: 5rem;
+    padding: 0 1rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+  .text-label {
+    flex: 0 0 5.5rem;
+    font-size: 1.6rem;
+  }
+  .text-input-code {
+    flex: 1;
+    align-self: center;
+    border: 0;
+    font-size: 1.6rem;
+    color: #333;
+    overflow: hidden;
+    outline: none;
+  }
+  .pass-button-vcode {
+    background: #fff;
+    font-size: 1.4rem;
+    border: 1px solid #ccc;
+    padding: 0.2rem;
+  }
+  .pass-button-submit {
+    height: 4.4rem;
+    outline: none;
   }
 </style>

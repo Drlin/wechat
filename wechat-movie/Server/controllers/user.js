@@ -23,7 +23,6 @@ module.exports = {
 		};
 		let verifyCode = Sms.getCode();
 		user = new User({
-			name: '赵铁柱',
 			phoneNum,
 			verifyCode,
 			accessToken: uuid.v4()
