@@ -80,9 +80,7 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post(`/api/user/verify`, {
-        phoneNum: this.phoneNum
-      }).then((res) => {
+      this.$http.post(`/api/user/signIn`, this.user).then((res) => {
         if (res.data === 0) {
           this.verifyed = true
         }
