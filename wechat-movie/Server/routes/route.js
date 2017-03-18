@@ -7,5 +7,7 @@ module.exports = function(router) {
 
 	router.get('/api/movie/:nid', Movie.detail)
 
-	router.post('/api/user/verify', User.verify)
+	router.post('/api/user/getVerify', User.getVerify)
+	
+	router.post('/api/user/signIn', User.signIn)
 }

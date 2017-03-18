@@ -13,13 +13,13 @@ const bodyParser = require('koa-bodyparser')
 const session = require('session')
 const socket_io = require('socket.io')
 
+
 const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
 const menu = require('./wechat/lib/menu.js');
 const game = require('./Server/controllers/game.js');
 const wx = require('./Server/controllers/wechat.js')
 const dbUrl = 'mongodb://localhost/wechat'
-
 
 const app = koa();
 mongoose.Promise = require('bluebird')

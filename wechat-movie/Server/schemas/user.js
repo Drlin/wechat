@@ -13,7 +13,10 @@ const UserSchema = new mongoose.Schema({
 		type: Number
 	},
 	accessToken: String,
-	verifyCode: String,
+	verifyed: {
+		type: Boolean,
+		default: false
+	},
 	meta:{
         createAt:{
             type:Date,
@@ -47,11 +50,11 @@ UserSchema.pre('save', function (next) {
 	} else {
 		this.meta.updateAt = Date.now()
 	}
-	bcrypt.genSalt(10, function(err, salt) {
+	bcrypt.genSalt(10, (err, salt)=> {
 		if (err) {
 			return next(err)
 		}
-		bcrypt.hash(that.password, salt, function(err, hash) {
+		bcrypt.hash(that.password, salt, (err, hash)=> {
 			if (err) {
 				return next(err)
 			}

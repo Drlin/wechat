@@ -6,7 +6,7 @@
         class="text-input input" 
         maxlength="6" 
         placeholder="输入用户名" 
-        v-model="user.userName"
+        v-model="user.name"
       >
       <input 
         class="text-input input" 
@@ -31,7 +31,7 @@
     </div>
     <div class="vcode-wrapper" v-else>
       <p class="checkTip">已发送验证码短信到</p>
-      <p class="checkPhone">{{phoneNum}}</p>
+      <p class="checkPhone">{{user.phoneNum}}</p>
       <div class="form-input-vcode">
         <div class="form-input-wrapper">
           <label 
@@ -50,8 +50,9 @@
         </div>
         <input 
           type="button" 
-          value="重新获取验证码" 
+          value="获取验证码" 
           class="pass-button-vcode"
+          @click="getVerify"
         >
       </div>
       <input type="submit" value="提交" class="pass-button-full pass-button-submit">
@@ -60,13 +61,14 @@
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui'
 export default {
   name: 'signIn',
   data () {
     return {
       user: {
         phoneNum: '',
-        userName: '',
+        name: '',
         password: ''
       },
       verifyed: false
@@ -74,16 +76,38 @@ export default {
   },
   computed: {
     isDisabled () {
-      let {phoneNum, userName, password} = this.user
-      return phoneNum.length === 11 && userName && password
+      let {phoneNum, name, password} = this.user
+      return phoneNum.length === 11 && name && password
     }
   },
   methods: {
     submit () {
-      this.$router.push('/signup')
-      this.$http.post(`/api/user/signIn`, this.user).then((res) => {
-        if (res.data === 0) {
+      this.$http.post(`/api/user/signIn`, this.user)
+      .then((res) => {
+        let { status } = res.data
+        if (status === 0) {
           this.verifyed = true
+        } else if (status === 1) {
+          MessageBox({
+            title: '提示',
+            message: '您已经注册账号，是否去登录',
+            showCancelButton: true
+          })
+          .then(action => {
+            if (action === 'confirm') {
+              this.$router.push('/signup')
+            }
+          })
+        }
+      })
+    },
+    getVerify () {
+      let {phoneNum} = this.user
+      this.$http.post(`/api/user/getVerify`, {phoneNum})
+      .then((res) => {
+        let { status } = res.data
+        if (status === 0) {
+          alert(1)
         }
       })
     }

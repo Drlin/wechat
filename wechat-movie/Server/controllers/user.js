@@ -1,81 +1,75 @@
 const mongoose = require('mongoose');
+const uuid = require('uuid')
 const User = require('../models/user');
 const Sms = require('../api/sms.js')
-const uuid = require('uuid')
+const Redis = require('../api/redis.js')
 
 module.exports = {
-	verify: function *(next) {
+	getVerify: function *(next) {
 		const phoneNum = this.request.body.phoneNum;
-		let user = yield User.findOne({phoneNum}).exec();
-		if (!phoneNum) {
-			this.body = {
-				status: 1,
-				msg: '手机号不存在'
-			}
-			return;
-		}
-		if (user) {
-			this.body = {
-				status: 1,
-				msg: '手机号已存在'
-			}
-			return;
-		};
 		let verifyCode = Sms.getCode();
-		user = new User({
-			phoneNum,
-			verifyCode,
-			accessToken: uuid.v4()
-		})
-		user = yield user.save();
-
 		try {
 			Sms.send(verifyCode, phoneNum)
+			Redis.setRedis(phoneNum, {verifyCode})
+			this.body = {
+				status: 0,
+				msg: '发送成功'
+			}
 		} catch(e) {
 			this.body = {
 				status: 1,
 				msg: e
 			}
-			return;
 		}
-		this.body = {
-			status: 0,
-			msg: '发送成功'
+	},
+	validate: function *(next) {
+		user = new User({
+			phoneNum,
+			verifyCode,
+			accessToken: uuid.v4()
+		})
+	},
+	signIn: function *(next) {
+		let {phoneNum, userName, password} = this.request.body;
+		let user = yield User.findOne({ phoneNum }).exec();
+		if (user) {
+			return this.body = {
+				status: 1,
+				msg: '用户已存在'
+			}
+		};
+		user = new User(this.request.body);
+		try {
+			yield user.save();
+			this.body = {
+				status: 0,
+				msg: '保存成功'
+			}
+		} catch(e) {
+			this.body = {
+				status: 2,
+				msg: e
+			}
 		}
 		
 	},
-	signin: function(req, res, next) {
-		var name = req.body.name;
-		var password = req.body.password;
-		User.findOne({
-			name: name
-		}, function(err, user) {
+	signup: function *(next) {
+		user.comparePassword(password, function(err, isMatch) {
 			if (err) {
 				return next(err)
 			}
-			if (!user) {
+			if (isMatch) {
+				req.session.user = user
+				return res.json({
+					status: 0,
+					msg: '登录成功'
+				});
+			} else {
 				return res.json({
 					status: 1,
-					msg: '用户不存在'
+					msg: '密码错误'
 				});
 			}
-			user.comparePassword(password, function(err, isMatch) {
-				if (err) {
-					return next(err)
-				}
-				if (isMatch) {
-					req.session.user = user
-					return res.json({
-						status: 0,
-						msg: '登录成功'
-					});
-				} else {
-					return res.json({
-						status: 1,
-						msg: '密码错误'
-					});
-				}
-			})
 		})
 	},
 	logout: function(req, res, next) {
