@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     submit () {
+      this.$router.push('/signup')
       this.$http.post(`/api/user/signIn`, this.user).then((res) => {
         if (res.data === 0) {
           this.verifyed = true
