@@ -1,13 +1,31 @@
 <template>
   <div class="form-wrapper">
     <img class="logo-dom" src="../../static/time.jpg" alt="logo">
-    <div v-if="!verifyed">
-      <input class="text-input input" maxlength="13" placeholder="输入手机号" v-model="phoneNum">
+    <div class="signIn-wrapper" v-if="!verifyed">
       <input 
-        value="获取手机验证码" 
+        class="text-input input" 
+        maxlength="6" 
+        placeholder="输入用户名" 
+        v-model="user.userName"
+      >
+      <input 
+        class="text-input input" 
+        maxlength="13" 
+        placeholder="输入手机号" 
+        v-model="user.phoneNum"
+      >
+      <input 
+        class="text-input input" 
+        type="password" 
+        maxlength="13"
+        placeholder="输入密码" 
+        v-model="user.password"
+      >
+      <input 
+        value="注册" 
         class="pass-button-full input" 
         type="button" 
-        :disabled='isDisabled'
+        :disabled='!isDisabled'
         @click="submit"
       >
     </div>
@@ -46,13 +64,18 @@ export default {
   name: 'signIn',
   data () {
     return {
-      phoneNum: '',
-      verifyed: true
+      user: {
+        phoneNum: '',
+        userName: '',
+        password: ''
+      },
+      verifyed: false
     }
   },
   computed: {
     isDisabled () {
-      return this.phoneNum.length !== 11
+      let {phoneNum, userName, password} = this.user
+      return phoneNum.length === 11 && userName && password
     }
   },
   methods: {
@@ -82,8 +105,11 @@ export default {
     margin-top: 35px;
     width: 138px;
   }
+  .signIn-wrapper {
+    width: 100%;
+  }
   .input {
-    margin: 2.5rem 0 0 0;
+    margin: 1.5rem 0 0 0;
     width: 100%;
     line-height: 4.4rem;
     height: 4.4rem;
