@@ -60,21 +60,22 @@ module.exports = {
 		
 	},
 	signup: function *(next) {
+		let {phoneNum, password} = this.request.body;
 		user.comparePassword(password, function(err, isMatch) {
 			if (err) {
 				return next(err)
 			}
 			if (isMatch) {
 				req.session.user = user
-				return res.json({
+				return this.body = {
 					status: 0,
 					msg: '登录成功'
 				});
 			} else {
-				return res.json({
+				return this.body = {
 					status: 1,
 					msg: '密码错误'
-				});
+				};
 			}
 		})
 	},
