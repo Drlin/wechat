@@ -12,6 +12,7 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const session = require('session')
 const socket_io = require('socket.io')
+const jwt = require('koa-jwt')
 
 
 const config = require('./wechat/config/config')
@@ -19,6 +20,7 @@ const Wechat = require('./wechat/wechat')
 const menu = require('./wechat/lib/menu.js');
 const game = require('./Server/controllers/game.js');
 const wx = require('./Server/controllers/wechat.js')
+const User = require('./Server/controllers/user.js')
 const dbUrl = 'mongodb://localhost/wechat'
 
 const app = koa();
@@ -33,7 +35,8 @@ WechatApi.deleteMenu().then(() => {
 .then((msg) => {
   console.log(msg)
 })
-
+app.use(jwt({secret: 'lin'})
+    .unless({path:  [/^\/api\/user/]}));
 
 require('./Server/routes/route')(router);
 
@@ -47,6 +50,23 @@ router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
 
 app.use(serve(path.resolve('html/dist')));
+
+app.use(function *(next) {
+  let url = this.url
+  let userId = this.state.user;
+  if (!url.match('getVerify') || !url.match('signIn') || !url.match('validate')) {
+    if (userId) {
+      const user = yield User.findOne(userId).exec();
+      if (!(user && user.verifyed === false)) {
+        return this.body = {
+          status: 1,
+          msg: '未验证用户'
+        }
+      }
+    }
+  }
+  yield next;
+});
 
 app.use(function*(next){  
   if(parseInt(this.status) === 404){

@@ -30,13 +30,12 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.methods = {
-	comparePassword: function(_password, cb) {
-		bcrypt.compare(_password, this.password , function(err, isMatch) {
-			if (err) {
-				return cb(err)
-			}
-			cb(null, isMatch)
-		})
+	comparePassword: function(_password) {
+		return function(cb) {
+			bcrypt.compare(_password, this.password , function(err, isMatch) {
+				cb(null, isMatch)
+			})
+		}
 	}
 }
 

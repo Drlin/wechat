@@ -46,7 +46,9 @@ export default {
   methods: {
     submit () {
       this.$http.post(`/api/user/signUp`, this.user).then((res) => {
-        if (res.data === 0) {
+        let { status, token } = res.data
+        if (status === 0) {
+          window.localStorage.setItem('token', JSON.stringify(token))
           this.verifyed = true
         }
       })

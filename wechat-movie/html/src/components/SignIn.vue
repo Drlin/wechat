@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui'
+import { MessageBox, Toast } from 'mint-ui'
 export default {
   name: 'signIn',
   data () {
@@ -123,7 +123,10 @@ export default {
       .then((res) => {
         let { status } = res.data
         if (status === 0) {
+          Toast('注册成功')
           this.$router.push('/signup')
+        } else {
+          Toast('验证码错误')
         }
       })
     }

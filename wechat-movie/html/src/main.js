@@ -11,6 +11,12 @@ Vue.use(VueSocketio, 'http://localhost:3000')
 
 Vue.use(VueResource)
 Vue.config.productionTip = false
+try {
+  let token = window.localStorage.getItem('token')
+  Vue.http.headers.common['Authorization'] = `Bearer ${token}`
+} catch (e) {
+  console.log(e)
+}
 
 /* eslint-disable no-new */
 new Vue({

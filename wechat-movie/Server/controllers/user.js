@@ -3,6 +3,7 @@ const uuid = require('uuid')
 const User = require('../models/user');
 const Sms = require('../api/sms.js')
 const Redis = require('../api/redis.js')
+const jwt = require('koa-jwt')
 
 module.exports = {
 	getVerify: function *(next) {
@@ -33,6 +34,11 @@ module.exports = {
 				status: 0,
 				msg: '注册成功'
 			}
+		} else {
+			this.body = {
+				status: 1,
+				msg: '验证失败'
+			}
 		}
 	},
 	signIn: function *(next) {
@@ -61,23 +67,27 @@ module.exports = {
 	},
 	signup: function *(next) {
 		let {phoneNum, password} = this.request.body;
-		user.comparePassword(password, function(err, isMatch) {
-			if (err) {
-				return next(err)
-			}
-			if (isMatch) {
-				req.session.user = user
-				return this.body = {
-					status: 0,
-					msg: '登录成功'
-				});
-			} else {
-				return this.body = {
-					status: 1,
-					msg: '密码错误'
-				};
-			}
-		})
+		let user = yield User.findOne({ phoneNum }).exec();
+		if (!user) {
+			return this.body = {
+				status: 1,
+				msg: '用户不存在'
+			};
+		}
+		const isMatch = user.comparePassword(password);
+		if (isMatch) {
+			const token = jwt.sign(user._id.toString(), 'lin', {exp: 7200})
+			return this.body = {
+				status: 0,
+				token,
+				msg: '登录成功'
+			};
+		} else {
+			return this.body = {
+				status: 1,
+				msg: '密码错误'
+			};
+		}
 	},
 	logout: function(req, res, next) {
 		delete req.session.user;
