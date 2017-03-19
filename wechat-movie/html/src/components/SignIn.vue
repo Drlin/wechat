@@ -53,7 +53,16 @@
           value="获取验证码" 
           class="pass-button-vcode"
           @click="getVerify"
+          v-if="timeOut"
         >
+        <div class="pass-button-vcode" v-else>
+          重新发送
+          <Remaintime  
+            :time="60" 
+            v-on:refreshState="refreshStateDone"
+            >
+          </Remaintime>
+        </div>
       </div>
       <input 
         type="submit" 
@@ -67,6 +76,7 @@
 
 <script>
 import { MessageBox, Toast } from 'mint-ui'
+import Remaintime from './Remaintime'
 export default {
   name: 'signIn',
   data () {
@@ -76,8 +86,9 @@ export default {
         name: '',
         password: ''
       },
-      verifyed: false,
-      verifyCode: ''
+      verifyed: true,
+      verifyCode: '',
+      timeOut: true
     }
   },
   computed: {
@@ -85,6 +96,9 @@ export default {
       let {phoneNum, name, password} = this.user
       return phoneNum.length === 11 && name && password
     }
+  },
+  components: {
+    'Remaintime': Remaintime
   },
   methods: {
     submit () {
@@ -109,6 +123,7 @@ export default {
     },
     getVerify () {
       let {phoneNum} = this.user
+      this.timeOut = false
       this.$http.post(`/api/user/getVerify`, {phoneNum})
       .then((res) => {
         let { status } = res.data
@@ -129,6 +144,9 @@ export default {
           Toast('验证码错误')
         }
       })
+    },
+    refreshStateDone () {
+      this.timeOut = true
     }
   }
 }
@@ -224,10 +242,18 @@ export default {
     outline: none;
   }
   .pass-button-vcode {
+    flex: 0 0 26%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 5rem;
     background: #fff;
     font-size: 1.4rem;
     border: 1px solid #ccc;
-    padding: 0.2rem;
+  }
+  .pass-button-vcode > span {
+    align-self: center;
+    align-content: center;
   }
   .pass-button-submit {
     height: 4.4rem;
