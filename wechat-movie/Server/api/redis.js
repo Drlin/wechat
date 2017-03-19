@@ -1,29 +1,13 @@
-const Promise = require('bluebird')
 const redisClient = require('../../wechat/config/redis')
 const REDIS_PREFIX = 'wechat_'
 
 module.exports = {
-	setRedis: function (key, value, expire) {
-		return new Promise((resolve, reject) => {
-			redisClient.set(`${REDIS_PREFIX}${key}`, JSON.stringify(value), (err, reply)=> {
-				redisClient.expire('string key', expire);
-				if (err) {
-					reject(new Error(err));
-				} else {
-					resolve();
-				}
-			})
-    	});
+	setRedis: function *(key, value, expire) {
+		yield redisClient.set(`${REDIS_PREFIX}${key}`, JSON.stringify(value));
+		redisClient.expire('string key', expire);
 	},
-	getRedis: function (key) {
-		return new Promise((resolve, reject) => {
-			redisClient.set(`${REDIS_PREFIX}${key}`,  (err, reply)=> {
-        		if (err) {
-					reject(new Error(err));
-				} else {
-					resolve(JSON.parse(reply));
-				}
-   			})
-		}) 
+	getRedis: function *(key) {
+		const reply = yield redisClient.get(`${REDIS_PREFIX}${key}`);
+		return JSON.parse(reply)
 	}
 }

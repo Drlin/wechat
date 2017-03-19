@@ -41,7 +41,7 @@
           </label>
           <input
             class="text-input-code" 
-            value="" 
+            v-model="verifyCode"
             placeholder="请输入验证码" 
             autocomplete="off" 
             maxlength="6" 
@@ -55,7 +55,12 @@
           @click="getVerify"
         >
       </div>
-      <input type="submit" value="提交" class="pass-button-full pass-button-submit">
+      <input 
+        type="submit" 
+        value="提交" 
+        class="pass-button-full pass-button-submit"
+        @click="register"
+      >
     </div>
   </div>
 </template>
@@ -71,7 +76,8 @@ export default {
         name: '',
         password: ''
       },
-      verifyed: false
+      verifyed: false,
+      verifyCode: ''
     }
   },
   computed: {
@@ -107,7 +113,17 @@ export default {
       .then((res) => {
         let { status } = res.data
         if (status === 0) {
-          alert(1)
+          console.log('1')
+        }
+      })
+    },
+    register () {
+      let {phoneNum} = this.user
+      this.$http.post(`/api/user/validate`, {phoneNum, verifyCode: this.verifyCode})
+      .then((res) => {
+        let { status } = res.data
+        if (status === 0) {
+          this.$router.push('/signup')
         }
       })
     }

@@ -1,7 +1,5 @@
 const redis = require('redis')
-const redisUrl = 'mongodb://localhost:6379'
-const redisClient = redis.createClient(redisUrl)
-
-module.exports = {
-	redisClient
-}
+const coRedis = require('co-redis')
+const db = redis.createClient(6379, 'localhost')
+const dbCo = coRedis(db); 
+module.exports = dbCo;

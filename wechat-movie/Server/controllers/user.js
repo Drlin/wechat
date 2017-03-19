@@ -10,7 +10,7 @@ module.exports = {
 		let verifyCode = Sms.getCode();
 		try {
 			Sms.send(verifyCode, phoneNum)
-			Redis.setRedis(phoneNum, {verifyCode})
+			yield Redis.setRedis(phoneNum, {verifyCode}, 600)
 			this.body = {
 				status: 0,
 				msg: '发送成功'
@@ -23,11 +23,17 @@ module.exports = {
 		}
 	},
 	validate: function *(next) {
-		user = new User({
-			phoneNum,
-			verifyCode,
-			accessToken: uuid.v4()
-		})
+		let {verifyCode, phoneNum} = this.request.body;
+		const reply = yield Redis.getRedis(phoneNum)
+		if (verifyCode === reply.verifyCode) {
+			let user = yield User.findOne({ phoneNum }).exec()
+			user.verifyed = true;
+			yield user.save();
+			this.body = {
+				status: 0,
+				msg: '注册成功'
+			}
+		}
 	},
 	signIn: function *(next) {
 		let {phoneNum, userName, password} = this.request.body;
