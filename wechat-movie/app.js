@@ -1,14 +1,11 @@
 'use strict'
 
-const koa = require('koa')
+import koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
 const promise = require('promise')
-const path = require('path');
-const fs = require('fs')
-const render = require('koa-swig');
+const path = require('path')
 const serve = require('koa-static')
-const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const session = require('session')
 const socket_io = require('socket.io')
@@ -17,8 +14,7 @@ const jwt = require('koa-jwt')
 
 const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
-const menu = require('./wechat/lib/menu.js');
-const game = require('./Server/controllers/game.js');
+const menu = require('./wechat/lib/menu.js')
 const wx = require('./Server/controllers/wechat.js')
 const User = require('./Server/controllers/user.js')
 const dbUrl = 'mongodb://localhost/wechat'
@@ -35,6 +31,7 @@ WechatApi.deleteMenu().then(() => {
 .then((msg) => {
   console.log(msg)
 })
+
 app.use(jwt({secret: 'lin'})
     .unless({path:  [/^\/api\/user/]}));
 
