@@ -105,11 +105,10 @@ module.exports = {
 		}
 		let userId = this.state.user;
 		const user = yield User.findOne({_id: userId._id}).exec();
-		delete user.password;
-		delete user.verifyed;
+		let {name, phoneNum, _id, role} = user
 		return this.body = {
 			status: 0,
-			data: user
+			data: {name, phoneNum, _id, role}
 		};
 	},
 	lists(req, res, next) {
