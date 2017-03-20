@@ -76,7 +76,7 @@ module.exports = {
 		}
 		const isMatch = user.comparePassword(password);
 		if (isMatch) {
-			const token = jwt.sign(user._id.toString(), 'lin', {exp: 7200})
+			const token = jwt.sign({_id: user._id}, 'lin', {exp: 7200})
 			return this.body = {
 				status: 0,
 				token,
@@ -89,14 +89,30 @@ module.exports = {
 			};
 		}
 	},
-	logout: function(req, res, next) {
+	logout(req, res, next) {
 		delete req.session.user;
 		return res.json({
 			status: 0,
 			msg: '退出成功'
 		});
 	},
-	lists: function(req, res, next) {
+	userCenter: function *(next) {
+		if (!this.state.user) {
+			return this.body = {
+				status: 1,
+				msg: '用户未登录'
+			};
+		}
+		let userId = this.state.user;
+		const user = yield User.findOne({_id: userId._id}).exec();
+		delete user.password;
+		delete user.verifyed;
+		return this.body = {
+			status: 0,
+			data: user
+		};
+	},
+	lists(req, res, next) {
 		User.find({})
 		.exec(function(err, docs) {
 			if (err) {
@@ -108,7 +124,7 @@ module.exports = {
 			})
 		})
 	},
-	signinRequired: function(req, res, next) {
+	signinRequired(req, res, next) {
 		const user = req.session.user;
 		if (!user) {
 			return res.json({
@@ -118,7 +134,7 @@ module.exports = {
 		}
 		next();
 	},
-	adminRequired: function(req, res, next) {
+	adminRequired(req, res, next) {
 		const user = req.session.user;
 		if (user.role < 10 || !user.role) {
 			return res.json({

@@ -14,4 +14,6 @@ module.exports = function(router) {
 	router.post('/api/user/validate', User.validate)
 
 	router.post('/api/user/signUp', User.signup)
+
+	router.get('/api/UserCenter', User.userCenter)
 }

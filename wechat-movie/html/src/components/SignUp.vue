@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
   name: 'SignUp',
   data () {
@@ -46,10 +47,13 @@ export default {
   methods: {
     submit () {
       this.$http.post(`/api/user/signUp`, this.user).then((res) => {
-        let { status, token } = res.data
+        let { status, token, msg } = res.data
         if (status === 0) {
-          window.localStorage.setItem('token', JSON.stringify(token))
-          this.verifyed = true
+          window.localStorage.setItem('token', token)
+          Toast('登录成功')
+          this.$router.push('/user')
+        } else {
+          Toast(msg)
         }
       })
     }

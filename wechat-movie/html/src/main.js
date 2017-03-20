@@ -13,6 +13,7 @@ Vue.use(VueResource)
 Vue.config.productionTip = false
 try {
   let token = window.localStorage.getItem('token')
+  console.log(token)
   Vue.http.headers.common['Authorization'] = `Bearer ${token}`
 } catch (e) {
   console.log(e)

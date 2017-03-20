@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import Message from '@/components/Message'
 import SignIn from '@/components/SignIn'
 import signUp from '@/components/SignUp'
+import User from '@/components/User'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/signup',
       name: 'signUp',
       component: signUp
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: User
     }
   ]
 })

@@ -1,6 +1,6 @@
 'use strict'
 
-import koa = require('koa')
+const koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
 const promise = require('promise')
@@ -16,7 +16,7 @@ const config = require('./wechat/config/config')
 const Wechat = require('./wechat/wechat')
 const menu = require('./wechat/lib/menu.js')
 const wx = require('./Server/controllers/wechat.js')
-const User = require('./Server/controllers/user.js')
+const User = require('./Server/models/user')
 const dbUrl = 'mongodb://localhost/wechat'
 
 const app = koa();
@@ -35,6 +35,23 @@ WechatApi.deleteMenu().then(() => {
 app.use(jwt({secret: 'lin'})
     .unless({path:  [/^\/api\/user/]}));
 
+app.use(function *(next) {
+  let url = this.url
+  let userId = this.state.user;
+  if (!url.match(/^\/api\/user/)) {
+    if (userId) {
+      const user = yield User.findOne({_id: userId._id}).exec();
+      if (!(user && user.verifyed === false)) {
+        return this.body = {
+          status: 1,
+          msg: '未验证用户'
+        }
+      }
+    }
+  }
+  yield next;
+});
+
 require('./Server/routes/route')(router);
 
 //app.use(session(app))
@@ -47,23 +64,6 @@ router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
 
 app.use(serve(path.resolve('html/dist')));
-
-app.use(function *(next) {
-  let url = this.url
-  let userId = this.state.user;
-  if (!url.match('getVerify') || !url.match('signIn') || !url.match('validate')) {
-    if (userId) {
-      const user = yield User.findOne(userId).exec();
-      if (!(user && user.verifyed === false)) {
-        return this.body = {
-          status: 1,
-          msg: '未验证用户'
-        }
-      }
-    }
-  }
-  yield next;
-});
 
 app.use(function*(next){  
   if(parseInt(this.status) === 404){
