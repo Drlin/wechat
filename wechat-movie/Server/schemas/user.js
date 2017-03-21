@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	portrait: {
+		type: String,
+		default: 'https://ss1.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/4633e5b08fe696b0e6b4bbe7949fe7949f9348'
+	},
 	meta:{
         createAt:{
             type:Date,

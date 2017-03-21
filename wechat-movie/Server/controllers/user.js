@@ -111,6 +111,24 @@ module.exports = {
 			data: {name, phoneNum, _id, role}
 		};
 	},
+	userUpdate: function *(next) {
+		let userId = this.state.user;
+		const user = yield User.findOne({_id: userId._id}).exec();
+		let _id = user._id;
+		delete user._id;
+		try {
+			yield User.update({_id:_id}, this.request.body)
+		} catch (e) {
+			return this.body = {
+				status: 1,
+				msg: ' 更新失败'
+			}
+		}
+		this.body = {
+			status: 0,
+			msg: ' 更新成功'
+		}
+	},
 	lists(req, res, next) {
 		User.find({})
 		.exec(function(err, docs) {
