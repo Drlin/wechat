@@ -1,5 +1,6 @@
 const Movie = require('../controllers/movie');
 const User = require('../controllers/user.js');
+const Game = require('../controllers/game.js');
 
 module.exports = function(router) {
 	
@@ -18,4 +19,6 @@ module.exports = function(router) {
 	router.get('/api/UserCenter', User.userCenter)
 
 	router.post('/api/UserUpdate', User.userUpdate)
+
+	router.get('/api/getConfig', Game.movie)
 }

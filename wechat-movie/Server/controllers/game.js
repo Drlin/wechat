@@ -7,7 +7,7 @@ const sha1 = require('sha1')
 const config = require('../../wechat/config/config')
 const Wechat = require('../../wechat/wechat')
 
-const tpl = heredoc(() => {/*
+/*const tpl = heredoc(() => {
   <!DOCTYPE html>
     <html>
       <head>
@@ -61,7 +61,7 @@ const tpl = heredoc(() => {/*
         </script>
       </body>
     </html>
-*/})
+})*/
 function _sign(nonceStr, ticket, timestamp, url) {
   const params = [
     `noncestr=${nonceStr}`,
@@ -93,11 +93,14 @@ function sign(ticket, url) {
 
 exports.movie = function *() {
 	const wechatApi = new Wechat(config.wechat);
-    const data = yield wechatApi.fetchAccessToken();
-    const access_token = data.access_token;
-    const ticketData = yield wechatApi.fetchTicket(access_token);
-    const params = sign(ticketData.ticket, this.href)
-    console.log(params)
-    this.body = ejs.render(tpl, params)
-    return;
+  const data = yield wechatApi.fetchAccessToken();
+  const access_token = data.access_token;
+  const ticketData = yield wechatApi.fetchTicket(access_token);
+  const params = sign(ticketData.ticket, this.href)
+  this.body = {
+    status: 0,
+    params
+  }
+  //this.body = ejs.render(tpl, params)
+  return;
 }

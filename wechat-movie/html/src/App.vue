@@ -5,8 +5,30 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk'
 export default {
-  name: 'app'
+  name: 'app',
+  created () {
+    this.$http.get(`/api/getConfig`).then((res) => {
+      let {status, params} = res.body
+      let {nonceStr, timestamp, signature} = params
+      if (status === 0) {
+        wx.config({
+          debug: true,
+          appId: 'wxf850ce602b6ff3f3',
+          timestamp,
+          nonceStr,
+          signature,
+          jsApiList: [
+            'startRecord',
+            'stopRecord',
+            'onVoiceRecordEnd',
+            'translateVoice'
+          ]
+        })
+      }
+    })
+  }
 }
 </script>
 
