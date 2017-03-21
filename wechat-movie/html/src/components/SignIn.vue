@@ -86,7 +86,7 @@ export default {
         name: '',
         password: ''
       },
-      verifyed: true,
+      verifyed: false,
       verifyCode: '',
       timeOut: true
     }

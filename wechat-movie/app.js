@@ -32,8 +32,8 @@ WechatApi.deleteMenu().then(() => {
   console.log(msg)
 })
 
-app.use(jwt({secret: 'lin'})
-    .unless({path:  [/^\/api\/user/]}));
+router.use('/api', jwt({secret: 'lin'})
+    .unless({path:  [/^\/api\/user/, /favicon.ico/g]}));
 
 app.use(function *(next) {
   let url = this.url
@@ -73,7 +73,7 @@ app.use(function*(next){
   yield next;
 })
 
-const io = socket_io.listen(app.listen(3000));
+const io = socket_io.listen(app.listen(80));
 
 io.sockets.on('connection', (socket)=> {
   var messages = []
@@ -86,5 +86,5 @@ io.sockets.on('connection', (socket)=> {
   })
 })
 
-console.log('成功启动服务，端口是 3000')
+console.log('成功启动服务，端口是 80')
 
