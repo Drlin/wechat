@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <div class="user-img">
-      
+      <img class="user-img-pic" :src="user.portrait" width="100%" height="100%" alt="头像">
     </div>
     <div class="user-name">{{user.name}}</div>
   </div>
@@ -41,6 +41,9 @@ export default {
     border-radius: 50%;
     border: 2px solid #fff;
     margin-right: 17px;
+  }
+  .user-img-pic {
+    border-radius: 50%;
   }
   .user-name {
     color: #fff;

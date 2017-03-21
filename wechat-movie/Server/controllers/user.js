@@ -105,10 +105,10 @@ module.exports = {
 		}
 		let userId = this.state.user;
 		const user = yield User.findOne({_id: userId._id}).exec();
-		let {name, phoneNum, _id, role} = user
+		let {name, phoneNum, _id, role, portrait} = user
 		return this.body = {
 			status: 0,
-			data: {name, phoneNum, _id, role}
+			data: {name, phoneNum, _id, role, portrait}
 		};
 	},
 	userUpdate: function *(next) {

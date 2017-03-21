@@ -17,5 +17,5 @@ module.exports = function(router) {
 
 	router.get('/api/UserCenter', User.userCenter)
 
-	router.post('api/UserUpdate', User.userUpdate)
+	router.post('/api/UserUpdate', User.userUpdate)
 }
