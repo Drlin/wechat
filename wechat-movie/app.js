@@ -10,6 +10,7 @@ const bodyParser = require('koa-bodyparser')
 const session = require('session')
 const socket_io = require('socket.io')
 const jwt = require('koa-jwt')
+const cors = require('kcors');
 
 
 const config = require('./wechat/config/config')
@@ -20,6 +21,8 @@ const User = require('./Server/models/user')
 const dbUrl = 'mongodb://localhost/wechat'
 
 const app = koa();
+
+
 mongoose.Promise = require('bluebird')
 mongoose.connect(dbUrl)
 const WechatApi = new Wechat(config.wechat);
@@ -33,7 +36,9 @@ WechatApi.deleteMenu().then(() => {
 })
 
 router.use('/api', jwt({secret: 'lin'})
-    .unless({path:  [/^\/api\/user/, /favicon.ico/g]}));
+    .unless({path:  [/^\/api\/user/]}));
+
+app.use(cors())
 
 app.use(function *(next) {
   let url = this.url
@@ -63,6 +68,7 @@ app.use(router.routes())
 router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
 
+
 app.use(serve(path.resolve('html/dist')));
 
 app.use(function*(next){  
@@ -73,7 +79,7 @@ app.use(function*(next){
   yield next;
 })
 
-const io = socket_io.listen(app.listen(80));
+const io = socket_io.listen(app.listen(3000));
 
 io.sockets.on('connection', (socket)=> {
   var messages = []
@@ -86,5 +92,5 @@ io.sockets.on('connection', (socket)=> {
   })
 })
 
-console.log('成功启动服务，端口是 80')
+console.log('成功启动服务，端口是 3000')
 
