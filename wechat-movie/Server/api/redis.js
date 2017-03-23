@@ -1,6 +1,6 @@
 const redisClient = require('../../wechat/config/redis')
 const REDIS_PREFIX = 'wechat_'
-
+console.log(redisClient)
 module.exports = {
 	setRedis: function *(key, value, expire) {
 		yield redisClient.set(`${REDIS_PREFIX}${key}`, JSON.stringify(value));
