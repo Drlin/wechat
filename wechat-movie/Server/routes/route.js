@@ -24,4 +24,7 @@ module.exports = function(router) {
 	router.get('/api/getConfig', Game.movie)
 
 	router.post('/api/catagory', Catagory.save)
+
+	router.get('/api/catagoryList', Catagory.catagoryList)
+	
 }

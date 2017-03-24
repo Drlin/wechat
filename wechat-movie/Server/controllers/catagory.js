@@ -5,9 +5,13 @@ const Catagory = require('../models/catagory');
 module.exports = {
 	save: function *(next) {
 		const catagoryObj = this.request.body;
-		const catagory = new Catagory({
-			catagoryObj
-		})
+		if (!catagoryObj.name) {
+			return this.body = {
+				status: 1,
+				msg: '请输入分类名'
+			}
+		}
+		const catagory = new Catagory(catagoryObj)
 		try {
 			yield catagory.save();
 		} catch(e) {
@@ -21,16 +25,29 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
-	list: function(req, res, next) {
-		const pagesize = parseInt(req.query.pagesize, 10) || 10;
-		const pagestart = parseInt(req.query.pagestart, 10) || 1;
-		Catagory.find({})
-		.skip((pagestart - 1) * pagesize)
-		.exec(function(err, docs) {
-			if (err) {
-				return next(err);
+	catagoryList: function *(next) {
+		let {limit, page, catagoryId} = this.query;
+		limit = parseInt(limit, 10) || 10;
+		page = parseInt(page, 10) || 1;
+		if (!catagoryId) {
+			return this.body = {
+				status: 1,
+				msg: '请提交种类'
 			}
-			return res.json(docs);
-		});
+		}
+		try { 
+			const lists = yield Catagory.findOne({_id: catagoryId})
+			.skip((page - 1) * limit)
+			.exec();
+			return this.body = {
+				status: 0,
+				data: lists
+			}
+		} catch (e) {
+			return this.body = {
+				status: 1,
+				msg: e
+			} 
+		}
 	},
 }
