@@ -1,6 +1,7 @@
 const Movie = require('../controllers/movie');
 const User = require('../controllers/user.js');
 const Game = require('../controllers/game.js');
+const Rank = require('../api/pageRank.js');
 const Catagory = require('../controllers/catagory.js');
 
 module.exports = function(router) {
@@ -26,5 +27,7 @@ module.exports = function(router) {
 	router.post('/api/catagory', Catagory.save)
 
 	router.get('/api/catagoryList', Catagory.catagoryList)
+
+	router.get('/api/user/pageRank', Rank.pageRank)
 	
 }

@@ -3,7 +3,6 @@
 const koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
-const promise = require('promise')
 const path = require('path')
 const serve = require('koa-static')
 const bodyParser = require('koa-bodyparser')
