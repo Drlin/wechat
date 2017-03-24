@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const CatagorySchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     movies: [{type: ObjectId, ref: 'Moive'}],
     meta:{
         createAt: {

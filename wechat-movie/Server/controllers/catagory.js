@@ -3,18 +3,23 @@ const Blog = require('../models/blog');
 const Catagory = require('../models/catagory');
 
 module.exports = {
-	save: function(req, res, next) {
-		var name = req.body.name;
-		var _catagory = new Catagory({
-			name: name
+	save: function *(next) {
+		const catagoryObj = this.request.body;
+		const catagory = new Catagory({
+			catagoryObj
 		})
-		_catagory.save(function(err, user) {
-			if (err) return next(err);
-			return res.json({
-				status: 0,
-				msg: ' 保存成功'
-			});
-		})
+		try {
+			yield catagory.save();
+		} catch(e) {
+			return this.body = {
+				status: 1,
+				msg: e
+			}
+		}
+		this.body = {
+			status: 0,
+			msg: '保存成功'
+		}
 	},
 	list: function(req, res, next) {
 		const pagesize = parseInt(req.query.pagesize, 10) || 10;

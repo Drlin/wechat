@@ -17,5 +17,5 @@ module.exports = {
 	getRank: function *() {
 		const result = yield redisClient.zrevrange('movie_rank', 0, -1);
 		return JSON.parse(result);
-	},
+	}
 }

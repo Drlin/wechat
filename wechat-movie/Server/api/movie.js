@@ -6,7 +6,7 @@ const koa_request = require('koa-request');
 const _ = require('lodash')
 
 const Movie = require('../models/movie');
-const Category = require('../models/category');
+const Catagory = require('../models/catagory');
 
 function* findAll() {
 	const categories = 

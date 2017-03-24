@@ -69,7 +69,6 @@ function _sign(nonceStr, ticket, timestamp, url) {
     `timestamp=${timestamp}`,
     `url=${url}`
   ]
-  console.log(params)
   let str = params.sort().join('&')
   return sha1(str)
 }
