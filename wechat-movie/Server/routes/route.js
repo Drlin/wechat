@@ -3,6 +3,7 @@ const User = require('../controllers/user.js');
 const Game = require('../controllers/game.js');
 const Rank = require('../api/pageRank.js');
 const Catagory = require('../controllers/catagory.js');
+const Miniapp = require('../controllers/miniapp.js');
 
 module.exports = function(router) {
 	
@@ -29,5 +30,7 @@ module.exports = function(router) {
 	router.get('/api/catagoryList', Catagory.catagoryList)
 
 	router.get('/api/user/pageRank', Rank.pageRank)
+
+	router.post('/api/user/create', Miniapp.create)
 	
 }

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Blog = require('../models/blog');
 const Catagory = require('../models/catagory');
 
 module.exports = {

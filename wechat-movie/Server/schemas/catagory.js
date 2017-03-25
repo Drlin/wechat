@@ -7,7 +7,7 @@ const CatagorySchema = new Schema({
         type: String,
         required: true
     },
-    movies: [{type: ObjectId, ref: 'Moive'}],
+    miniapp: [{type: ObjectId, ref: 'Miniapp'}],
     meta:{
         createAt: {
             type: Date,

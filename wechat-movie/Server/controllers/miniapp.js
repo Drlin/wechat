@@ -1,39 +1,24 @@
 const mongoose = require('mongoose');
-const Blog = require('../models/blog');
+const _ = require('lodash')
+const Miniapp = require('../models/miniapp');
 const Comment = require('../models/comment');
 const Catagory = require('../models/catagory');
 
 module.exports = {
-	create: function(req, res, next) {
-		const _Blog = new Blog(req.body);
-		_Blog.save(function(err, docs) {
-			if (err) return next(err);
-			if (req.body.catagory) {
-				Catagory.findOne({_id: docs.catagory}, function(err, catagory) {
-					catagory.blogs.push(docs._id)
-					catagory.save(function(err, docs) {
-						if (err) return next(err);
-						return res.json({
-							status: 0,
-							msg: '保存成功'
-						});
-					})	
-				})
-			} else {
-				var catagory = new Catagory({
-					name: req.body.catagoryName,
-					blogs: [docs._id]
-				})
-				catagory.save(function(err, catagory) {
-					if (err) return next(err);
-					return res.json({
-						status: 0,
-						msg: '保存成功'
-					});
-				})
+	create: function *(next) {
+		const _Miniapp = new Miniapp(this.request.body);
+		try {
+			yield _Miniapp.save()
+		} catch (e) {
+			return this.body = {
+				status: 1,
+				msg: e
 			}
-			
-		});
+		}
+		return this.body = {
+			status: 0,
+			msg: '保存成功'
+		}
 	},
 	list: function(req, res, next) {
 		const pagesize = parseInt(req.query.pagesize, 10) || 10;
