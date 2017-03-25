@@ -36,7 +36,6 @@ function *filterHtml (html) {
 	let icon = $('.obj-img').find('img').attr('src');
 	let screenshot = [];
 	let catagory = ''
-	console.log(name)
 	if (!name) {
 		return;
 	}
@@ -67,7 +66,7 @@ function *filterHtml (html) {
 module.exports = {
 	pageRank: function *(next) {
 		let promiseArr = [];
-		for (let i = 50; i < 1500 ; i ++) {
+		for (let i = 1501; i < 2000 ; i ++) {
 			yield timeout(1000);
 			try {
 				let html = yield $get(`${baseUrl}${i}`)
@@ -83,7 +82,7 @@ module.exports = {
 		// }
 		this.body = {
 			status: 0,
-			data: 3
+			data: '抓取成功'
 		}
 	}
 }

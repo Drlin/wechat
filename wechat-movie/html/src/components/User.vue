@@ -22,10 +22,9 @@ export default {
         this.user = data
       }
     })
-    this.$http.get(`/api/catagoryList?catagoryId=58d50be956f40db4314a906e`).then((res) => {
-      let {status, data} = res.body
+    this.$http.get(`/api/catagory/catagorys`).then((res) => {
+      let {status} = res.body
       if (status === 0) {
-        this.user = data
       }
     })
   },

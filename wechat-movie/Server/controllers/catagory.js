@@ -24,6 +24,24 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
+	catagorys: function *(next) {
+		let catagorys = [];
+		try {
+			catagorys = yield Catagory
+			.find({})
+			.populate({path: 'miniapp'})
+			.exec();
+		} catch(e) {
+			return this.body = {
+				status: 1,
+				msg: e
+			}
+		}
+		this.body = {
+			status: 0,
+			data: catagorys
+		}
+	},
 	catagoryList: function *(next) {
 		let {limit, page, catagoryId} = this.query;
 		limit = parseInt(limit, 10) || 10;

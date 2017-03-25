@@ -25,12 +25,13 @@ module.exports = function(router) {
 
 	router.get('/api/getConfig', Game.movie)
 
-	router.post('/api/catagory', Catagory.save)
+	router.post('/api/catagory/save', Catagory.save)
 
-	router.get('/api/catagoryList', Catagory.catagoryList)
+	router.get('/api/catagorys/catagoryList', Catagory.catagoryList)
 
-	router.get('/api/user/pageRank', Rank.pageRank)
+	router.get('/api/catagory/catagorys', Catagory.catagorys)
 
-	router.post('/api/user/create', Miniapp.create)
-	
+	router.post('/api/miniapp/create', Miniapp.create)
+
+
 }
