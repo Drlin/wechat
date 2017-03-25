@@ -15,10 +15,29 @@
         </a>
       </div>
     </div>
+    <div class="store-banner-wrap">
+      <img src="../../static/header-bar-wrap.jpg" alt="">
+    </div>
+    <div class="fast-nav">
+      <a class="nav-item" href="/category">
+        <img class="category" src="../../static/category.png" />
+        <p>类别</p>
+      </a>
+      <a class="nav-item" href="/recommend">
+        <img class="recommend" src="../../static/recommend.png" />
+        <p>每日小程序推荐</p>
+      </a>
+      <a class="nav-item" href="/ranking">
+        <img class="ranking" src="../../static/ranking.png" />
+        <p>排行榜</p>
+      </a>
+    </div>
+    <Module title="资讯"/>
   </div>
 </template>
 
 <script>
+import Module from './common/Module'
 export default {
   name: 'Home',
   data () {
@@ -27,16 +46,27 @@ export default {
     }
   },
   created () {
-    this.$socket.emit('getAllMessages')
+    this.$http.get(`/api/catagory/catagorys`).then((res) => {
+      let {status} = res.body
+      if (status === 0) {
+      }
+    })
   },
   methods: {
 
+  },
+  components: {
+    'Module': Module
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.home {
+  height: 100%;
+  overflow: hidden;
+}
 .header {
   position: relative;
   width: 100%;
@@ -102,5 +132,31 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.store-banner-wrap {
+  width: 100%;
+}
+.fast-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.nav-item {
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+}
+.nav-item p {
+  color: #303030;
+  margin-top: 1rem;
+}
+.nav-item > img {
+  width: 3rem;
+  height: 3rem;
 }
 </style>

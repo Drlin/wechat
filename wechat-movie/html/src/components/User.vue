@@ -22,11 +22,6 @@ export default {
         this.user = data
       }
     })
-    this.$http.get(`/api/catagory/catagorys`).then((res) => {
-      let {status} = res.body
-      if (status === 0) {
-      }
-    })
   },
   methods: {
 
