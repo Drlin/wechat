@@ -6,7 +6,7 @@
     </div>
     <div class="scroll-module">
       <template v-for="item in data">
-        <a href='/app/1'>
+        <a :href="`/app/${item._id}`">
           <div class="icon">
             <img :src="item.icon" width="100%" height="100%" />
           </div>
