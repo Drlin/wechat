@@ -32,7 +32,9 @@
         <p>排行榜</p>
       </a>
     </div>
-    <Module title="资讯"/>
+    <template v-for="(item, index) in dataArr">
+      <Module :title="item" :data="miniappArr[index]"/>
+    </template>
   </div>
 </template>
 
@@ -42,14 +44,24 @@ export default {
   name: 'Home',
   data () {
     return {
-      portrait: ''
+      portrait: '',
+      dataArr: ['资讯', '旅行', '交通', '办公软件', '美食'],
+      miniappArr: []
     }
   },
   created () {
-    this.$http.get(`/api/catagory/catagorys`).then((res) => {
-      let {status} = res.body
-      if (status === 0) {
-      }
+    let fetchArr = []
+    this.dataArr.map((item) => {
+      fetchArr.push(this.$http.get(`/api/catagory/catagoryList?catagoryName=${item}`))
+    })
+    Promise.all(fetchArr)
+    .then((data) => {
+      data.map((item) => {
+        let {status, data} = item.body
+        if (status === 0) {
+          this.miniappArr.push(data.miniapp)
+        }
+      })
     })
   },
   methods: {
@@ -64,8 +76,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .home {
-  height: 100%;
-  overflow: hidden;
+  padding-bottom: 2rem;
 }
 .header {
   position: relative;

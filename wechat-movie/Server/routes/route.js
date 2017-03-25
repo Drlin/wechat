@@ -27,7 +27,7 @@ module.exports = function(router) {
 
 	router.post('/api/catagory/save', Catagory.save)
 
-	router.get('/api/catagorys/catagoryList', Catagory.catagoryList)
+	router.get('/api/catagory/catagoryList', Catagory.catagoryList)
 
 	router.get('/api/catagory/catagorys', Catagory.catagorys)
 

@@ -43,17 +43,25 @@ module.exports = {
 		}
 	},
 	catagoryList: function *(next) {
-		let {limit, page, catagoryId} = this.query;
+		let {limit, page, catagoryId, catagoryName} = this.query;
 		limit = parseInt(limit, 10) || 10;
 		page = parseInt(page, 10) || 1;
-		if (!catagoryId) {
+		if (!catagoryId && !catagoryName) {
 			return this.body = {
 				status: 1,
 				msg: '请提交种类'
 			}
 		}
+		let obj = catagoryId ? {_id: catagoryId} : {name: catagoryName}
 		try { 
-			const lists = yield Catagory.findOne({_id: catagoryId})
+			const lists = yield Catagory.findOne(obj)
+			.populate(
+				{
+					path: 'miniapp', 
+					select: {name: 1, icon: 1},
+					options: {limit, skip: (page - 1) * limit}
+				}
+			)
 			.skip((page - 1) * limit)
 			.exec();
 			return this.body = {

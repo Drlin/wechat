@@ -5,40 +5,14 @@
       <a href="/app/" class="all">显示全部</a>
     </div>
     <div class="scroll-module">
-      <a href="/app/743">
-        <div class="icon">
-          <img src="http://ojyhagqv7.bkt.clouddn.com/9cn_2017012099f2d2c4d6d8258b5630b75f1c017a18.png" width="100%" height="100%" />
-        </div>
-        <p class="name">认真的虎扑足球</p>
-      </a>
-
-      <a href="/app/743">
-        <div class="icon">
-          <img src="http://ojyhagqv7.bkt.clouddn.com/9cn_2017012099f2d2c4d6d8258b5630b75f1c017a18.png" width="100%" height="100%" />
-        </div>
-        <p class="name">认真的虎扑足球</p>
-      </a>
-
-      <a href="/app/743">
-        <div class="icon">
-          <img src="http://ojyhagqv7.bkt.clouddn.com/9cn_2017012099f2d2c4d6d8258b5630b75f1c017a18.png" width="100%" height="100%" />
-        </div>
-        <p class="name">认真的虎扑足球</p>
-      </a>
-
-      <a href="/app/743">
-        <div class="icon">
-          <img src="http://ojyhagqv7.bkt.clouddn.com/9cn_2017012099f2d2c4d6d8258b5630b75f1c017a18.png" width="100%" height="100%" />
-        </div>
-        <p class="name">认真的虎扑足球</p>
-      </a>
-
-      <a href="/app/743">
-        <div class="icon">
-          <img src="http://ojyhagqv7.bkt.clouddn.com/9cn_2017012099f2d2c4d6d8258b5630b75f1c017a18.png" width="100%" height="100%" />
-        </div>
-        <p class="name">认真的虎扑足球</p>
-      </a>
+      <template v-for="item in data">
+        <a href='/app/1'>
+          <div class="icon">
+            <img :src="item.icon" width="100%" height="100%" />
+          </div>
+          <p class="name">{{item.name}}</p>
+        </a>
+      </template>
     </div>
   </div>
 </template>
@@ -50,7 +24,7 @@ export default {
     return {
     }
   },
-  props: ['title', 'arr']
+  props: ['title', 'data']
 }
 </script>
 
@@ -80,7 +54,8 @@ export default {
   -webkit-overflow-scrolling: touch; /* ios 卡顿问题*/
 }
 .scroll-module > a {
-  flex: 0 0 8rem;
+  width: 8rem;
+  flex-shrink: 0;
   height: 12rem;
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.14);
