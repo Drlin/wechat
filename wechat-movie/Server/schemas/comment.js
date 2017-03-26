@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const CommentSchema = new Schema({
-    blog: {type: ObjectId, ref: 'Blog'},
+    miniapp: {type: ObjectId, ref: 'Miniapp'},
     from: {type: ObjectId, ref: 'User'},
-    to: {type: ObjectId, ref: 'User'},
     content: String,
+    star: ''
     meta:{
         createAt:{
             type:Date,

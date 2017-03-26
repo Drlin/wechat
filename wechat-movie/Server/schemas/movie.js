@@ -15,6 +15,29 @@ const MovieSchema = new Schema({
     summary: String,
     year: String,
     genres: [String],
+    overall_rating: Number,
+    rating: {
+        0: {
+            type: Number,
+            default: 0
+        },
+        1: {
+            type: Number,
+            default: 0
+        },
+        2: {
+            type: Number,
+            default: 0
+        },
+        3: {
+            type: Number,
+            default: 0
+        },
+        4: {
+            type: Number,
+            default: 0
+        }
+    },
     collect_count: String,
     alt: String,
     meta:{

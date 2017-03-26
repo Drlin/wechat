@@ -32,6 +32,21 @@
         <mt-badge size="small" color="#e82f1b">10</mt-badge>
       </div>
     </div> 
+    <div class="comment">
+      <h3 class="comment-title">全部评论</h3>
+      <div class="comment-wrap">
+        <div class="wrap-header">
+          <img data-v-3211db36="" src="https://media.ifanrusercontent.com/media/tavatar/bd/e5/bde505626df40ab317c4092be514b353214f42f5.jpg" alt="评论作者头像">
+          <div class="content-meta">
+            <span class="nickname">Dr.林</span>
+            <span class="time">27秒前</span>
+          </div>
+        </div>
+        <div class="comment-content">
+          小程序不错哦
+        </div>
+      </div>
+    </div>
     <mt-popup
       v-model="popupVisible"
       popup-transition="popup-fade"
@@ -42,7 +57,6 @@
           placeholder="请输入内容"
           v-model="form.content"
         >
-          11
         </textarea>
         <div class="limit_text" :class="{illegal: form.content.length > 200}">
           {{form.content.length}}/200
@@ -58,6 +72,19 @@
             <input type="radio" :value="i + 1" name="score" v-model="form.score" />
           </label>
         </div>
+        <button class="submit-btn" @click="submit">发表评论</button>
+        <p 
+          v-if="dirty && (!form.score || !form.content)"
+          class="error" 
+        >
+          不能为空哦
+        </p>
+        <p 
+          v-if="dirty && (form.content.length > 200)"
+          class="error"
+        >
+          长度过长
+        </p>
       </div>
     </mt-popup>
     <v-Model 
@@ -90,7 +117,8 @@
         form: {
           content: '',
           score: ''
-        }
+        },
+        dirty: false
       }
     },
     created () {
@@ -112,6 +140,13 @@
       },
       close () {
         this.vis = false
+      },
+      submit () {
+        let { content, score } = this.form
+        this.dirty = true
+        if (!content || !score || score.length > 200) {
+          return
+        }
       }
     }
   }
@@ -121,6 +156,7 @@
 .store-detail{
   width: 100%;
   overflow: hidden;
+  padding-bottom: 3.5rem;
 }
 .detail-header {
   display: flex;
@@ -168,7 +204,7 @@
 }   
 .tips {
   margin-top: 3rem;
-  padding-left: 0.8rem;
+  padding: 0 0.8rem;
 }
 .tips .h2 {
   font-size: 1.6rem;
@@ -179,7 +215,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 1.2rem;
-  padding-bottom: 5rem;
+  padding-bottom: 2rem;
   font-size: 1.4rem;
   color: #7D8994;
   line-height: 2rem;
@@ -228,6 +264,7 @@
 }
 .comment-dialog {
   padding: 2rem .8rem 0;
+  text-align: center;
 }
 .textarea {
   width: 100%;
@@ -239,8 +276,10 @@
 .star-wrap {
   display: flex;
   justify-content: flex-end;
-  margin: .5rem 0 1.5rem 0;
+  margin: .5rem 0 0.5rem 0;
+  padding-bottom: 0.5rem;
   font-size: 1.6rem;
+  border-bottom: 1px solid #f1f1f1;
 }
 .illegal {
   color: red;
@@ -265,5 +304,31 @@
   width: 100%;
   height: 100%;
 }
-
+.submit-btn {
+  text-align: center;
+  background-color: #e82201;
+  width: 8rem;
+  height: 2.5rem;
+  outline: 0;
+  color: #fff;
+  border-radius: .3rem;
+  border: none;
+  margin: 0.5rem 0 1rem 0;
+}
+.error {
+  color: #E82F1B;
+  text-align: center;
+  width: 100%;
+  font-size: 1.4rem;
+  padding-bottom: 1rem;
+}
+.comment {
+  padding: 0 0.8rem;
+}
+.comment-title {
+  padding: 1rem 0;
+  font-size: 1.4rem;
+  color: #47525d;
+  border-bottom: 1px solid #eaeef1;
+}
 </style>
