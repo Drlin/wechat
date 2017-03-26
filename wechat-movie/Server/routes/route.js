@@ -4,6 +4,7 @@ const Game = require('../controllers/game.js');
 const Rank = require('../api/pageRank.js');
 const Catagory = require('../controllers/catagory.js');
 const Miniapp = require('../controllers/miniapp.js');
+const Comment = require('../controllers/comment.js');
 
 module.exports = function(router) {
 	
@@ -32,6 +33,8 @@ module.exports = function(router) {
 	router.get('/api/catagory/catagorys', Catagory.catagorys)
 
 	router.post('/api/miniapp/create', Miniapp.create)
+
+	router.post('/api/comment/create', Comment.create)
 
 	router.get('/api/miniapp/:id', Miniapp.detail)
 }

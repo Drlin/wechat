@@ -98,7 +98,7 @@
 </template>
 
 <script>
-  import { Popup, Badge } from 'mint-ui'
+  import { Popup, Badge, Toast } from 'mint-ui'
   import Model from './common/Model'
   export default {
     components: {
@@ -147,6 +147,17 @@
         if (!content || !score || score.length > 200) {
           return
         }
+        this.$http.post('/api/comment/create', {
+          content,
+          star: score,
+          miniappId: this.$route.params.id
+        }).then((res) => {
+          let {status} = res.body
+          if (status === 0) {
+            this.popupVisible = false
+            Toast('评论成功')
+          }
+        })
       }
     }
   }

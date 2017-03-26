@@ -6,7 +6,7 @@ const CommentSchema = new Schema({
     miniapp: {type: ObjectId, ref: 'Miniapp'},
     from: {type: ObjectId, ref: 'User'},
     content: String,
-    star: ''
+    star: '',
     meta:{
         createAt:{
             type:Date,
