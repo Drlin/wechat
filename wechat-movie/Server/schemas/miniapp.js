@@ -11,6 +11,10 @@ const MiniappSchema = new Schema({
     icon: String,
     rating: [{ type: Number}],
     hot: Number,
+    viewNum: {
+        type: Number,
+        default: 0
+    },
     meta:{
         createAt:{
             type:Date,

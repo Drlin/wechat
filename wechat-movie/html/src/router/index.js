@@ -5,6 +5,7 @@ import Message from '@/components/Message'
 import SignIn from '@/components/SignIn'
 import signUp from '@/components/SignUp'
 import User from '@/components/User'
+import Detail from '@/components/Detail'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User
+    },
+    {
+      path: '/app/:id',
+      name: 'Detail',
+      component: Detail
     }
   ]
 })

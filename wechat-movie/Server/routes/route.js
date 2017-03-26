@@ -33,5 +33,5 @@ module.exports = function(router) {
 
 	router.post('/api/miniapp/create', Miniapp.create)
 
-
+	router.get('/api/miniapp/:id', Miniapp.detail)
 }

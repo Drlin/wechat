@@ -32,28 +32,27 @@ module.exports = {
 			return res.json(docs);
 		});
 	},
-	get: function(req, res, next) {
-		const id = req.params.nid;
+	detail: function *(next) {
+		const id = this.params.id;
 		if (!id) {
-			return next(new Error('news not found'));
+			return this.body = {
+				status: 1,
+				data: '没找到ID'
+			}
 		}
-
-		Blog
-		.findOne({_id: id}, function(err, docs) {
-			Comment.find({blog: id})
-				.populate({path: 'from'}) 
-				.exec(function(err, comments) {
-				if(err) {
-					return next(err);
-				}
-				if(!comments) {
-					return next(new Error('new not Found'));
-				}
-				return res.json({
-					status: 0,
-					data: comments
-				});
-			})
-		})
+		yield Miniapp.update({_id: id}, {$inc: {viewNum: 1}})
+		let _Miniapp = yield Miniapp
+						.findOne({_id: id})
+						.exec();
+		if (!_Miniapp) {
+			return this.body = {
+				status: 1,
+				data: '没找到对应小程序'
+			}
+		}				
+		this.body = {
+			status: 0,
+			data: _Miniapp
+		}
 	}
 }
