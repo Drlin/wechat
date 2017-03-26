@@ -37,9 +37,26 @@
       popup-transition="popup-fade"
     >
       <div class="comment-dialog">
-        <textarea class="textarea" placeholder="评论字数需多于 5 个字"></textarea>
+        <textarea 
+          class="textarea" 
+          placeholder="请输入内容"
+          v-model="form.content"
+        >
+          11
+        </textarea>
+        <div class="limit_text" :class="{illegal: form.content.length > 200}">
+          {{form.content.length}}/200
+        </div>
         <div class="star-wrap">
           <span>评分: </span>
+          <label 
+            class="score" 
+            for="" 
+            v-for="i in [0, 1, 2, 3, 4]"
+            :class="{checked: i < +form.score}"
+          >
+            <input type="radio" :value="i + 1" name="score" v-model="form.score" />
+          </label>
         </div>
       </div>
     </mt-popup>
@@ -69,7 +86,11 @@
         },
         popupVisible: false,
         vis: false,
-        picIndex: 0
+        picIndex: 0,
+        form: {
+          content: '',
+          score: ''
+        }
       }
     },
     created () {
@@ -221,4 +242,28 @@
   margin: .5rem 0 1.5rem 0;
   font-size: 1.6rem;
 }
+.illegal {
+  color: red;
+}
+.limit_text {
+  text-align: right;
+}
+.score {
+  width: 1.8rem;
+  height: 1.8rem;
+  background: url(../../static/star.png);
+  background-size: contain;
+  margin-left: 0.2rem;
+  vertical-align: middle;
+}
+.score.checked {
+  background: url(../../static/star-light.png);
+  background-size: contain;
+}
+.score > input[type="radio"] {
+  appearance: none;
+  width: 100%;
+  height: 100%;
+}
+
 </style>
