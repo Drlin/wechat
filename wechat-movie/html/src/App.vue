@@ -33,9 +33,10 @@ export default {
 </script>
 
 <style>
-body, p, div, h1, h2, h3, h4, h5,input {
+body, p, div, h1, h2, h3, h4, h5,input, ul, li, a {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 html {
   font-size: 62.5%;
@@ -49,6 +50,9 @@ a {
 ::-webkit-scrollbar { 
   width: 0;
   height: 0;
+}
+li {
+  list-style: none;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

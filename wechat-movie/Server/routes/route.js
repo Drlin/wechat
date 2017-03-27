@@ -33,12 +33,14 @@ module.exports = function(router) {
 
 	router.post('/api/miniapp/create', Miniapp.create)
 
+	router.post('/api/miniapp/search', Miniapp.search)
+
 	router.post('/api/comment/create', Comment.create)
 
 	router.get('/api/miniapp/:id', Miniapp.detail)
 
 	//错误处理
-	router.use((err, next) => {
-        this.body = err
-    })
+	// router.use(function *(err, next) {
+ //        this.body = err
+ //    })
 }

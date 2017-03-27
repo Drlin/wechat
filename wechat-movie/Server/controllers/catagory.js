@@ -19,7 +19,7 @@ module.exports = {
 				msg: e
 			}
 		}
-		this.body = {
+		return this.body = {
 			status: 0,
 			msg: '保存成功'
 		}
@@ -37,7 +37,7 @@ module.exports = {
 				msg: e
 			}
 		}
-		this.body = {
+		return this.body = {
 			status: 0,
 			data: catagorys
 		}

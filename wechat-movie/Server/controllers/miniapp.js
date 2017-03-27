@@ -3,6 +3,7 @@ const _ = require('lodash')
 const Miniapp = require('../models/miniapp');
 const Comment = require('../models/comment');
 const Catagory = require('../models/catagory');
+const {errorType} = require('../middleware/middleware')
 
 module.exports = {
 	create: function *(next) {
@@ -38,7 +39,7 @@ module.exports = {
 				data: '没找到对应小程序'
 			}
 		}				
-		this.body = {
+		return this.body = {
 			status: 0,
 			data: _Miniapp
 		}
@@ -48,9 +49,13 @@ module.exports = {
 		if (!query) {
 			return this.body = {
 				status: 1,
-				data: '请输入查询条件'
+				msg: '请输入查询条件'
 			}
 		}
-		yield Miniapp.find({name: new RegExp(query)}).exec();
+		let data = yield Miniapp.find({name: new RegExp(query)}).exec();
+		return this.body = {
+			status: 0,
+			data
+		}
 	}
 }
