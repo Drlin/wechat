@@ -6,6 +6,7 @@ import SignIn from '@/components/SignIn'
 import signUp from '@/components/SignUp'
 import User from '@/components/User'
 import Detail from '@/components/Detail'
+import Search from '@/components/Search'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/app/:id',
       name: 'Detail',
       component: Detail
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
     }
   ]
 })

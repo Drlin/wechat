@@ -6,9 +6,9 @@
         <a href="/" class="board-name">小程序商店</a>
       </div>
       <div class="header-r">
-        <a class="search" href="">
+        <router-link  :to="`/search`" class="search">
           <img src="../../static/search.png" alt="搜索">
-        </a>
+        </router-link>
         <a class="portrait" href="">
           <img v-if="portrait" :src="portrait" alt="头像">
           <img v-else src="../../static/user.png" alt="头像">
