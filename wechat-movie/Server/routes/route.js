@@ -7,7 +7,6 @@ const Miniapp = require('../controllers/miniapp.js');
 const Comment = require('../controllers/comment.js');
 
 module.exports = function(router) {
-	
 	router.get('/api/movie', Movie.list)
 
 	router.get('/api/movie/:nid', Movie.detail)
@@ -37,4 +36,9 @@ module.exports = function(router) {
 	router.post('/api/comment/create', Comment.create)
 
 	router.get('/api/miniapp/:id', Miniapp.detail)
+
+	//错误处理
+	router.use((err, next) => {
+        this.body = err
+    })
 }

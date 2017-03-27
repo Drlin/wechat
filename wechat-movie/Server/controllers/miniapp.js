@@ -20,18 +20,6 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
-	list: function(req, res, next) {
-		const pagesize = parseInt(req.query.pagesize, 10) || 10;
-		const pagestart = parseInt(req.query.pagestart, 10) || 1;
-		Catagory.find({})
-		.populate({path: 'blogs', options: {limit: pagesize, skip: (pagestart - 1) * pagesize}})
-		.exec(function(err, docs) {
-			if (err) {
-				return next(err);
-			}
-			return res.json(docs);
-		});
-	},
 	detail: function *(next) {
 		const id = this.params.id;
 		if (!id) {
@@ -54,5 +42,15 @@ module.exports = {
 			status: 0,
 			data: _Miniapp
 		}
+	},
+	search: function *(next) {
+		const query = this.request.body.query;
+		if (!query) {
+			return this.body = {
+				status: 1,
+				data: '请输入查询条件'
+			}
+		}
+		yield Miniapp.find({name: new RegExp(query)}).exec();
 	}
 }
