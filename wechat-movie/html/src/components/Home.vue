@@ -7,12 +7,12 @@
       </div>
       <div class="header-r">
         <router-link  :to="`/search`" class="search">
-          <img src="../../static/search.png" alt="搜索">
+          <Icon type="search" />
         </router-link>
-        <a class="portrait" href="">
+        <router-link class="portrait" to="user">
           <img v-if="portrait" :src="portrait" alt="头像">
-          <img v-else src="../../static/user.png" alt="头像">
-        </a>
+          <Icon v-else type="user" />
+        </router-link>
       </div>
     </div>
     <div class="store-banner-wrap">
@@ -40,6 +40,7 @@
 
 <script>
 import Module from './common/Module'
+import Icon from './common/Icon.vue'
 export default {
   name: 'Home',
   data () {
@@ -68,7 +69,8 @@ export default {
 
   },
   components: {
-    'Module': Module
+    'Module': Module,
+    'Icon': Icon
   }
 }
 </script>
@@ -117,24 +119,24 @@ export default {
   align-items: center;
 }
 .search {
-  margin-right: .1rem;
   width: 4.4rem;
   height: 4.4rem;
+  text-align: center;
+  line-height: 4.3rem;
   position: relative;
+  margin-right: .1rem;
   border-left: .01rem solid #f1f1f1;
   border-right: .01rem solid #f1f1f1;
 }
-.search > img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 2.2rem;
-  height: 2.2rem;
+.search > i, .portrait > i {
+  font-size: 2rem;
+  color: #303030;
+  vertical-align: middle;
 }
 .portrait {
   width: 4.4rem;
   height: 4.4rem;
+  line-height: 4.3rem;
   position: relative;
   text-align: center;
 }

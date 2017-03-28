@@ -3,7 +3,8 @@ const _ = require('lodash')
 const Miniapp = require('../models/miniapp');
 const Comment = require('../models/comment');
 const Catagory = require('../models/catagory');
-const {errorType} = require('../middleware/middleware')
+const {errorType} = require('../middleware/middleware');
+const {saveToRank, getRank} = require('../api/redis.js');
 
 module.exports = {
 	create: function *(next) {
@@ -52,10 +53,36 @@ module.exports = {
 				msg: '请输入查询条件'
 			}
 		}
-		let data = yield Miniapp.find({name: new RegExp(query)}).exec();
+		try {
+			yield saveToRank('movie_rank', {name: query})
+		} catch (e) {
+
+		}
+		
+		let data = yield Miniapp
+						.find({name: new RegExp(query)})
+						.populate({
+							path: 'catagory', 
+							select: {name: 1}
+						})
+						.exec();
 		return this.body = {
 			status: 0,
 			data
 		}
-	}
+	},
+	hotLists: function *(next) {
+		try {
+			let lists = yield getRank('movie_rank')
+			return this.body = {
+				status: 0,
+				data: lists.splice(0, 10)
+			}
+		} catch (e) {
+			return this.body = {
+				status: 1,
+				msg: e
+			}
+		}
+	}	
 }

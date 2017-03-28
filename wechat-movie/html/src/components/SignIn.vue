@@ -76,7 +76,7 @@
 
 <script>
 import { MessageBox, Toast } from 'mint-ui'
-import Remaintime from './Remaintime'
+import Remaintime from './common/Remaintime'
 export default {
   name: 'signIn',
   data () {

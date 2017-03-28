@@ -1,34 +1,24 @@
 <template>
-  <mt-loadmore 
-      :top-method="loadTop"
-      :bottom-method="loadBottom" 
-      :bottom-all-loaded="allLoaded"
-      :topMethod="loadMoreData"
-      ref="loadmore"
-      >
-    <ul
-      class="item-wrap page-infinite-list">
-  	  <li v-for="item in lists" class="item">
-        <router-link :to="`/app/${item._id}`">
-          <img class="item-img" :src="item.icon" />
-          <div class="item-info-left">
-            <h2>{{ item.name }}</h2>
-            <p>{{ item.description }}</p>
-            <div class="star">
-              
-            </div>
-          </div>
-          <div class="qrcode">
-            详情
-          </div>
-        </router-link>
-      </li>
-  	</ul>
-  </mt-loadmore>
+  <ul
+    class="item-wrap page-infinite-list">
+	  <li v-for="item in lists" class="item">
+      <router-link :to="`/app/${item._id}`">
+        <img class="item-img" :src="item.icon" />
+        <div class="item-info-left">
+          <h2>{{ item.name }}</h2>
+          <p>分类: &nbsp;{{ item.catagory.name }}</p>
+          <Star :rating="item.overall_rating || 0" />
+        </div>
+        <div class="qrcode">
+          详情
+        </div>
+      </router-link>
+    </li>
+	</ul>
 </template>
 
 <script>
-  import { Loadmore } from 'mint-ui'
+  import Star from './Star'
   export default {
     data () {
       return {
@@ -39,28 +29,9 @@
         qrcodeUrl: ''
       }
     },
+    props: ['lists'],
     components: {
-      'mt-loadmore': Loadmore
-    },
-    props: ['lists', 'allLoaded'],
-    methods: {
-      showModel (qrcodeUrl) {
-        this.qrcodeUrl = qrcodeUrl
-        this.popupVisible = true
-      },
-      loadBottom (id) {
-        this.$emit('onPage')
-        this.$refs.loadmore.onBottomLoaded()
-      },
-      loadTop () {
-        this.$emit('onPageTop')
-        this.$refs.loadmore.onTopLoaded()
-      },
-      loadMoreData () {
-      }
-    },
-    computed: {
-
+      'Star': Star
     }
   }
 </script>
@@ -96,16 +67,12 @@
   font-size: 1.4rem;
 }       
 .item-info-left p {
-  margin-top: 0.1rem;
+  margin: 0.1rem 0;
   font-size: 1.2rem;
   max-height: 2em;
   text-overflow: ellipsis;
   overflow: hidden;
-}  
-.star {
-  width: 1.2rem;
-  height: .2rem;
-}      
+}   
 .qrcode {
   flex: 0 0 3.8rem;
   width: 3.8rem;

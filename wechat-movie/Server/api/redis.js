@@ -10,12 +10,16 @@ module.exports = {
 		const reply = yield redisClient.get(`${REDIS_PREFIX}${key}`);
 		return JSON.parse(reply)
 	},
-	saveToRank: function *(movie) {
-		const result = yield redisClient.zincrby('movie_rank', 1, movie);
+	saveToRank: function *(rankName, obj) {
+		const result = yield redisClient.zincrby(rankName, 1, JSON.stringify(obj));
 		return result;
 	},
-	getRank: function *() {
-		const result = yield redisClient.zrevrange('movie_rank', 0, -1);
-		return JSON.parse(result);
+	getRank: function *(rankName) {
+		const result = yield redisClient.zrevrange(rankName, 0, -1);
+		let arr = []
+		result.map((item) => {
+			arr.push(JSON.parse(item))
+		})
+		return arr;
 	}
 }

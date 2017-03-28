@@ -35,7 +35,7 @@ WechatApi.deleteMenu().then(() => {
 })
 
 router.use('/api', jwt({secret: 'lin'})
-    .unless({path:  [/^\/api\/user/]}));
+    .unless({path:  [/^\/api\/user/, /^\/api\/miniapp/, /^\/api\/catagory/]}));
 
 app.use(cors())
 

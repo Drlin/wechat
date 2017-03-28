@@ -46,6 +46,7 @@ input {
 }
 a {
   text-decoration: none;
+  color: #303030;
 }
 ::-webkit-scrollbar { 
   width: 0;

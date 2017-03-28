@@ -35,9 +35,9 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods = {
 	comparePassword: function(_password) {
-		return function(cb) {
+		return function(next) {
 			bcrypt.compare(_password, this.password , function(err, isMatch) {
-				cb(null, isMatch)
+				next(null, isMatch)
 			})
 		}
 	}

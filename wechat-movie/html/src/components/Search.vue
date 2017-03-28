@@ -1,24 +1,31 @@
 <template>
   <div class="search">
     <div class="search-form">
-      <input maxlength="12" 
-              type="text" 
-              placeholder="输入小程序名称关键词" 
-              class="search-input"
-              v-model="search"
-            >
+      <input 
+        maxlength="12" 
+        type="text" 
+        placeholder="输入小程序名称关键词" 
+        class="search-input"
+        v-model="search"
+        @click="hideHotLists"
+      />
       <div class="search-icon">
-        <div @click="searchSubmit"><Icon type="search" /></div>
-        <div>
+        <div class="search_icon_search" @click="searchSubmit"><Icon type="search" /></div>
+        <router-link to="/" class="search_icon_close">
           <Icon type="angle-close" />
-        </div>
+        </router-link>
+      </div>
+    </div>
+    <div class="hot-search" v-if="hotListsShow">
+      <div class="inner">
+        <h2>热门搜索</h2>
+        <p v-for="item in hotLists">
+          {{item.name}}
+        </p>
       </div>
     </div>
     <v-content
       :lists="lists"
-      :allLoaded="allLoaded"
-      v-on:onPageTop="onPageTop"
-      v-on:onPage="onPageChange"
     >
     </v-content>
   </div>
@@ -35,17 +42,28 @@ export default {
     return {
       search: '',
       lists: '',
-      allLoaded: false
+      allLoaded: false,
+      hotLists: [],
+      hotListsShow: true
     }
   },
   created () {
-
+    this.$http.get('/api/miniapp/hotLists')
+    .then((res) => {
+      let {status, data} = res.body
+      if (status === 0) {
+        this.hotLists = data
+      }
+    })
   },
   components: {
     'Icon': Icon,
     'v-content': Content
   },
   methods: {
+    hideHotLists () {
+      this.hotListsShow = false
+    },
     searchSubmit () {
       if (!this.search) {
         Toast('请输入查询条件')
@@ -54,13 +72,10 @@ export default {
       .then((res) => {
         let {status, data} = res.body
         if (status === 0) {
+          data.length === 0 && Toast('没有搜索结果，换个词试试')
           this.lists = data
         }
       })
-    },
-    onPageChange () {
-    },
-    onPageTop () {
     }
   }
 }
@@ -80,7 +95,7 @@ export default {
   .search-icon {
     display: flex;
   }
-  .search-icon > div {
+  .search_icon_close, .search_icon_search {
     display: flex;
     color: #7d8994;
     width: 3rem;
@@ -90,7 +105,26 @@ export default {
     line-height: 3rem;
     border-left: .1rem solid #f1f1f1;
   }
-  .search-icon >  div {
+  .search-icon > div {
     font-size: 1.4rem;
   }
+  .hot-search {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hot-search .inner > h2 {
+    text-align: center;
+    margin-bottom: .3rem;
+    font-size: 1.6rem;
+    color: #000000;
+  }
+  .hot-search .inner > p {
+    font-size: 1.4rem;
+    padding: .2rem 0;
+    text-align: center;
+    color: #0db252;
+  }
+    
 </style>

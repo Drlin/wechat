@@ -32,6 +32,24 @@
         <mt-badge size="small" color="#e82f1b">10</mt-badge>
       </div>
     </div> 
+    <div class="rate">
+      <div>
+        <span class="red-bar"></span>
+        <h2>{{data.name}}评价</h2>
+      </div>
+      <div class="rate-overal"> 
+        <div class="rate-inner">
+          <span class="rating-num">{{data.overall_rating || 0}}</span>
+          <div class="rating-wrap">
+            <Star :rating="data.overall_rating || 0"/>
+            <p>共{{total}}个评分</p>
+          </div>
+        </div>
+        <div class="rate-detail">
+          <v-progress :rating="data.rating" :total="total"/>
+        </div>
+      </div>
+    </div>
     <div class="comment">
       <h3 class="comment-title">全部评论</h3>
       <div class="comment-wrap">
@@ -100,16 +118,21 @@
 <script>
   import { Popup, Badge, Toast } from 'mint-ui'
   import Model from './common/Model'
+  import Star from './common/Star'
+  import Progress from './common/Progress'
   export default {
     components: {
       'v-Model': Model,
       'mt-popup': Popup,
-      'mt-badge': Badge
+      'mt-badge': Badge,
+      'Star': Star,
+      'v-progress': Progress
     },
     data () {
       return {
         data: {
-          screenshot: []
+          screenshot: [],
+          rating: []
         },
         popupVisible: false,
         vis: false,
@@ -118,7 +141,8 @@
           content: '',
           score: ''
         },
-        dirty: false
+        dirty: false,
+        total: 0
       }
     },
     created () {
@@ -127,6 +151,9 @@
         let {data, status} = res.body
         if (status === 0) {
           this.data = data
+          data.rating.map((item) => {
+            this.total += item
+          })
         }
       })
     },
@@ -158,6 +185,9 @@
             Toast('评论成功')
           }
         })
+      },
+      handleClick (i) {
+        console.log(i)
       }
     }
   }
@@ -179,9 +209,9 @@
   border-bottom: 1px solid #f1f1f1;
 } 
 .detail-img{
-  flex: 0 0 9rem;
-  width: 9rem;
-  height: 9rem;
+  flex: 0 0 7rem;
+  width: 7rem;
+  height: 7rem;
 }
 .detail-tips{
   flex: 1;
@@ -341,5 +371,40 @@
   font-size: 1.4rem;
   color: #47525d;
   border-bottom: 1px solid #eaeef1;
+}
+.rate {
+  margin-bottom: 2.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.rate > div > h2 {
+  display: inline-block;
+  vertical-align: middle;
+}
+.red-bar {
+  display: inline-block;
+  width: .4rem;
+  height: 1.6rem;
+  background-color: #e82201;
+  margin-right: .8rem;
+  vertical-align: middle;
+}
+.rate-overal {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rating-wrap {
+  display: inline-block;
+  vertical-align: middle;
+}
+.rating-num {
+  margin-top: 2rem;
+  font-size: 4.4rem;
+  color: #3d464d;
+  font-weight: bold;
+  margin-right: 2rem;
+  vertical-align: middle;
 }
 </style>
