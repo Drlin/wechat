@@ -1,6 +1,6 @@
 <template>
   <div class="star">
-    <div class="star-inner" :style="{width: `${rating * 100}%`}"> 
+    <div class="star-inner" :style="{width: `${rating/5 * 100}%`}"> 
     </div>
   </div>
 </template>

@@ -20,7 +20,7 @@ module.exports = {
 				count += item * _rating
 				total += _rating
 			})
-			_Miniapp.overall_rating = total === 0 ? 0 : count/total.fiexd(2);
+			_Miniapp.overall_rating = total === 0 ? 0 : count/total.toFixed(2);
 			try {
 				yield _Miniapp.save();
 			} catch (e) {
