@@ -41,7 +41,7 @@
         <div class="rate-inner">
           <span class="rating-num">{{data.overall_rating || 0}}</span>
           <div class="rating-wrap">
-            <Star :rating="data.overall_rating || 0"/>
+            <Star :rating="data.overall_rating.toFixed(2) || 0"/>
             <p>共{{total}}个评分</p>
           </div>
         </div>
