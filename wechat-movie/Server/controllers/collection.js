@@ -51,6 +51,5 @@ module.exports = {
 			status: 0,
 			msg: '删除成功'
 		}
-		
 	}
 }
