@@ -25,11 +25,10 @@
         {{data.description}}
       </div>
     </div>
-    <div class="activity-bar" @click="showModel">
-      <div class="input">说说你的看法吧</div>
-      <div class="activity-bar_r">
-        <img src="../../static/message.png" class="message">
-        <mt-badge size="small" color="#e82f1b">10</mt-badge>
+    <div class="activity-bar">
+      <div class="activity-bar_l" @click="showModel">说说你的看法吧</div>
+      <div class="activity-bar_r" @click="collection" >
+        <Icon type="heart"/>
       </div>
     </div> 
     <div class="rate">
@@ -41,7 +40,7 @@
         <div class="rate-inner">
           <span class="rating-num">{{data.overall_rating || 0}}</span>
           <div class="rating-wrap">
-            <Star :rating="data.overall_rating.toFixed(2) || 0"/>
+            <Star :rating="data.overall_rating || 0"/>
             <p>共{{total}}个评分</p>
           </div>
         </div>
@@ -65,6 +64,7 @@
         </div>
       </div>
     </div>
+
     <mt-popup
       v-model="popupVisible"
       popup-transition="popup-fade"
@@ -116,7 +116,8 @@
 </template>
 
 <script>
-  import { Popup, Badge, Toast } from 'mint-ui'
+  import Icon from './common/Icon.vue'
+  import { Popup, Toast } from 'mint-ui'
   import Model from './common/Model'
   import Star from './common/Star'
   import Progress from './common/Progress'
@@ -124,9 +125,9 @@
     components: {
       'v-Model': Model,
       'mt-popup': Popup,
-      'mt-badge': Badge,
       'Star': Star,
-      'v-progress': Progress
+      'v-progress': Progress,
+      'Icon': Icon
     },
     data () {
       return {
@@ -185,6 +186,9 @@
             Toast('评论成功')
           }
         })
+      },
+      collection () {
+        console.log(1)
       },
       handleClick (i) {
         console.log(i)
@@ -276,7 +280,7 @@
   padding: 0 1rem;
 }
 
-.activity-bar .input {
+.activity-bar .activity-bar_l {
   flex: 1;
   height: 2.5rem;
   line-height: 2.5rem;
@@ -285,19 +289,10 @@
   border-radius: 2.5rem;
   text-indent: 1rem;
 }
-.activity-bar_r .message {
-  width: 2rem;
-  height: 2rem;
-  vertical-align: middle;
-}
 .activity-bar_r {
   padding-left: 1rem;
-}
-.activity-bar_r > span {
-  padding: 0 6px !important;
-  position: relative;
-  left: -.8rem;
-  bottom: .6rem;
+  font-size: 1.6rem;
+  color: #7d8994;
 }
 .mint-popup {
   width: 90%;

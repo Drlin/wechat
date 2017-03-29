@@ -12,11 +12,11 @@ export default {
 <style>
 @font-face {
   font-family: 'icon';
-  src:  url('/static/fonts/icomoon.eot?5vzgo1');
-  src:  url('/static/fonts/icomoon.eot?5vzgo1#iefix') format('embedded-opentype'),
-        url('/static/fonts/icomoon.ttf?5vzgo1') format('truetype'),
-        url('/static/fonts/icomoon.woff?5vzgo1') format('woff'),
-        url('/static/fonts/icomoon.svg?5vzgo1#icomoon') format('svg');
+  src:  url('/static/fonts/icomoon.eot?dyaqqk');
+  src:  url('/static/fonts/icomoon.eot?dyaqqk#iefix') format('embedded-opentype'),
+        url('/static/fonts/icomoon.ttf?dyaqqk') format('truetype'),
+        url('/static/fonts/icomoon.woff?dyaqqk') format('woff'),
+        url('/static/fonts/icomoon.svg?dyaqqk#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -224,5 +224,8 @@ export default {
 }
 .icon-search:before {
   content: "\e986";
+}
+.icon-heart:before {
+  content: "\e9da";
 }
 </style>
