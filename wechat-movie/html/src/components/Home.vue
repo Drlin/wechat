@@ -119,6 +119,7 @@ export default {
   align-items: center;
 }
 .search {
+  display: inline-block;
   width: 4.4rem;
   height: 4.4rem;
   text-align: center;

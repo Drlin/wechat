@@ -27,9 +27,7 @@
     </div>
     <div class="activity-bar">
       <div class="activity-bar_l" @click="showModel">说说你的看法吧</div>
-      <div class="activity-bar_r" @click="collection" >
-        <Icon type="heart"/>
-      </div>
+      <div class="activity-bar_r heartAnimation" @click="collection"></div>
     </div> 
     <div class="rate">
       <div>
@@ -38,7 +36,7 @@
       </div>
       <div class="rate-overal"> 
         <div class="rate-inner">
-          <span class="rating-num">{{data.overall_rating || 0}}</span>
+          <span class="rating-num">{{data.overall_rating.toFixed(2) || 0}}</span>
           <div class="rating-wrap">
             <Star :rating="data.overall_rating || 0"/>
             <p>共{{total}}个评分</p>
@@ -49,6 +47,7 @@
         </div>
       </div>
     </div>
+
     <div class="comment">
       <h3 class="comment-title">全部评论</h3>
       <div class="comment-wrap">
@@ -133,7 +132,8 @@
       return {
         data: {
           screenshot: [],
-          rating: []
+          rating: [],
+          overall_rating: 0
         },
         popupVisible: false,
         vis: false,
@@ -157,6 +157,9 @@
           })
         }
       })
+      // if (_id) {
+      //  // /api/collection/collectionList
+      // }
     },
     methods: {
       showModel () {
@@ -188,7 +191,14 @@
         })
       },
       collection () {
-        console.log(1)
+        this.$http.post('/api/collection/operate', {
+          miniappId: this.$route.params.id
+        }).then((res) => {
+          let {status} = res.body
+          if (status === 0) {
+            Toast('成功')
+          }
+        })
       },
       handleClick (i) {
         console.log(i)
@@ -290,9 +300,26 @@
   text-indent: 1rem;
 }
 .activity-bar_r {
-  padding-left: 1rem;
-  font-size: 1.6rem;
-  color: #7d8994;
+  flex: 0 0 5rem;
+  flex-shrink: 0;
+  background: url(/static/web_heart_animation.png) no-repeat left center;
+  background-size: 3000%;
+  height: 5rem;
+}
+.heartAnimation {
+  animation: heartAnimation;
+  animation-duration: 0.8s;
+  animation-timing-function: steps(28);
+  animation-iteration-count: 1;
+  background-position: right;
+}
+@keyframes heartAnimation {
+  0% {
+    background-position: left center;
+  }
+  100% {
+    background-position: right center;
+  }
 }
 .mint-popup {
   width: 90%;

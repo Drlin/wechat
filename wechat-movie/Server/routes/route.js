@@ -5,6 +5,7 @@ const Rank = require('../api/pageRank.js');
 const Catagory = require('../controllers/catagory.js');
 const Miniapp = require('../controllers/miniapp.js');
 const Comment = require('../controllers/comment.js');
+const Collection = require('../controllers/collection.js');
 
 module.exports = function(router) {
 	router.get('/api/movie', Movie.list)
@@ -40,10 +41,15 @@ module.exports = function(router) {
 	router.get('/api/miniapp/:id', Miniapp.detail)
 
 	router.get('/api/miniapp/hotLists', Miniapp.hotLists)
-	
 
+	router.get('/api/miniapp/hotLists', Miniapp.hotLists)
+
+	router.post('/api/collection/operate', Collection.operate)
+
+	router.post('/api/collection/collectionList', Collection.collectionList)
+	
 	//错误处理
 	// router.use(function *(err, next) {
- //        this.body = err
- //    })
+ 	// 	this.body = err
+ 	// })
 }

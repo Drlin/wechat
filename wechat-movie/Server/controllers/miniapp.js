@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const _ = require('lodash')
+const Collection = require('../models/collection');
 const Miniapp = require('../models/miniapp');
 const Comment = require('../models/comment');
 const Catagory = require('../models/catagory');

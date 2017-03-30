@@ -28,6 +28,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import { md5 } from 'md5'
 export default {
   name: 'SignUp',
   data () {
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post(`/api/user/signUp`, this.user).then((res) => {
+      this.$http.post(`/api/user/signUp`, {...this.user, ...{password: md5(this.password)}}).then((res) => {
         let { status, token, msg } = res.data
         if (status === 0) {
           window.localStorage.setItem('token', token)

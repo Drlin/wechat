@@ -6,7 +6,6 @@ const mongoose = require('mongoose')
 const path = require('path')
 const serve = require('koa-static')
 const bodyParser = require('koa-bodyparser')
-const session = require('session')
 const socket_io = require('socket.io')
 const jwt = require('koa-jwt')
 const cors = require('kcors');
@@ -20,7 +19,6 @@ const User = require('./Server/models/user')
 const dbUrl = 'mongodb://localhost/wechat'
 
 const app = koa();
-
 
 mongoose.Promise = require('bluebird')
 mongoose.connect(dbUrl)
@@ -58,12 +56,10 @@ app.use(function *(next) {
 
 require('./Server/routes/route')(router);
 
-//app.use(session(app))
 app.use(bodyParser())
 app.use(router.routes())
    .use(router.allowedMethods())
 
-//router.get('/movie', game.movie)
 router.post('/wx', wx.hear)
 router.get('/wx', wx.hear)
 
