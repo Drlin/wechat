@@ -9,3 +9,6 @@ node app.js (启动项目)
 
 
 微信接口测试地址 http://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+
+
+添加XSS攻击防范
