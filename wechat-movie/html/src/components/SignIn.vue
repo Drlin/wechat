@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { md5 } from 'md5'
+import md5 from 'md5'
 import { MessageBox, Toast } from 'mint-ui'
 import Remaintime from './common/Remaintime'
 export default {
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post(`/api/user/signIn`, {...this.user, ...{password: md5(this.password)}})
+      this.$http.post(`/api/user/signIn`, {...this.user, ...{password: md5(this.user.password)}})
       .then((res) => {
         let { status } = res.data
         if (status === 0) {

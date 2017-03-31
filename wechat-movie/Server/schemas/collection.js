@@ -7,7 +7,7 @@ const CollectionSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
-    miniapp: [{type: ObjectId, ref: 'Miniapp'}],
+    miniapp: {type: ObjectId, ref: 'Miniapp'},
     meta:{
         createAt: {
             type: Date,

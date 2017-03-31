@@ -1,34 +1,37 @@
 <template>
-  <div class="form-wrapper">
-    <img class="logo-dom" src="../../static/time.jpg" alt="logo">
-    <div class="signUp-wrapper">
-      <input 
-        class="text-input input" 
-        maxlength="13" 
-        placeholder="输入手机号" 
-        v-model="user.phoneNum"
-      >
-      <input 
-        class="text-input input" 
-        type="password" 
-        maxlength="13"
-        placeholder="输入密码" 
-        v-model="user.password"
-      >
-      <input 
-        value="登录" 
-        class="pass-button-full input" 
-        type="button" 
-        :disabled='!isDisabled'
-        @click="submit"
-      >
+  <div class="signup">
+    <div class="form-wrapper">
+      <img class="logo-dom" src="../../static/time.jpg" alt="logo">
+      <div class="signUp-wrapper">
+        <input 
+          class="text-input input" 
+          maxlength="13" 
+          placeholder="输入手机号" 
+          v-model="user.phoneNum"
+        >
+        <input 
+          class="text-input input" 
+          type="password" 
+          maxlength="13"
+          placeholder="输入密码" 
+          v-model="user.password"
+        >
+        <input 
+          value="登录" 
+          class="pass-button-full input" 
+          type="button" 
+          :disabled='!isDisabled'
+          @click="submit"
+        >
+      </div>
     </div>
+    <router-link to="signin" class="account-login">立即注册</router-link>
   </div>
 </template>
 
 <script>
 import { Toast } from 'mint-ui'
-import { md5 } from 'md5'
+import md5 from 'md5'
 export default {
   name: 'SignUp',
   data () {
@@ -47,7 +50,9 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post(`/api/user/signUp`, {...this.user, ...{password: md5(this.password)}}).then((res) => {
+      let password = md5(this.user.password)
+      this.$http.post(`/api/user/signUp`, {...this.user, ...{password}})
+      .then((res) => {
         let { status, token, msg } = res.data
         if (status === 0) {
           window.localStorage.setItem('token', token)
@@ -103,5 +108,16 @@ export default {
   }
   .pass-button-full:disabled {
     color: #90b6ff;
+  }
+  .account-login {
+    position: absolute;
+    color: #367cff;
+    font-size: 1.6rem;
+    border: 1px solid #367cff;
+    border-radius: 0.2rem;
+    padding: 1rem 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 5rem;
   }
 </style>

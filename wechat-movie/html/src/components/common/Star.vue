@@ -23,7 +23,6 @@ export default {
     background-size: cover;
   }    
   .star-inner {
-    width: 100%;
     height: 100%;
     background: url(/static/score-p.png) no-repeat left center;
     background-size: 6rem 1rem;

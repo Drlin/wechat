@@ -47,9 +47,10 @@ module.exports = {
 	},
 	collectionList: function *(next) {
 		const from = this.state.user._id;
+		const miniappId = this.query.miniappId;
 		let collections = [];
 		try {
-			collections = yield Collection.find({from}).exec();
+			collections = yield Collection.find({from, miniapp: miniappId}).exec();
 		} catch(e) {
 			return this.body = {
 				status: 1,

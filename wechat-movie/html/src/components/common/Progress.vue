@@ -1,11 +1,11 @@
 <template>
   <ul class="progress">
-    <div v-for="(item, i) in evenRating">
+    <li v-for="(item, i) in evenRating">
       <span>{{[5, 4, 3, 2, 1][i]}}</span>
-      <li class="list-item">
+      <div class="list-item">
         <div class="inner" :style="{width: `${((item || 0)/total * 100)}%`}"></div>
-      </li>
-    </div>
+      </div>
+    </li>
   </ul>
 </template>
 
@@ -26,7 +26,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .progress > div {
+  .progress > li {
     display: flex;
   }
   .progress .list-item {

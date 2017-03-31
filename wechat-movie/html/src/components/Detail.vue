@@ -27,7 +27,12 @@
     </div>
     <div class="activity-bar">
       <div class="activity-bar_l" @click="showModel">说说你的看法吧</div>
-      <div class="activity-bar_r heartAnimation" @click="collection"></div>
+      <div 
+        class="activity-bar_r" 
+        :class="{isLove, heartAnimation}"
+        @click="collection">
+      
+      </div>
     </div> 
     <div class="rate">
       <div>
@@ -143,11 +148,15 @@
           score: ''
         },
         dirty: false,
-        total: 0
+        total: 0,
+        isLogin: false,
+        isLove: false,
+        heartAnimation: false
       }
     },
     created () {
-      this.$http.get(`/api/miniapp/${this.$route.params.id}`)
+      let miniappId = this.$route.params.id
+      this.$http.get(`/api/miniapp/${miniappId}`)
       .then((res) => {
         let {data, status} = res.body
         if (status === 0) {
@@ -157,13 +166,31 @@
           })
         }
       })
-      // if (_id) {
-      //  // /api/collection/collectionList
-      // }
+      localStorage.getItem('token') && this.$http.get(`/api/collection/collectionList?miniappId=${miniappId}`)
+      .then((res) => {
+        this.isLogin = true
+        let {data, status} = res.body
+        if (status === 0) {
+          data.map((item) => {
+            if (item.miniapp === miniappId) {
+              this.isLove = true
+            }
+          })
+        }
+      })
+      .catch((e) => {
+        if (e.status === 401) {
+          this.isLogin = false
+        }
+      })
     },
     methods: {
       showModel () {
-        this.popupVisible = true
+        if (this.isLogin) {
+          this.popupVisible = true
+          return
+        }
+        this.$router.push('/signup')
       },
       showPics (index) {
         this.vis = true
@@ -196,7 +223,12 @@
         }).then((res) => {
           let {status} = res.body
           if (status === 0) {
-            Toast('成功')
+            this.isLove = !this.isLove
+            if (this.isLove) {
+              this.heartAnimation = true
+            } else {
+              this.heartAnimation = false
+            }
           }
         })
       },
@@ -306,12 +338,14 @@
   background-size: 3000%;
   height: 5rem;
 }
-.heartAnimation {
+.activity-bar_r.isLove {
+  background-position: right;
+}
+.activity-bar_r.heartAnimation {
   animation: heartAnimation;
   animation-duration: 0.8s;
   animation-timing-function: steps(28);
   animation-iteration-count: 1;
-  background-position: right;
 }
 @keyframes heartAnimation {
   0% {
@@ -395,9 +429,8 @@
   border-bottom: 1px solid #eaeef1;
 }
 .rate {
-  margin-bottom: 2.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0 1.5rem;
 }
 .rate > div > h2 {
   display: inline-block;

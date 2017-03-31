@@ -35,11 +35,13 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods = {
 	comparePassword: function(_password) {
-		return function(next) {
-			bcrypt.compare(_password, this.password , function(err, isMatch) {
-				next(null, isMatch)
-			})
-		}
+		bcrypt.compare(_password, this.password , (err, isMatch) => {
+			if (!err) {
+				return isMatch
+			} else {
+				return null
+			}
+		})
 	}
 }
 

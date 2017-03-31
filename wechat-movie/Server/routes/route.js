@@ -46,7 +46,7 @@ module.exports = function(router) {
 
 	router.post('/api/collection/operate', Collection.operate)
 
-	router.post('/api/collection/collectionList', Collection.collectionList)
+	router.get('/api/collection/collectionList', Collection.collectionList)
 	
 	//错误处理
 	// router.use(function *(err, next) {
