@@ -5,9 +5,6 @@ import VueResource from 'vue-resource'
 import 'mint-ui/lib/style.css'
 import App from './App'
 import router from './router'
-import VueSocketio from 'vue-socket.io'
-
-Vue.use(VueSocketio, 'http://localhost:3000')
 
 Vue.use(VueResource)
 Vue.config.productionTip = false

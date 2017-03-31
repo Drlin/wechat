@@ -45,11 +45,22 @@ module.exports = {
 		let {phoneNum, userName, password} = this.request.body;
 		let user = yield User.findOne({ phoneNum }).exec();
 		if (user) {
-			return this.body = {
-				status: 1,
-				msg: '用户已存在'
+			if (user.verifyed) {
+				return this.body = {
+					status: 1,
+					msg: '用户已存在'
+				}
+			} else {
+				try {
+					yield User.remove({phoneNum}).exec();
+				} catch(e) {
+					return this.body = {
+						status: 1,
+						msg: '操作失败'
+					}
+				}
 			}
-		};
+		}
 		user = new User(this.request.body);
 		try {
 			yield user.save();

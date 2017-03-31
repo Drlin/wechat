@@ -36,6 +36,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.methods = {
 	comparePassword: function(_password) {
 		bcrypt.compare(_password, this.password , (err, isMatch) => {
+			console.log(_password, this.password, err)
 			if (!err) {
 				return isMatch
 			} else {

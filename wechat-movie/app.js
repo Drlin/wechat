@@ -6,7 +6,6 @@ const mongoose = require('mongoose')
 const path = require('path')
 const serve = require('koa-static')
 const bodyParser = require('koa-bodyparser')
-const socket_io = require('socket.io')
 const jwt = require('koa-jwt')
 const cors = require('kcors');
 
@@ -74,18 +73,7 @@ app.use(function*(next){
   yield next;
 })
 
-const io = socket_io.listen(app.listen(3000));
-
-io.sockets.on('connection', (socket)=> {
-  var messages = []
-  socket.on('getAllMessages', ()=> {
-    socket.emit('allMessages', messages)
-  })
-  socket.on('createMessage', (message)=> {
-    messages.push(message)
-    io.sockets.emit('allMessages', messages)
-  })
-})
+app.listen(3000);
 
 console.log('成功启动服务，端口是 3000')
 

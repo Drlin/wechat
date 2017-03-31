@@ -25,7 +25,7 @@
         >
       </div>
     </div>
-    <router-link to="signin" class="account-login">立即注册</router-link>
+    <router-link to="signin" class="account-signin">立即注册</router-link>
   </div>
 </template>
 
@@ -109,7 +109,7 @@ export default {
   .pass-button-full:disabled {
     color: #90b6ff;
   }
-  .account-login {
+  .account-signin {
     position: absolute;
     color: #367cff;
     font-size: 1.6rem;

@@ -5,20 +5,21 @@
       <input 
         class="text-input input" 
         maxlength="6" 
-        placeholder="输入用户名" 
+        placeholder="输入用户名，最长6位" 
         v-model="user.name"
       >
       <input 
         class="text-input input" 
         maxlength="13" 
         placeholder="输入手机号" 
+        type="number" 
         v-model="user.phoneNum"
       >
       <input 
         class="text-input input" 
         type="password" 
         maxlength="13"
-        placeholder="输入密码" 
+        placeholder="输入6到16位密码" 
         v-model="user.password"
       >
       <input 
@@ -45,6 +46,7 @@
             placeholder="请输入验证码" 
             autocomplete="off" 
             maxlength="6" 
+            type="number"
           >
           <span class="input-clearValue"></span>
         </div>
@@ -70,6 +72,9 @@
         class="pass-button-full pass-button-submit"
         @click="register"
       >
+    </div>
+    <div class="account-signup">
+      <router-link to="signup">已有账号？前去登录</router-link>
     </div>
   </div>
 </template>
@@ -102,7 +107,27 @@ export default {
     'Remaintime': Remaintime
   },
   methods: {
+    validator () {
+      let {password, phoneNum, name} = this.user
+      let valid = true
+      if (name.match(/[@#$%^&*<]+/g)) {
+        Toast('用户名不能包含特殊字符')
+        valid = false
+      }
+      if (!phoneNum.match(/^1[3|4|5|7|8]\d{9}$/ig)) {
+        Toast('请输入正确的手机号')
+        valid = false
+      }
+      if (!password.match(/^\w{6,16}$/ig)) {
+        Toast('密码需6到16位数字或字母')
+        valid = false
+      }
+      return valid
+    },
     submit () {
+      if (!this.validator()) {
+        return
+      }
       this.$http.post(`/api/user/signIn`, {...this.user, ...{password: md5(this.user.password)}})
       .then((res) => {
         let { status } = res.data
@@ -259,5 +284,11 @@ export default {
   .pass-button-submit {
     height: 4.4rem;
     outline: none;
+  }
+  .account-signup {
+    padding-top: 1rem;
+    width: 100%;
+    text-align: right;
+    font-size: 1.4rem;
   }
 </style>
