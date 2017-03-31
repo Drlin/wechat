@@ -82,7 +82,7 @@ module.exports = {
 		if (!user) {
 			return this.body = {
 				status: 1,
-				msg: '用户不存在'
+				msg: '无效的用户名或密码'
 			};
 		}
 		const isMatch = user.comparePassword(password);
@@ -96,7 +96,7 @@ module.exports = {
 		} else {
 			return this.body = {
 				status: 1,
-				msg: '密码错误'
+				msg: '无效的用户名或密码'
 			};
 		}
 	},
