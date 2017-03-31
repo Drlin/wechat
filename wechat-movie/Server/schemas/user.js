@@ -35,38 +35,23 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods = {
 	comparePassword: function(_password) {
-		bcrypt.compare(_password, this.password)
-		.then((isMatch) => {
-			return isMatch
-		})
-		.catch(() => {
-			return null
-		})
+		return bcrypt.compareSync(_password, this.password);
 	}
 }
 
 UserSchema.pre('save', function (next) {
-	if (!this.password) {
-		next()
+	if (this.verifyed) {
+		next();
 	}
-	var that = this
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now()
 	} else {
 		this.meta.updateAt = Date.now()
 	}
-	bcrypt.genSalt(10, (err, salt)=> {
-		if (err) {
-			return next(err)
-		}
-		bcrypt.hash(that.password, salt, (err, hash)=> {
-			if (err) {
-				return next(err)
-			}
-			that.password = hash
-			next()
-		})
-	})
+	const salt = bcrypt.genSaltSync(10);
+	const hash = bcrypt.hashSync(this.password, salt);
+	this.password = hash;
+	next();
 })
 
 module.exports = UserSchema;

@@ -79,7 +79,7 @@ module.exports = {
 	signup: function *(next) {
 		let {phoneNum, password} = this.request.body;
 		let user = yield User.findOne({ phoneNum }).exec();
-		if (!user) {
+		if (!user || !user.verifyed) {
 			return this.body = {
 				status: 1,
 				msg: '无效的用户名或密码'
@@ -87,7 +87,7 @@ module.exports = {
 		}
 		const isMatch = user.comparePassword(password);
 		if (isMatch) {
-			const token = jwt.sign({_id: user._id}, 'lin', {exp: 7200})
+			const token = jwt.sign({_id: user._id}, 'lin', {exp: Date.now() + 1*30*1000})
 			return this.body = {
 				status: 0,
 				token,
@@ -115,7 +115,16 @@ module.exports = {
 			};
 		}
 		let userId = this.state.user;
-		const user = yield User.findOne({_id: userId._id}).exec();
+		let user = {};
+		try {
+			 user = yield User.findOne({_id: userId._id}).exec();
+		} catch(e) {
+			return this.body = {
+				status: 1,
+				msg: '用户未登录'
+			};
+		}
+		
 		let {name, phoneNum, _id, role, portrait} = user
 		return this.body = {
 			status: 0,

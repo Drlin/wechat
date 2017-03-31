@@ -335,7 +335,7 @@
   flex: 0 0 5rem;
   flex-shrink: 0;
   background: url(/static/web_heart_animation.png) no-repeat left center;
-  background-size: 3000%;
+  background-size: 2900%;
   height: 5rem;
 }
 .activity-bar_r.isLove {
