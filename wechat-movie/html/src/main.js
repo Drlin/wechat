@@ -9,12 +9,15 @@ import router from './router'
 Vue.use(VueResource)
 Vue.config.productionTip = false
 
-try {
-  let token = window.localStorage.getItem('token')
-  Vue.http.headers.common['Authorization'] = `Bearer ${token}`
-} catch (e) {
-  console.log(e)
-}
+router.beforeEach((to, from, next) => {
+  try {
+    let token = window.localStorage.getItem('token')
+    Vue.http.headers.common['Authorization'] = `Bearer ${token}`
+  } catch (e) {
+    console.log(e)
+  }
+  next()
+})
 
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
