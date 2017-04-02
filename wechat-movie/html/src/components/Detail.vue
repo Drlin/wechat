@@ -70,7 +70,7 @@
           <span class="time">{{time( item.meta.createAt )}}</span>
         </div>
         <div class="comment-content">
-          {{filterTag(htmlDecode(item.content))}}
+          {{item.content | htmlDecode | filterTag}}
         </div>
       </div>
     </div>
@@ -134,8 +134,6 @@
   import Star from './common/Star'
   import Progress from './common/Progress'
   import {config} from './config/config'
-  /* eslint-disable no-unused-vars */
-  import {htmlDecode, filterTag} from './util/util'
   export default {
     components: {
       'v-Model': Model,
@@ -194,12 +192,6 @@
       this.getData()
     },
     methods: {
-      htmlDecode (value) {
-        return htmlDecode(value)
-      },
-      filterTag (value) {
-        return filterTag(value)
-      },
       time (value) {
         moment.locale('cn', config.moment)
         return moment(value).fromNow()

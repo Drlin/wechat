@@ -1,4 +1,6 @@
-function htmlDecode (str) {
+import Vue from 'vue'
+
+Vue.filter('htmlDecode', (str) => {
   if (!str) {
     return str
   }
@@ -12,16 +14,11 @@ function htmlDecode (str) {
   return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, t) => {
     return arrEntities[t]
   })
-}
+})
 
-function filterTag (str) {
+Vue.filter('filterTag', (str) => {
   if (!str) {
     return str
   }
   return str.replace(/<\/?(script|style|iframe|frame)>/ig, '')
-}
-
-module.exports = {
-  htmlDecode,
-  filterTag
-}
+})
