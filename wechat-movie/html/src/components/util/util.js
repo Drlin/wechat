@@ -10,11 +10,18 @@ function htmlDecode (str) {
     'quot': '"'
   }
   return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, t) => {
-    console.log(all, t)
     return arrEntities[t]
   })
 }
 
+function filterTag (str) {
+  if (!str) {
+    return str
+  }
+  return str.replace(/<\/?(script|style|iframe|frame)>/ig, '')
+}
+
 module.exports = {
-  htmlDecode
+  htmlDecode,
+  filterTag
 }
