@@ -61,5 +61,28 @@ module.exports = {
 			status: 0,
 			data: collections
 		}
+	},
+	userCollection: function *(next) {
+		const from = this.state.user._id;
+		try {
+			collections = 
+			yield Collection
+					.find({from})
+					.populate(
+						{
+							path: 'miniapp'
+						}
+					)
+					.exec();
+		} catch(e) {
+			return this.body = {
+				status: 1,
+				msg: '查询失败'
+			}
+		}
+		return this.body = {
+			status: 0,
+			data: collections
+		}
 	}
 }

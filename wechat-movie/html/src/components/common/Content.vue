@@ -2,7 +2,7 @@
   <ul
     class="item-wrap page-infinite-list">
 	  <li v-for="item in lists" class="item">
-      <router-link :to="`/app/${item._id}`">
+      <div>
         <img class="item-img" :src="item.icon" />
         <div class="item-info-left">
           <h2>{{ item.name }}</h2>
@@ -10,9 +10,9 @@
           <Star :rating="item.overall_rating || 0" />
         </div>
         <div class="qrcode">
-          详情
+          <slot name="link" :router="`/app/${item._id}`"></slot>
         </div>
-      </router-link>
+      </div>
     </li>
 	</ul>
 </template>
@@ -46,7 +46,7 @@
   width: 100%;
   border-bottom: 1px solid #F1F1F1;
 }
-.item a {
+.item > div {
   display: flex;
   justify-content: space-between;
   padding: 0.4rem 0.8rem;
@@ -73,7 +73,8 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }   
-.qrcode {
+.qrcode > a {
+  display: inline-block;
   flex: 0 0 3.8rem;
   width: 3.8rem;
   height: 2.2rem;

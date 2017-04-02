@@ -78,6 +78,7 @@
           class="textarea" 
           placeholder="请输入内容"
           v-model="form.content"
+          maxlength="200" 
         >
         </textarea>
         <div class="limit_text" :class="{illegal: form.content.length > 200}">

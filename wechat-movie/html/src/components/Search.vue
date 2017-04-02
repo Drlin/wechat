@@ -27,6 +27,9 @@
     <v-content
       :lists="lists"
     >
+      <template scope="props" slot="link">
+        <router-link :to="props.router">详情</router-link>
+      </template>
     </v-content>
   </div>
 </template>
