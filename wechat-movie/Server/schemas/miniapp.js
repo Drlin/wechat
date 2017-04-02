@@ -9,7 +9,6 @@ const MiniappSchema = new Schema({
     screenshot: [{ type: String}],
     description: String,
     icon: String,
-    rating: [{ type: Number}],
     hot: Number,
     viewNum: {
         type: Number,

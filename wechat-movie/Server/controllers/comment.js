@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Comment = require('../models/comment');
 const Miniapp = require('../models/miniapp');
+const {html_encode} =  require('../api/XSS');
 module.exports = {
 	create: function *(next) {
-		const {content, star, miniappId} = this.request.body;
+		let {content, star, miniappId} = this.request.body;
 		const from = this.state.user._id;
+		content = html_encode(content);
 		const comment = new Comment({
 			content, star, miniapp: miniappId, from
 		})

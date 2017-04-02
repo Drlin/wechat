@@ -38,7 +38,7 @@ module.exports = function(router) {
 
 	router.post('/api/comment/create', Comment.create)
 
-	router.get('/api/comment/lists', Comment.lists)
+	router.get('/api/miniapp/commentLists', Comment.lists)
 
 	router.get('/api/miniapp/:id', Miniapp.detail)
 

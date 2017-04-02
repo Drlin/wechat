@@ -209,7 +209,7 @@
             })
           }
         })
-        this.$http.get(`/api/comment/lists?miniappId=${miniappId}`)
+        this.$http.get(`/api/miniapp/commentLists?miniappId=${miniappId}`)
         .then((res) => {
           let {data, status} = res.body
           if (status === 0) {

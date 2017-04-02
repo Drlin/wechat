@@ -19,7 +19,7 @@ export default {
   computed: {
     evenRating () {
       this.rating.splice(0, 1)
-      return this.rating.sort()
+      return this.rating
     }
   }
 }
