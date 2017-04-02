@@ -19,7 +19,7 @@
     <div class="hot-search" v-if="hotListsShow">
       <div class="inner">
         <h2>热门搜索</h2>
-        <p v-for="item in hotLists">
+        <p v-for="item in hotLists" @click="handleClick( item )">
           {{item.name}}
         </p>
       </div>
@@ -79,6 +79,9 @@ export default {
           this.lists = data
         }
       })
+    },
+    handleClick (item) {
+      this.search = item.name
     }
   }
 }

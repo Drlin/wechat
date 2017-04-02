@@ -53,18 +53,24 @@
       </div>
     </div>
 
-    <div class="comment">
+    <div class="comment" v-if="comments.length > 0">
       <h3 class="comment-title">全部评论</h3>
-      <div class="comment-wrap">
+      <div 
+        class="comment-wrap" 
+        v-for="item in comments"
+      >
         <div class="wrap-header">
-          <img data-v-3211db36="" src="https://media.ifanrusercontent.com/media/tavatar/bd/e5/bde505626df40ab317c4092be514b353214f42f5.jpg" alt="评论作者头像">
           <div class="content-meta">
-            <span class="nickname">Dr.林</span>
-            <span class="time">27秒前</span>
+            <img :src="item.from.portrait" alt="评论者头像">
+            <div class="content-r"> 
+              <span class="nickname">{{item.from.name}}</span>
+              <Star :rating="item.star"/>
+            </div>
           </div>
+          <span class="time">{{time( item.meta.createAt )}}</span>
         </div>
         <div class="comment-content">
-          小程序不错哦
+          {{item.content}}
         </div>
       </div>
     </div>
@@ -121,11 +127,13 @@
 </template>
 
 <script>
-  import Icon from './common/Icon.vue'
+  import moment from 'moment'
   import { Popup, Toast } from 'mint-ui'
+  import Icon from './common/Icon.vue'
   import Model from './common/Model'
   import Star from './common/Star'
   import Progress from './common/Progress'
+  import {config} from './config/config'
   export default {
     components: {
       'v-Model': Model,
@@ -152,7 +160,8 @@
         total: 0,
         isLogin: false,
         isLove: false,
-        heartAnimation: false
+        heartAnimation: false,
+        comments: []
       }
     },
     computed: {
@@ -163,16 +172,6 @@
     },
     created () {
       let miniappId = this.$route.params.id
-      this.$http.get(`/api/miniapp/${miniappId}`)
-      .then((res) => {
-        let {data, status} = res.body
-        if (status === 0) {
-          this.data = data
-          data.rating.map((item) => {
-            this.total += item
-          })
-        }
-      })
       localStorage.getItem('token') && this.$http.get(`/api/collection/collectionList?miniappId=${miniappId}`)
       .then((res) => {
         this.isLogin = true
@@ -190,8 +189,34 @@
           this.isLogin = false
         }
       })
+      this.getData()
     },
     methods: {
+      time (value) {
+        moment.locale('cn', config.moment)
+        return moment(value).fromNow()
+      },
+      getData () {
+        let miniappId = this.$route.params.id
+        this.$http.get(`/api/miniapp/${miniappId}`)
+        .then((res) => {
+          let {data, status} = res.body
+          this.total = 0
+          if (status === 0) {
+            this.data = data
+            data.rating.map((item) => {
+              this.total += item
+            })
+          }
+        })
+        this.$http.get(`/api/comment/lists?miniappId=${miniappId}`)
+        .then((res) => {
+          let {data, status} = res.body
+          if (status === 0) {
+            this.comments = data
+          }
+        })
+      },
       showModel () {
         if (this.isLogin) {
           this.popupVisible = true
@@ -220,6 +245,7 @@
           let {status} = res.body
           if (status === 0) {
             this.popupVisible = false
+            this.getData()
             Toast('评论成功')
           }
         })
@@ -427,13 +453,40 @@
   padding-bottom: 1rem;
 }
 .comment {
-  padding: 0 0.8rem;
+  padding: 0.5rem 1.5rem;
 }
 .comment-title {
   padding: 1rem 0;
   font-size: 1.4rem;
   color: #47525d;
   border-bottom: 1px solid #eaeef1;
+}
+.comment-wrap {
+  padding: 0.5 1rem;
+  border-bottom: 1px solid #eaeef1;
+}
+.wrap-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+.wrap-header > .content-meta > img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+.content-meta {
+  display: flex;
+  align-items: center;
+}
+.content-r {
+  margin-left: 1rem;
+}
+.comment-content {
+  margin: .5rem 0 .5rem 4rem;
+  font-size: 1.4rem;
+  color: #3d464d;
+  word-break: break-all;
 }
 .rate {
   margin-bottom: 1.5rem;

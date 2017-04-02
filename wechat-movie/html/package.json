@@ -12,6 +12,7 @@
   "dependencies": {
     "md5": "^2.2.1",
     "mint-ui": "^2.2.1",
+    "moment": "^2.18.1",
     "socket.io": "^1.7.3",
     "vue": "^2.2.1",
     "vue-resource": "^1.2.1",

@@ -45,5 +45,26 @@ module.exports = {
 			msg: '保存成功'
 		}
 
+	},
+	lists: function *(next) {
+		const {miniappId} = this.query;
+		let comments = [];
+		try {
+			comments = yield Comment
+				.find({miniapp: miniappId})
+				.populate({
+					path: 'from'
+				})
+				.exec();
+		} catch(e) {
+			return this.body = {
+				status: 1,
+				msg: e
+			}
+		}
+		return this.body = {
+			status: 0,
+			data: comments
+		}
 	}
 }
