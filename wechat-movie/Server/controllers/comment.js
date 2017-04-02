@@ -55,7 +55,8 @@ module.exports = {
 			comments = yield Comment
 				.find({miniapp: miniappId})
 				.populate({
-					path: 'from'
+					path: 'from',
+					select: {password: 0}
 				})
 				.exec();
 		} catch(e) {
