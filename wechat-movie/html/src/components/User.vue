@@ -7,13 +7,13 @@
       <div class="user-name">{{user.name}}</div>
     </div>
     <div class="entrance-wrap">
-      <router-link to="collection">
+      <router-link to="created">
         <span>
           我的发布
         </span>
         <Icon type="next"/>
       </router-link>
-      <router-link to="created">
+      <router-link to="collection">
         <span>
           我的收藏
         </span>

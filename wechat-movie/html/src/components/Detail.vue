@@ -41,9 +41,9 @@
       </div>
       <div class="rate-overal"> 
         <div class="rate-inner">
-          <span class="rating-num">{{data.overall_rating.toFixed(2) || 0}}</span>
+          <span class="rating-num">{{overall_rating || 0}}</span>
           <div class="rating-wrap">
-            <Star :rating="data.overall_rating || 0"/>
+            <Star :rating="+overall_rating || 0"/>
             <p>共{{total}}个评分</p>
           </div>
         </div>
@@ -113,7 +113,7 @@
       :pics="data.screenshot" 
       :vis="vis" 
       :picIndex="picIndex" 
-      v-on:closeModel="close"
+      @closeModel="close"
     >
     </v-Model>
   </div>
@@ -138,7 +138,7 @@
         data: {
           screenshot: [],
           rating: [],
-          overall_rating: 0
+          overall_rating: ''
         },
         popupVisible: false,
         vis: false,
@@ -152,6 +152,12 @@
         isLogin: false,
         isLove: false,
         heartAnimation: false
+      }
+    },
+    computed: {
+      overall_rating () {
+        let value = String(this.data.overall_rating)
+        return value.slice(0, value.indexOf('.') + 3)
       }
     },
     created () {

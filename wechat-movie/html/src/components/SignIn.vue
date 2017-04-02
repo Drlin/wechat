@@ -61,7 +61,7 @@
           重新发送
           <Remaintime  
             :time="60" 
-            v-on:refreshState="refreshStateDone"
+            @refreshState="refreshStateDone"
             >
           </Remaintime>
         </div>
