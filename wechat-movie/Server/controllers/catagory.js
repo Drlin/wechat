@@ -58,11 +58,9 @@ module.exports = {
 			.populate(
 				{
 					path: 'miniapp', 
-					select: {name: 1, icon: 1},
 					options: {limit, skip: (page - 1) * limit}
 				}
 			)
-			.skip((page - 1) * limit)
 			.exec();
 			return this.body = {
 				status: 0,

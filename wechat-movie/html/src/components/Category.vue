@@ -2,7 +2,11 @@
   <div class="category">
     <h2>类别</h2>
     <div class="container">
-      <router-link  v-for="item in lists" to="/app" key="item.key">
+      <router-link  
+        v-for="item in lists" 
+        :to="`/lists?key=${item.key}&value=${item.value}`" 
+        key="item.key"
+      >
         <span :style="{color: item.color}"><Icon :type="item.type"/></span>
         <p>{{item.value}}</p>
       </router-link>
@@ -17,11 +21,6 @@ export default {
     return {
       lists: [
         {
-          type: 'stack',
-          key: '',
-          value: '全部',
-          color: '#303030'
-        }, {
           type: 'music',
           key: '在线音乐',
           value: '音乐',
@@ -62,17 +61,6 @@ export default {
   },
   components: {
     'Icon': Icon
-  },
-  created () {
-    this.$http.get(`/api/catagory/catagorys`)
-    .then((res) => {
-      let {data, status} = res.body
-      if (status === 0) {
-        data.map((item) => {
-          console.log(item.name)
-        })
-      }
-    })
   }
 }
 </script>

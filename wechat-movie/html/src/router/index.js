@@ -8,6 +8,7 @@ import Detail from '@/components/Detail'
 import Search from '@/components/Search'
 import Collection from '@/components/Collection'
 import Category from '@/components/Category'
+import Lists from '@/components/Lists'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/category',
       name: 'category',
       component: Category
+    },
+    {
+      path: '/lists',
+      name: 'lists',
+      component: Lists
     }
   ]
 })
