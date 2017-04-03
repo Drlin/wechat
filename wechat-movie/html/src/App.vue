@@ -43,6 +43,7 @@ html {
 }
 input {
   outline: none;
+  border: 0;
 }
 a {
   text-decoration: none;
@@ -54,6 +55,10 @@ a {
 }
 li {
   list-style: none;
+}
+input,
+button {
+ -webkit-appearance: none;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

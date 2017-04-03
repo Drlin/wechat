@@ -49,7 +49,7 @@ h2 {
   width: 100%;
   height: 4rem;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.6rem;
   line-height: 4rem;
   background: #f8f8f8;
 }
