@@ -12,11 +12,11 @@ export default {
 <style>
 @font-face {
   font-family: 'icon';
-  src:  url('/static/fonts/icomoon.eot?dyaqqk');
-  src:  url('/static/fonts/icomoon.eot?dyaqqk#iefix') format('embedded-opentype'),
-        url('/static/fonts/icomoon.ttf?dyaqqk') format('truetype'),
-        url('/static/fonts/icomoon.woff?dyaqqk') format('woff'),
-        url('/static/fonts/icomoon.svg?dyaqqk#icomoon') format('svg');
+  src:  url('/static/fonts/icomoon.eot?t9alb3');
+  src:  url('/static/fonts/icomoon.eot?t9alb3#iefix') format('embedded-opentype'),
+        url('/static/fonts/icomoon.ttf?t9alb3') format('truetype'),
+        url('/static/fonts/icomoon.woff?t9alb3') format('woff'),
+        url('/static/fonts/icomoon.svg?t9alb3#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -227,5 +227,35 @@ export default {
 }
 .icon-heart:before {
   content: "\e9da";
+}
+.icon-stack:before {
+  content: "\e944";
+}
+.icon-image:before {
+  content: "\e93e";
+}
+.icon-music:before {
+  content: "\e93f";
+}
+.icon-play:before {
+  content: "\e940";
+}
+.icon-cart:before {
+  content: "\e946";
+}
+.icon-airplane:before {
+  content: "\e9af";
+}
+.icon-image:before {
+  content: "\e93e";
+}
+.icon-stats-dots:before {
+  content: "\e99b";
+}
+.icon-glass:before {
+  content: "\e9a0";
+}
+.icon-lifebuoy:before {
+  content: "\e948";
 }
 </style>
