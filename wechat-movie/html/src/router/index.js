@@ -7,6 +7,7 @@ import User from '@/components/User'
 import Detail from '@/components/Detail'
 import Search from '@/components/Search'
 import Collection from '@/components/Collection'
+import Category from '@/components/Category'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/collection',
       name: 'collection',
       component: Collection
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: Category
     }
   ]
 })

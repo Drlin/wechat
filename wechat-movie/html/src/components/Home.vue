@@ -19,18 +19,18 @@
       <img src="../../static/header-bar-wrap.jpg" alt="">
     </div>
     <div class="fast-nav">
-      <a class="nav-item" href="/category">
+      <router-link class="nav-item" to="/category">
         <img class="category" src="../../static/category.png" />
         <p>类别</p>
-      </a>
-      <a class="nav-item" href="/recommend">
+      </router-link>
+      <router-link class="nav-item" to="/recommend">
         <img class="recommend" src="../../static/recommend.png" />
         <p>每日小程序推荐</p>
-      </a>
-      <a class="nav-item" href="/ranking">
+      </router-link>
+      <router-link class="nav-item" to="/ranking">
         <img class="ranking" src="../../static/ranking.png" />
         <p>排行榜</p>
-      </a>
+      </router-link>
     </div>
     <template v-for="(item, index) in dataArr">
       <Module :title="item" :data="miniappArr[index]"/>

@@ -110,7 +110,7 @@ export default {
     color: #90b6ff;
   }
   .account-signin {
-    position: absolute;
+    position: fixed;
     color: #367cff;
     font-size: 1.6rem;
     border: 1px solid #367cff;
