@@ -48,7 +48,10 @@
     "xml2js": "^0.4.13",
     "xss": "^0.3.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
