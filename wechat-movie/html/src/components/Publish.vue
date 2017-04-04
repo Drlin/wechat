@@ -25,9 +25,9 @@
       </div>
       <div class="release">
         <p class="title">图标</p>
+        <div class="uploader-pick"  @click="uploadImage"></div>
       </div>
     </div>
-    <button @click="uplosdImage">上传</button>
     <a class="bth">
       发布
     </a>
@@ -74,7 +74,7 @@ export default {
     })
   },
   methods: {
-    uplosdImage () {
+    uploadImage () {
       wx.ready(() => {
         wx.chooseImage({
           count: 1,
@@ -151,5 +151,12 @@ export default {
     color: #fff;
     font-size: 1.4rem;
     text-align: center;
+  }
+  .uploader-pick {
+    width: 10rem;
+    height: 10rem;
+    margin-top: .5rem;
+    background: url(/static/uploader.jpg) no-repeat;
+    background-size: contain;
   }
 </style>
