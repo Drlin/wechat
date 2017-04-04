@@ -22,6 +22,9 @@ const api = {
   },
   ticket: {
     get: `${prefix}/ticket/getticket?`
+  },
+  media: {
+    get: `${prefix}/media/get?`
   }
 }
 const Promise = require('bluebird');
@@ -262,6 +265,7 @@ class Wechat {
             .then((response) => {
               let _data = response[1];
               if (_data) {
+                console.log(_data)
                 resolve(_data) 
               } else {
                 throw new Error('获取失败')
@@ -290,6 +294,32 @@ class Wechat {
                 resolve(_data) 
               } else {
                 throw new Error('删除失败')
+              }
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        })
+    })
+  }
+
+  getMedia(media_id) {
+    return new Promise((resolve, reject) => {
+      this.fetchAccessToken()
+        .then((data) => {
+          let url = `${api.media.get}access_token=${data.access_token}&media_id=${media_id}`;
+          const options = {
+            url,
+            json: true
+          }
+          request(options)
+            .then((response) => {
+              let _data = response[1];
+              console.log(response)
+              if (_data) {
+                resolve(_data) 
+              } else {
+                throw new Error('获取失败')
               }
             })
             .catch((err) => {

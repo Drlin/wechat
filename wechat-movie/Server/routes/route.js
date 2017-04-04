@@ -6,6 +6,7 @@ const Catagory = require('../controllers/catagory.js');
 const Miniapp = require('../controllers/miniapp.js');
 const Comment = require('../controllers/comment.js');
 const Collection = require('../controllers/collection.js');
+const Wechat = require('../controllers/wechat.js');
 
 module.exports = function(router) {
 	router.get('/api/movie', Movie.list)
@@ -21,6 +22,8 @@ module.exports = function(router) {
 	router.post('/api/user/signUp', User.signup)
 
 	router.get('/api/user/getConfig', Game.movie)
+
+	router.post('/api/user/getMedia', Wechat.getMedia)
 
 	router.get('/api/UserCenter', User.userCenter)
 

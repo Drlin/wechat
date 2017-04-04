@@ -25,7 +25,8 @@
       </div>
       <div class="release">
         <p class="title">图标</p>
-        <div class="uploader-pick"  @click="uploadImage"></div>
+        <div class="uploader-pick" @click="wechatUploadImage"></div>
+        <img :src="form.icon" />
       </div>
     </div>
     <a class="bth">
@@ -43,7 +44,8 @@ export default {
       form: {
         name: '',
         worker: '',
-        description: ''
+        description: '',
+        icon: ''
       }
     }
   },
@@ -60,10 +62,6 @@ export default {
           nonceStr,
           signature,
           jsApiList: [
-            'startRecord',
-            'stopRecord',
-            'onVoiceRecordEnd',
-            'translateVoice',
             'chooseImage',
             'previewImage',
             'uploadImage',
@@ -74,14 +72,38 @@ export default {
     })
   },
   methods: {
-    uploadImage () {
-      wx.ready(() => {
+    chooseImage () {
+      return new Promise((resolve, reject) => {
         wx.chooseImage({
           count: 1,
-          success: function (res) {
-            let localIds = res.localIds
-            console.log(localIds)
+          success (res) {
+            resolve(res)
           }
+        })
+      })
+    },
+    uploadImage (localId) {
+      return new Promise((resolve, reject) => {
+        wx.uploadImage({
+          localId,
+          isShowProgressTips: 1,
+          success (res) {
+            resolve(res)
+          }
+        })
+      })
+    },
+    wechatUploadImage () {
+      wx.ready(() => {
+        this.chooseImage()
+        .then((res) => {
+          let localIds = res.localIds
+          this.form.icon = localIds[0]
+          this.uploadImage(localIds[0])
+          .then((res) => {
+            let serverId = res.serverId
+            this.$http.post(`/api/user/getMedia`, {media_id: serverId})
+          })
         })
       })
     }
