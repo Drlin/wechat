@@ -10,7 +10,7 @@ module.exports = {
 	{
 		'name': '小程序商店',
 		'type': 'view',
-		'url': 'http://www.github.com'
+		'url': 'http://www.drrlin.com/#/publish'
 	}
 	]
 }

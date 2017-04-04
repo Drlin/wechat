@@ -36,8 +36,13 @@ a {
 li {
   list-style: none;
 }
+textarea {
+  outline: none;
+  border: none;
+}
 input,
-button {
+button,
+textarea {
  -webkit-appearance: none;
 }
 #app {
