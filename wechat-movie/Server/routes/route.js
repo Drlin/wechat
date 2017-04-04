@@ -52,6 +52,7 @@ module.exports = function(router) {
 
 	router.get('/api/collection/userCollection', Collection.userCollection)
 	
+	
 	//错误处理
 	// router.use(function *(err, next) {
  	// 	this.body = err

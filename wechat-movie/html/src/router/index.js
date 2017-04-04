@@ -9,7 +9,7 @@ import Search from '@/components/Search'
 import Collection from '@/components/Collection'
 import Category from '@/components/Category'
 import Lists from '@/components/Lists'
-
+import Publish from '@/components/Publish'
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +58,11 @@ export default new Router({
       path: '/lists',
       name: 'lists',
       component: Lists
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: Publish
     }
   ]
 })
