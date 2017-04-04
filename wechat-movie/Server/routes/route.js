@@ -20,11 +20,11 @@ module.exports = function(router) {
 
 	router.post('/api/user/signUp', User.signup)
 
+	router.get('/api/user/getConfig', Game.movie)
+
 	router.get('/api/UserCenter', User.userCenter)
 
 	router.post('/api/UserUpdate', User.userUpdate)
-
-	router.get('/api/getConfig', Game.movie)
 
 	router.post('/api/catagory/save', Catagory.save)
 
