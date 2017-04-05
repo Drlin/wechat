@@ -26,6 +26,16 @@ module.exports = {
 			})
 		})
 	},
+	deleteFileAsync(fpath, content) {
+		return new Promise((resolve, reject) => {
+			fs.unlink(fpath, (err) => {
+				if (err) {
+					return reject(err)
+				}
+				resolve()
+			})
+		})
+	},
 	parseXMLAsync(xml) {
 		return new Promise((resolve, reject) => {
 			xml2js.parseString(xml, {trim: true}, (err, content) => {

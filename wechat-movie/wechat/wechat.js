@@ -2,7 +2,7 @@ const fs = require('fs');
 const _ = require('lodash')
 const Promise = require('bluebird');
 const request = Promise.promisify(require('request'));
-
+const com_request = require('request');
 const Util = require('./lib/Util')
 
 const prefix = 'https://api.weixin.qq.com/cgi-bin';
@@ -310,22 +310,17 @@ class Wechat {
         .then((data) => {
           let url = `${api.media.get}access_token=${data.access_token}&media_id=${media_id}`;
           const options = {
-            url,
-            json: true
+            url
           }
-          request(options)
-            .then((response) => {
-              let _data = response[1];
-              console.log(media_id, data.access_token)
-              if (_data) {
-                resolve(_data) 
-              } else {
-                throw new Error('获取失败')
-              }
-            })
-            .catch((err) => {
-              reject(err)
-            })
+
+          let stream = com_request(options)
+          .on('error', function(err) {
+             reject(err)
+           }) 
+          .pipe(fs.createWriteStream(`image/${media_id}.png`))
+
+          
+
         })
     })
   }
