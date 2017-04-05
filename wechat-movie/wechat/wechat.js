@@ -1,6 +1,11 @@
 const fs = require('fs');
-const prefix = 'https://api.weixin.qq.com/cgi-bin';
 const _ = require('lodash')
+const Promise = require('bluebird');
+const request = Promise.promisify(require('request'));
+
+const Util = require('./lib/Util')
+
+const prefix = 'https://api.weixin.qq.com/cgi-bin';
 const api = {
   access_token: `${prefix}/token?grant_type=client_credential`,
   temporary: {
@@ -27,10 +32,6 @@ const api = {
     get: `${prefix}/media/get?`
   }
 }
-const Promise = require('bluebird');
-const request = Promise.promisify(require('request'));
-
-const Util = require('./lib/Util')
 
 class Wechat {
   constructor(opts) {
@@ -315,7 +316,7 @@ class Wechat {
           request(options)
             .then((response) => {
               let _data = response[1];
-              console.log(response)
+              console.log(media_id, data.access_token)
               if (_data) {
                 resolve(_data) 
               } else {

@@ -8,7 +8,24 @@ const Comment = require('../controllers/comment.js');
 const Collection = require('../controllers/collection.js');
 const Wechat = require('../controllers/wechat.js');
 
+
+const config = require('../../wechat/config/config')
+
+const Promise = require('bluebird');
+const request = require('request');
+const fs = require('fs')
+
 module.exports = function(router) {
+	router.get('/api/user/test', function *(next) {
+		let res = request({url: 'https://api.weixin.qq.com/cgi-bin/media/get?access_token=_Gbqp3eWM_C85Ziu_07BPZjD51ekylhwSOgPNQX36WeqsZzh7RfVHnW2gZ45X1CL-ICaNbR485bBUAcQMURY5MUoKMA13BSy0W7CdGsPXUsa-3J_31EyjsbtTp6G1Bj2EIHeAHAMQP&media_id=8bpD1EZ8cD6Dj5VItcYWUz0m9lIGnHCcNenRwh2cHsILuOEwRbx9JkbGYNd8w1qm'}).pipe(fs.createWriteStream('1111.png'))
+		// console.log();
+		this.body = {
+			status: 1,
+			data: res
+		}
+
+	})
+
 	router.get('/api/movie', Movie.list)
 
 	router.get('/api/movie/:nid', Movie.detail)

@@ -14,7 +14,7 @@ module.exports = {
 	},
 	getMedia: function *() {
 		WechatApi.getMedia(this.request.body.media_id)
-		.then(() => {
+		.then((data) => {
 			this.body = {
 				status: 0,
 				msg: '获取成功'

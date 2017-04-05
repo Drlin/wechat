@@ -8,7 +8,7 @@ module.exports = {
 		'url': 'http://www.drrlin.com'
 	}, 
 	{
-		'name': '小程序商店',
+		'name': '上传小程序',
 		'type': 'view',
 		'url': 'http://www.drrlin.com/#/publish'
 	}

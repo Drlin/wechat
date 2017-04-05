@@ -23,7 +23,11 @@ const config = {
       return Util.writeFileAsync(wechat_ticket_file, data);
     },
   },
-  timeUp: 1487434365
+  timeUp: 1487434365,
+  qiniu: {
+    AK: 'C51ie9211SP_Focs2fgz31iwqLRVsahJsLy4tmjp',
+    SK: 'f7HjCzo7NT31zPs7WuoYkgMLp_9sD-h7PhicFIAI'
+  }
 }
 
 module.exports = config;
