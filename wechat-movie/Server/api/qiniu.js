@@ -8,12 +8,12 @@ module.exports = {
     const putPolicy = new qiniu.rs.PutPolicy('wexin'+":"+key);
     return putPolicy.token();
   },
-  uploadFile (uptoken, key, localFile) => {
+  uploadFile (uptoken, key, localFile) {
     const extra = new qiniu.io.PutExtra();
       return new Promise((resolve, reject) => {
-        qiniu.io.putFile(uptoken, key, localFile, extra, function(err, ret) {
+        qiniu.io.putFile(uptoken, key, localFile, extra, (err, ret) => {
           if(!err) {
-            resolve(ret.hash, ret.key, ret.persistentId);       
+            resolve(ret.persistentId);       
           } else {
             reject(err);
           }

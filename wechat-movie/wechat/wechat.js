@@ -314,7 +314,6 @@ class Wechat {
           const options = {
             url
           }
-
           let stream = com_request(options)
           .on('error', (err)=> {
              reject(err)
@@ -328,7 +327,6 @@ class Wechat {
           stream.on('finish', () => {
             resolve()
           })
-
         })
     })
   }
