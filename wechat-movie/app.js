@@ -7,7 +7,6 @@ const path = require('path')
 const serve = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const jwt = require('koa-jwt')
-const cors = require('kcors');
 
 
 const config = require('./wechat/config/config')
@@ -33,8 +32,6 @@ WechatApi.deleteMenu().then(() => {
 
 router.use('/api', jwt({secret: 'lin'})
     .unless({path:  [/^\/api\/user/, /^\/api\/miniapp/, /^\/api\/catagory/]}));
-
-app.use(cors())
 
 app.use(function *(next) {
   let url = this.url
