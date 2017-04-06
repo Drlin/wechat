@@ -197,7 +197,9 @@ class Wechat {
     return new Promise((resolve, reject) => {
       this.fetchAccessToken()
         .then((data) => {
-          let url = `${api.user.get}?access_token=${data.access_token}&openid=${openIds}&lang=${lang}`;
+          let url 
+            = 
+          `${api.user.get}?access_token=${data.access_token}&openid=${openIds}&lang=${lang}`;
           const options = {
             url,
             json: true
@@ -314,12 +316,18 @@ class Wechat {
           }
 
           let stream = com_request(options)
-          .on('error', function(err) {
+          .on('error', (err)=> {
              reject(err)
            }) 
           .pipe(fs.createWriteStream(`image/${media_id}.png`))
 
-          
+          stream.on('error', (err)=> {
+            reject(err)
+          })
+
+          stream.on('finish', () => {
+            resolve()
+          })
 
         })
     })

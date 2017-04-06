@@ -7,6 +7,7 @@ const Miniapp = require('../controllers/miniapp.js');
 const Comment = require('../controllers/comment.js');
 const Collection = require('../controllers/collection.js');
 const Wechat = require('../controllers/wechat.js');
+const request = require('request');
 
 module.exports = function(router) {
 
@@ -56,9 +57,4 @@ module.exports = function(router) {
 
 	router.get('/api/collection/userCollection', Collection.userCollection)
 	
-	
-	//错误处理
-	// router.use(function *(err, next) {
- 	// 	this.body = err
- 	// })
 }
