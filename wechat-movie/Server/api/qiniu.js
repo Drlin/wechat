@@ -5,19 +5,19 @@ qiniu.conf.SECRET_KEY = 'f7HjCzo7NT31zPs7WuoYkgMLp_9sD-h7PhicFIAI';
 
 module.exports = {
   uptoken (key) {
-    const putPolicy = new qiniu.rs.PutPolicy('wexin'+":"+key);
+    const putPolicy = new qiniu.rs.PutPolicy('weixin'+":"+key);
     return putPolicy.token();
   },
   uploadFile (uptoken, key, localFile) {
     const extra = new qiniu.io.PutExtra();
-      return new Promise((resolve, reject) => {
-        qiniu.io.putFile(uptoken, key, localFile, extra, (err, ret) => {
-          if(!err) {
-            resolve(ret.persistentId);       
-          } else {
-            reject(err);
-          }
-        });
-      })
+    return new Promise((resolve, reject) => {
+      qiniu.io.putFile(uptoken, key, localFile, extra, (err, ret) => {
+        if(!err) {
+          resolve(ret.persistentId);       
+        } else {
+          reject(err);
+        }
+      });
+    })
   }
 }

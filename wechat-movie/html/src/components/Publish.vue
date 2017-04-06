@@ -25,8 +25,8 @@
       </div>
       <div class="release">
         <p class="title">图标</p>
-        <div class="uploader-pick" @click="wechatUploadImage"></div>
-        <img :src="form.icon" />
+        <div v-show="!form.icon" class="uploader-pick" @click="wechatUploadImage"></div>
+        <img v-show="form.icon" class="uploader-image" :src="form.icon" />
       </div>
     </div>
     <a class="bth">
@@ -45,7 +45,7 @@ export default {
         name: '',
         worker: '',
         description: '',
-        icon: ''
+        icon: 'http://onw5789kx.bkt.clouddn.com/XY8bO2fhVadIblcPo95dYRn4AOyFcmMydYtBq2AfYmE8IXcwm0fmafBdNka5UzVd.png'
       }
     }
   },
@@ -180,5 +180,10 @@ export default {
     margin-top: .5rem;
     background: url(/static/uploader.jpg) no-repeat;
     background-size: contain;
+  }
+  .uploader-image {
+    width: 10rem;
+    height: 10rem;
+    margin-top: .5rem;
   }
 </style>

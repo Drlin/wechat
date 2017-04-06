@@ -13,8 +13,9 @@ module.exports = {
 		yield this.middle(next);
 	},
 	getMedia: function *() {
+		let media_id = this.request.body.media_id;
 		try {
-			yield WechatApi.getMedia(this.request.body.media_id)
+			yield WechatApi.getMedia(media_id)
 		} catch (e) {
 			return this.body = {
 				status: 1,
@@ -24,7 +25,7 @@ module.exports = {
 		let key = `${media_id}.png`
 		let uptoken = qiniu.uptoken(key)
 		try {
-			yield uploadFile (uptoken, key, `image/${key}`)
+			yield qiniu.uploadFile(uptoken, key, `./image/${key}`)
 		} catch (e) {
 			return this.body = {
 				status: 1,
