@@ -2,8 +2,8 @@ var path = require('path');
 var fs = require('fs');
 var webpack = require('webpack');
 
-var distPath = path.resolve('__dirname', 'build');
-var appPath = path.resolve('__dirname', 'wechat');
+var distPath = path.resolve(__dirname, 'build');
+var appPath = path.resolve(__dirname, 'wechat');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -27,8 +27,12 @@ module.exports = {
 		//es6
 		loaders: [{
 			test: /\.js$/,
-			exclude: /node_modules/,
+			exclude: path.resolve(__dirname, 'node_modules'),
+			include: path.resolve(__dirname, 'compile2html.js'),
 			loader: 'babel-loader',
+			query: {
+                presets: ['es2015', 'stage-0']
+            }
 		}]
 	},
 	plugins: [
@@ -38,14 +42,15 @@ module.exports = {
 			// 删除所有的注释
 			comments: false,
 			compress: {
-			// 在UglifyJs删除没有用到的代码时不输出警告
-			warnings: false,
-			// 删除所有的 `console` 语句，可以兼容ie浏览器
-			drop_console: true,
-			// 内嵌定义了但是只用到一次的变量``
-			collapse_vars: true,
-			// 提取出出现多次但是没有定义成变量去引用的静态值
-			reduce_vars: true
+				// 在UglifyJs删除没有用到的代码时不输出警告
+				warnings: false,
+				// 删除所有的 `console` 语句，可以兼容ie浏览器
+				drop_console: true,
+				// 内嵌定义了但是只用到一次的变量``
+				collapse_vars: true,
+				// 提取出出现多次但是没有定义成变量去引用的静态值
+				reduce_vars: true
+			}
 		})
 	]
 	// resolve: {

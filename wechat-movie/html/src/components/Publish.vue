@@ -25,8 +25,23 @@
       </div>
       <div class="release">
         <p class="title">图标</p>
-        <div v-show="!form.icon" class="uploader-pick" @click="wechatUploadImage"></div>
-        <img v-show="form.icon" class="uploader-image" :src="form.icon" />
+        <div v-show="!form.icon" class="uploader-pick" @click="wechatUploadImage('icon')"></div>
+        <img 
+          v-show="form.icon" 
+          class="uploader-image" 
+          :src="form.icon" 
+          @click="wechatUploadImage" 
+        />
+      </div>
+      <div class="release">
+        <p class="title">二维码</p>
+        <div v-show="!form.qrcode" class="uploader-pick" @click="wechatUploadImage('qrcode')"></div>
+        <img 
+          v-show="form.qrcode" 
+          class="uploader-image" 
+          :src="form.qrcode" 
+          @click="wechatUploadImage('qrcode')"
+        />
       </div>
     </div>
     <a class="bth">
@@ -45,7 +60,8 @@ export default {
         name: '',
         worker: '',
         description: '',
-        icon: 'http://onw5789kx.bkt.clouddn.com/XY8bO2fhVadIblcPo95dYRn4AOyFcmMydYtBq2AfYmE8IXcwm0fmafBdNka5UzVd.png'
+        icon: '',
+        qrcode: ''
       }
     }
   },
@@ -93,17 +109,17 @@ export default {
         })
       })
     },
-    wechatUploadImage () {
+    wechatUploadImage (type) {
       wx.ready(() => {
         this.chooseImage()
         .then((res) => {
           let localIds = res.localIds
-          this.form.icon = localIds[0]
-          this.uploadImage(localIds[0])
-          .then((res) => {
-            let serverId = res.serverId
-            this.$http.post(`/api/user/getMedia`, {media_id: serverId})
-          })
+          this.form[type] = localIds[0]
+          // this.uploadImage(localIds[0])
+          // .then((res) => {
+          //   let serverId = res.serverId
+          //   this.$http.post(`/api/user/getMedia`, {media_id: serverId})
+          // })
         })
       })
     }
@@ -112,6 +128,9 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .lists {
+    padding-bottom: 4rem;
+  }
   h2 {
     width: 100%;
     height: 4rem;
@@ -163,7 +182,7 @@ export default {
   }
   .bth {
     display: inline-block;
-    position: absolute;
+    position: fixed ;
     left: 0;
     bottom: 0;
     width: 100%;
