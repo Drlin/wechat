@@ -23,8 +23,6 @@ module.exports = function(router) {
 
 	router.post('/api/user/signUp', User.signup)
 
-	router.post('/api/user/getMedia', Wechat.getMedia)
-
 	router.get('/api/UserCenter', User.userCenter)
 
 	router.post('/api/UserUpdate', User.userUpdate)

@@ -76,21 +76,25 @@
       </div>
       <Picker :slots="slots" @change="onValuesChange" valueKey="name" />
     </div>
-    <a class="bth" @click="postData">
+    <button class="bth" @click="postData" :disabled="isDisabled">
       发布
-    </a>
+    </button>
+    <div class="Spinner" v-show="isDisabled">
+      <Spinner />
+    </div>
   </div>
 </template>
 
 <script>
 import wx from 'weixin-js-sdk'
-import { Picker, Toast } from 'mint-ui'
+import { Picker, Toast, Spinner } from 'mint-ui'
 import Icon from './common/Icon.vue'
 export default {
   name: 'publish',
   components: {
     Picker,
-    Icon
+    Icon,
+    Spinner
   },
   data () {
     return {
@@ -98,10 +102,10 @@ export default {
         name: '',
         worker: '',
         description: '',
-        catagoryId: '',
+        catagory: '',
         icon: '',
         qrcode: '',
-        mediaIds: []
+        screenshot: []
       },
       mediaIds: [],
       icon: '',
@@ -109,6 +113,7 @@ export default {
       picker_obj: {},
       picker_value: '',
       picker: false,
+      isDisabled: false,
       slots: [
         {
           flex: 1,
@@ -124,7 +129,7 @@ export default {
       let {nonceStr, timestamp, signature} = params
       if (status === 0) {
         wx.config({
-          debug: true,
+          debug: false,
           appId: 'wxf850ce602b6ff3f3',
           timestamp,
           nonceStr,
@@ -193,19 +198,25 @@ export default {
           .then((res) => {
             let serverId = res.serverId
             this.mediaIds.push(localIds[0])
-            this.form.mediaIds.push(serverId)
-            // this.$http.post(`/api/user/getMedia`, {media_id: serverId})
+            this.form.screenshot.push(serverId)
           })
         })
       })
     },
     postData () {
       let { form } = this
-      console.log(form, Object.keys(form))
-      Object.keys(form).map((item) => {
-        if (!form[item] || form.mediaIds.length === 0) {
+      let arr = Object.keys(form)
+      for (let i = 0; i < arr.length; i++) {
+        if (!form[arr[i]] || form.screenshot.length === 0) {
           Toast('请填写完整信息')
+          return
         }
+      }
+      this.isDisabled = true
+      this.$http.post(`/api/verify/apply`, form)
+      .then((res) => {
+        this.isDisabled = false
+        Toast('保存成功')
       })
     },
     onValuesChange (picker, values) {
@@ -217,12 +228,12 @@ export default {
     deleteItem (i, e) {
       if (e.target.tagName.toLocaleLowerCase() === 'i') {
         this.mediaIds.splice(i, 1)
-        this.form.mediaIds.splice(i, 1)
+        this.form.screenshot.splice(i, 1)
       }
     },
     confirmPicker () {
       let {_id, name} = this.picker_obj[0]
-      this.form.catagoryId = _id
+      this.form.catagory = _id
       this.picker_value = name
       this.picker = false
     }
@@ -298,6 +309,8 @@ export default {
     bottom: 0;
     width: 100%;
     height: 4rem;
+    outline: none;
+    border: 0;
     line-height: 4rem;
     background: #0db252;
     color: #fff;
@@ -364,5 +377,16 @@ export default {
   .picker_container > .picker {
     background: #fff;
     width: 100%;
+  }
+  .Spinner {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.6);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
 </style>

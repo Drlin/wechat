@@ -29,7 +29,6 @@ module.exports = {
 		try {
 			catagorys = yield Catagory
 			.find({})
-			.populate({path: 'miniapp'})
 			.exec();
 		} catch(e) {
 			return this.body = {
@@ -39,7 +38,7 @@ module.exports = {
 		}
 		return this.body = {
 			status: 0,
-			data: catagorys
+			data: catagorys.splice(2, 20)
 		}
 	},
 	catagoryList: function *(next) {
