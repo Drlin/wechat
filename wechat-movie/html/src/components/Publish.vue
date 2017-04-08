@@ -33,29 +33,29 @@
       <div class="release">
         <p class="title">图标</p>
         <p class="tip">尺寸为400px*400px更容易过审核哦</p>
-        <div v-show="!form.icon" class="uploader-pick" @click="wechatUploadImage('icon')"></div>
+        <div v-show="!icon" class="uploader-pick" @click="wechatUploadImage('icon')"></div>
         <img 
-          v-show="form.icon" 
+          v-show="icon" 
           class="uploader-image" 
-          :src="form.icon" 
+          :src="icon" 
           @click="wechatUploadImage" 
         />
       </div>
       <div class="release">
         <p class="title">二维码</p>
         <p class="tip">尺寸为400px*400px更容易过审核哦</p>
-        <div v-show="!form.qrcode" class="uploader-pick" @click="wechatUploadImage('qrcode')"></div>
+        <div v-show="!qrcode" class="uploader-pick" @click="wechatUploadImage('qrcode')"></div>
         <img 
-          v-show="form.qrcode" 
+          v-show="qrcode" 
           class="uploader-image" 
-          :src="form.qrcode" 
+          :src="qrcode" 
           @click="wechatUploadImage('qrcode')"
         />
       </div>
       <div class="release media_ids">
         <p class="title">截图</p>
         <p class="tip">尺寸为750px*1334px更容易过审核哦</p>
-        <span v-for="(item, i) in form.media_ids" data-index="i" @click="deleteItem(i, $event)">
+        <span v-for="(item, i) in mediaIds" data-index="i" @click="deleteItem(i, $event)">
           <Icon type="close"/>
           <img 
             class="uploader-image" 
@@ -63,7 +63,7 @@
           />
         </span>
         <div 
-          v-show="form.media_ids.length < 5" 
+          v-show="mediaIds.length < 5" 
           class="uploader-pick" 
           @click="wechatUploadImages">
         </div>
@@ -76,7 +76,7 @@
       </div>
       <Picker :slots="slots" @change="onValuesChange" valueKey="name" />
     </div>
-    <a class="bth">
+    <a class="bth" @click="postData">
       发布
     </a>
   </div>
@@ -84,7 +84,7 @@
 
 <script>
 import wx from 'weixin-js-sdk'
-import { Picker } from 'mint-ui'
+import { Picker, Toast } from 'mint-ui'
 import Icon from './common/Icon.vue'
 export default {
   name: 'publish',
@@ -98,11 +98,14 @@ export default {
         name: '',
         worker: '',
         description: '',
+        picker: '',
         icon: '',
         qrcode: '',
-        picker: '',
-        media_ids: []
+        mediaIds: []
       },
+      mediaIds: [],
+      icon: '',
+      qrcode: '',
       picker_obj: {},
       picker_value: '',
       picker: false,
@@ -172,12 +175,13 @@ export default {
         this.chooseImage()
         .then((res) => {
           let localIds = res.localIds
-          this.form[type] = localIds[0]
-          // this.uploadImage(localIds[0])
-          // .then((res) => {
-          //   let serverId = res.serverId
-          //   this.$http.post(`/api/user/getMedia`, {media_id: serverId})
-          // })
+          this.uploadImage(localIds[0])
+          .then((res) => {
+            let serverId = res.serverId
+            this[type] = localIds[0]
+            this.form[type] = serverId
+            // this.$http.post(`/api/user/getMedia`, {media_id: serverId})
+          })
         })
       })
     },
@@ -186,9 +190,34 @@ export default {
         this.chooseImage()
         .then((res) => {
           let localIds = res.localIds
-          this.form.media_ids.push(localIds[0])
+          this.uploadImage(localIds[0])
+          .then((res) => {
+            let serverId = res.serverId
+            this.mediaIds.push(localIds[0])
+            this.form.mediaIds.push(serverId)
+            // this.$http.post(`/api/user/getMedia`, {media_id: serverId})
+          })
         })
       })
+    },
+    postData () {
+      let { form, mediaIds } = this
+      let {icon, qrcode} = form
+      if (!icon || !qrcode || !mediaIds.length === 0) {
+        Toast('请填写完整信息')
+      }
+      let promiseArr = []
+      let postMediaIds = [...[icon, qrcode], ...mediaIds]
+      postMediaIds.map((item) => {
+        promiseArr.push(this.uploadImage(item))
+      })
+      Promise.all(promiseArr)
+        .then((res) => {
+          //   let serverId = res.serverId
+        })
+        .catch((e) => {
+          Toast('上传失败')
+        })
     },
     onValuesChange (picker, values) {
       this.picker_obj = values
@@ -198,7 +227,7 @@ export default {
     },
     deleteItem (i, e) {
       if (e.target.tagName.toLocaleLowerCase() === 'i') {
-        this.form.media_ids.splice(i, 1)
+        this.mediaIds.splice(i, 1)
       }
     },
     confirmPicker () {
