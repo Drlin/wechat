@@ -22,9 +22,21 @@ module.exports = {
 			}
 		}
 		try {
-			yield qiniu.getMedia(verify.icon)
+			let {icon, qrcode, screenshot} = verify;
+			let arr = []
+			verify.icon = yield qiniu.getMedia(icon);
+			verify.qrcode = yield qiniu.getMedia(qrcode);
+			for (let i = 0; i < screenshot.length; i++) {
+				 arr.push(yield qiniu.getMedia(screenshot[i]))
+			}
+			verify.screenshot = arr;
 		} catch (e) {
 			console.log(e)
+		}
+		try {
+			yield Verify.update({id: verify.id}, verify)
+		} catch (e) {
+			console.log(e);
 		}
 	}
 }
