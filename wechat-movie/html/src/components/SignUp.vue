@@ -69,6 +69,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .signup {
+    display: flex;
+    flex-direction: column;
+  }
   .form-wrapper {
     display: flex;
     flex-direction: column;
@@ -110,14 +114,12 @@ export default {
     color: #90b6ff;
   }
   .account-signin {
-    position: fixed;
+    display: inline-block;
+    margin: 5rem auto 0 auto;
     color: #367cff;
     font-size: 1.6rem;
     border: 1px solid #367cff;
     border-radius: 0.2rem;
     padding: 1rem 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 5rem;
   }
 </style>

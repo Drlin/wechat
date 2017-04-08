@@ -7,10 +7,10 @@ const Miniapp = require('../controllers/miniapp.js');
 const Comment = require('../controllers/comment.js');
 const Collection = require('../controllers/collection.js');
 const Wechat = require('../controllers/wechat.js');
-const request = require('request');
+const Verify = require('../controllers/verify.js');
 
 module.exports = function(router) {
-
+	
 	router.get('/api/movie', Movie.list)
 
 	router.get('/api/movie/:nid', Movie.detail)
@@ -22,8 +22,6 @@ module.exports = function(router) {
 	router.post('/api/user/validate', User.validate)
 
 	router.post('/api/user/signUp', User.signup)
-
-	router.get('/api/user/getConfig', Game.movie)
 
 	router.post('/api/user/getMedia', Wechat.getMedia)
 
@@ -56,5 +54,8 @@ module.exports = function(router) {
 	router.get('/api/collection/collectionList', Collection.collectionList)
 
 	router.get('/api/collection/userCollection', Collection.userCollection)
-	
+
+	router.get('/api/verify/getConfig', Game.movie)
+
+	router.post('/api/verify/apply', Verify.apply)
 }

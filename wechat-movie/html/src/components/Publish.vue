@@ -98,7 +98,7 @@ export default {
         name: '',
         worker: '',
         description: '',
-        picker: '',
+        catagoryId: '',
         icon: '',
         qrcode: '',
         mediaIds: []
@@ -119,7 +119,7 @@ export default {
   },
   created () {
     let {href} = location
-    this.$http.get(`/api/user/getConfig?wechatHref=${href}`).then((res) => {
+    this.$http.get(`/api/verify/getConfig?wechatHref=${href}`).then((res) => {
       let {status, params} = res.body
       let {nonceStr, timestamp, signature} = params
       if (status === 0) {
@@ -180,7 +180,6 @@ export default {
             let serverId = res.serverId
             this[type] = localIds[0]
             this.form[type] = serverId
-            // this.$http.post(`/api/user/getMedia`, {media_id: serverId})
           })
         })
       })
@@ -201,23 +200,13 @@ export default {
       })
     },
     postData () {
-      let { form, mediaIds } = this
-      let {icon, qrcode} = form
-      if (!icon || !qrcode || !mediaIds.length === 0) {
-        Toast('请填写完整信息')
-      }
-      let promiseArr = []
-      let postMediaIds = [...[icon, qrcode], ...mediaIds]
-      postMediaIds.map((item) => {
-        promiseArr.push(this.uploadImage(item))
+      let { form } = this
+      console.log(form, Object.keys(form))
+      Object.keys(form).map((item) => {
+        if (!form[item] || form.mediaIds.length === 0) {
+          Toast('请填写完整信息')
+        }
       })
-      Promise.all(promiseArr)
-        .then((res) => {
-          //   let serverId = res.serverId
-        })
-        .catch((e) => {
-          Toast('上传失败')
-        })
     },
     onValuesChange (picker, values) {
       this.picker_obj = values
@@ -228,11 +217,12 @@ export default {
     deleteItem (i, e) {
       if (e.target.tagName.toLocaleLowerCase() === 'i') {
         this.mediaIds.splice(i, 1)
+        this.form.mediaIds.splice(i, 1)
       }
     },
     confirmPicker () {
       let {_id, name} = this.picker_obj[0]
-      this.form.picker = _id
+      this.form.catagoryId = _id
       this.picker_value = name
       this.picker = false
     }
