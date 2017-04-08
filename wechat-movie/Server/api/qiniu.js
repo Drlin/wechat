@@ -11,7 +11,7 @@ uploadFile = (uptoken, key, localFile) => {
   return new Promise((resolve, reject) => {
     qiniu.io.putFile(uptoken, key, localFile, extra, (err, ret) => {
       if(!err) {
-        resolve(ret.persistentId);       
+        resolve(ret.key);       
       } else {
         reject(err);
       }
@@ -29,7 +29,8 @@ module.exports = {
     let key = `${media_id}.png`
     let uptoken = new qiniu.rs.PutPolicy('weixin'+":"+key).token();
     try {
-      console.log(yield uploadFile(uptoken, key, `./image/${key}`))
+      let uri = yield uploadFile(uptoken, key, `./image/${key}`);
+      return uri;
     } catch (e) {
       throw new Error('获取失败');
     }

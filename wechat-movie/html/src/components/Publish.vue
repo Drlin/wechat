@@ -38,7 +38,7 @@
           v-show="icon" 
           class="uploader-image" 
           :src="icon" 
-          @click="wechatUploadImage" 
+          @click="wechatUploadImage('icon')" 
         />
       </div>
       <div class="release">
