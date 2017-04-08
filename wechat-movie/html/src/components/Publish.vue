@@ -17,6 +17,13 @@
         </div>
       </div>
       <div class="release">
+        <p class="title">分类</p>
+        <div class="text picker_input" @click="showPicker">
+          {{picker_value}}
+          <span><Icon type="down" /></span>
+        </div>
+      </div>
+      <div class="release">
         <p class="title">介绍</p>
         <div class="text textarea">
           <textarea type="text" maxlength="300" v-model="form.description"></textarea>
@@ -25,6 +32,7 @@
       </div>
       <div class="release">
         <p class="title">图标</p>
+        <p class="tip">尺寸为400px*400px更容易过审核哦</p>
         <div v-show="!form.icon" class="uploader-pick" @click="wechatUploadImage('icon')"></div>
         <img 
           v-show="form.icon" 
@@ -35,6 +43,7 @@
       </div>
       <div class="release">
         <p class="title">二维码</p>
+        <p class="tip">尺寸为400px*400px更容易过审核哦</p>
         <div v-show="!form.qrcode" class="uploader-pick" @click="wechatUploadImage('qrcode')"></div>
         <img 
           v-show="form.qrcode" 
@@ -43,6 +52,29 @@
           @click="wechatUploadImage('qrcode')"
         />
       </div>
+      <div class="release media_ids">
+        <p class="title">截图</p>
+        <p class="tip">尺寸为750px*1334px更容易过审核哦</p>
+        <span v-for="(item, i) in form.media_ids" data-index="i" @click="deleteItem(i, $event)">
+          <Icon type="close"/>
+          <img 
+            class="uploader-image" 
+            :src="item"
+          />
+        </span>
+        <div 
+          v-show="form.media_ids.length < 5" 
+          class="uploader-pick" 
+          @click="wechatUploadImages">
+        </div>
+      </div>
+    </div>
+    <div class="picker_container" v-show="picker">
+      <div class="btn_container">
+        <span @click="canclePicker">取消</span>
+        <span @click="confirmPicker" class="confirm">确定</span>
+      </div>
+      <Picker :slots="slots" @change="onValuesChange" valueKey="name" />
     </div>
     <a class="bth">
       发布
@@ -52,8 +84,14 @@
 
 <script>
 import wx from 'weixin-js-sdk'
+import { Picker } from 'mint-ui'
+import Icon from './common/Icon.vue'
 export default {
   name: 'publish',
+  components: {
+    Picker,
+    Icon
+  },
   data () {
     return {
       form: {
@@ -61,8 +99,19 @@ export default {
         worker: '',
         description: '',
         icon: '',
-        qrcode: ''
-      }
+        qrcode: '',
+        picker: '',
+        media_ids: []
+      },
+      picker_obj: {},
+      picker_value: '',
+      picker: false,
+      slots: [
+        {
+          flex: 1,
+          values: []
+        }
+      ]
     }
   },
   created () {
@@ -86,6 +135,12 @@ export default {
         })
       }
     })
+    this.$http.get('/api/catagory/catagorys').then((res) => {
+      let {status, data} = res.body
+      if (status === 0) {
+        this.slots[0].values = data.splice(2, 30)
+      }
+    })
   },
   methods: {
     chooseImage () {
@@ -97,6 +152,9 @@ export default {
           }
         })
       })
+    },
+    showPicker () {
+      this.picker = true
     },
     uploadImage (localId) {
       return new Promise((resolve, reject) => {
@@ -122,6 +180,32 @@ export default {
           // })
         })
       })
+    },
+    wechatUploadImages () {
+      wx.ready(() => {
+        this.chooseImage()
+        .then((res) => {
+          let localIds = res.localIds
+          this.form.media_ids.push(localIds[0])
+        })
+      })
+    },
+    onValuesChange (picker, values) {
+      this.picker_obj = values
+    },
+    canclePicker () {
+      this.picker = false
+    },
+    deleteItem (i, e) {
+      if (e.target.tagName.toLocaleLowerCase() === 'i') {
+        this.form.media_ids.splice(i, 1)
+      }
+    },
+    confirmPicker () {
+      let {_id, name} = this.picker_obj[0]
+      this.form.picker = _id
+      this.picker_value = name
+      this.picker = false
     }
   }
 }
@@ -150,11 +234,19 @@ export default {
     color: #303030;
     font-size: 1.4rem;
   }
+  .release > .tip {
+    color: #bbbbbb;
+    font-size: 1.2rem;
+  }
   .release > .text {
     border: 1px solid #eaeaea;
     position: relative;
     margin-top: .5rem;
-    height: 3rem;
+    height: 40px;
+  }
+  .release > .text.picker_input {
+    padding-left: 1rem;
+    line-height:  40px;
   }
   .release > .textarea {
     height: 8rem;
@@ -204,5 +296,54 @@ export default {
     width: 10rem;
     height: 10rem;
     margin-top: .5rem;
+  }
+  .picker_container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background: rgba(0,0,0,.6);
+  }
+  .picker_container > .btn_container {
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    padding-top: 0.5rem;
+  }
+  .btn_container > span {
+    font-size: 1.4rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+  }
+  .media_ids > span {
+    display: inline-block;
+    position: relative;
+    width: 10rem;
+    height: 10rem;
+    margin-right: 1rem;
+  }
+  .media_ids > span > i {
+    position: absolute;
+    font-size: 1.8rem;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    color: #41BE57;
+    transform: translateX(-50%);
+  }
+  .media_ids > div {
+    display: inline-block;
+  }
+  .btn_container > span:nth-child(2) {
+    color: #fa8919;
+  }
+  .picker_container > .picker {
+    background: #fff;
+    width: 100%;
   }
 </style>
