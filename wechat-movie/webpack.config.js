@@ -52,8 +52,8 @@ module.exports = {
 				reduce_vars: true
 			}
 		})
-	]
-	// resolve: {
- //        extensions: ['', '.js', '.json']
- //    }
+	],
+	resolve: {
+        extensions: ['', '.js', '.json']
+    }
 }

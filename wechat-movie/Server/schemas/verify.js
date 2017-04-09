@@ -28,6 +28,10 @@ const VerifySchema = new Schema({
     screenshot: [
         {type: String}
     ],
+    verifyed: {
+        type: Boolean,
+        default: false
+    },
     meta:{
         createAt: {
             type: Date,
