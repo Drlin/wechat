@@ -23,8 +23,9 @@ router.beforeEach((to, from, next) => {
 
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
+    let path = router.history.current.fullPath
     if (response.status === 401 && !request.url.match('/api/collection/collectionList')) {
-      router.push('/signup')
+      router.push(`/signup?path=${path}`)
     }
   })
 })

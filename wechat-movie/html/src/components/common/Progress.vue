@@ -1,9 +1,13 @@
 <template>
   <ul class="progress">
-    <li v-for="(item, i) in evenRating">
-      <span>{{[5, 4, 3, 2, 1][i]}}</span>
+    <li v-for="(value, key) in rating">
+      <span>{{[0, 5, 4, 3, 2, 1][key]}}</span>
       <div class="list-item">
-        <div class="inner" :style="{width: `${((item || 0)/total * 100)}%`}"></div>
+        <div 
+          class="inner" 
+          :style="{width: total === 0 ? 0 : `${((value || 0)/total * 100)}%`}">
+  
+        </div>
       </div>
     </li>
   </ul>
@@ -15,13 +19,7 @@ export default {
     return {
     }
   },
-  props: ['rating', 'total'],
-  computed: {
-    evenRating () {
-      this.rating.splice(0, 1)
-      return this.rating
-    }
-  }
+  props: ['rating', 'total']
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

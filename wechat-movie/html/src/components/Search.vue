@@ -16,7 +16,7 @@
         </router-link>
       </div>
     </div>
-    <div class="hot-search" v-if="hotListsShow">
+    <div class="hot-search" v-if="hotListsShow && lists.length === 0">
       <div class="inner">
         <h2>热门搜索</h2>
         <p v-for="item in hotLists" @click="handleClick( item )">

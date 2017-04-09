@@ -41,9 +41,9 @@
       </div>
       <div class="rate-overal"> 
         <div class="rate-inner">
-          <span class="rating-num">{{overall_rating || 0}}</span>
+          <span class="rating-num">{{overall_rating}}</span>
           <div class="rating-wrap">
-            <Star :rating="+overall_rating || 0"/>
+            <Star :rating="overall_rating"/>
             <p>共{{total}}个评分</p>
           </div>
         </div>
@@ -166,7 +166,7 @@
     },
     computed: {
       overall_rating () {
-        let value = String(this.data.overall_rating)
+        let value = String(this.data.overall_rating || 0)
         return value.slice(0, value.indexOf('.') + 3)
       }
     },
@@ -204,8 +204,8 @@
           this.total = 0
           if (status === 0) {
             this.data = data
-            data.rating.map((item) => {
-              this.total += item
+            Object.keys(data.rating).map((item) => {
+              this.total += data.rating[item]
             })
           }
         })

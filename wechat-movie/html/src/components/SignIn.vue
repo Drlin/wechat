@@ -246,7 +246,7 @@ export default {
   .form-input-wrapper {
     display: flex;
     align-items: center;
-    flex: 0 0 61%;
+    flex: 0 0 55%;
     flex-direction: row;
     height: 5rem;
     padding: 0 1rem;
@@ -272,7 +272,6 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
-    line-height: 5rem;
     background: #fff;
     font-size: 1.4rem;
     border: 1px solid #ccc;

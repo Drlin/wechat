@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     submit () {
+      let {path} = this.$route.query
       let password = md5(this.user.password)
       this.$http.post(`/api/user/signUp`, {...this.user, ...{password}})
       .then((res) => {
@@ -57,7 +58,7 @@ export default {
         if (status === 0) {
           window.localStorage.setItem('token', token)
           Toast('登录成功')
-          this.$router.push('/user')
+          this.$router.push(path || '/')
         } else {
           Toast(msg)
         }
