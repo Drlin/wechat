@@ -150,35 +150,28 @@ module.exports = {
 		}
 	},
 	lists(req, res, next) {
-		User.find({})
-		.exec(function(err, docs) {
-			if (err) {
-				return next(err)
-			}
-			return res.json({
-				status: 0,
-				data: docs
-			})
-		})
-	},
-	signinRequired(req, res, next) {
-		const user = req.session.user;
-		if (!user) {
-			return res.json({
+		try {
+			let users = yield User.find({});
+		} catch (e) {
+			return this.body = {
 				status: 1,
-				msg: '尚未登录'
-			})
+				msg: '查询失败'
+			}
 		}
-		next();
+		return this.body = {
+			status: 0,
+			data: users
+		}
 	},
 	adminRequired(req, res, next) {
-		const user = req.session.user;
+		let userId = this.state.user;
+		const user = yield User.findOne({_id: userId._id}).exec();
 		if (user.role < 10 || !user.role) {
-			return res.json({
+			return this.body = {
 				status: 1,
 				msg: '无权限'
-			})
+			};
 		}
-		next();
+		yield next;
 	}
 }
