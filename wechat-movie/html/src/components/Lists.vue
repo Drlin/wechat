@@ -8,29 +8,35 @@
         <router-link :to="props.router">详情</router-link>
       </template>
     </v-content>
+    <Spinner :isLoaded="isLoaded"/>
   </div>
 </template>
 
 <script>
 import Content from './common/Content'
+import Spinner from './common/Spinner.vue'
 export default {
   data () {
     return {
       query: this.$route.query,
-      lists: []
+      lists: [],
+      isLoaded: false
     }
   },
   components: {
-    'v-content': Content
+    'v-content': Content,
+    Spinner
   },
   created () {
     let catagoryName = this.query.key
+    this.isLoaded = true
     this.$http.get(`/api/catagory/catagoryList?catagoryName=${catagoryName}`)
     .then((res) => {
+      this.isLoaded = false
       let {data, status} = res.body
       if (status === 0) {
         let miniapp = data.miniapp
-        if (catagoryName !== '排行榜' || catagoryName !== '推荐') {
+        if (catagoryName !== '排行榜' && catagoryName !== '推荐' && !miniapp.length === 0) {
           miniapp.map((item) => {
             item.catagory = {}
             item.catagory.name = this.query.key

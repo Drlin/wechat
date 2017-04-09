@@ -8,7 +8,7 @@ randomFind = () => {
 		let promises = [];
 		let skip;
 		for (let i = 0; i < 100; i++) {
-			let skip = Math.round(Math.random() * 2000);
+			let skip = Math.round(Math.random() * 450);
 			promises.push(Miniapp
 				.findOne({})
 				.populate({

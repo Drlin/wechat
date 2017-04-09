@@ -79,15 +79,14 @@
     <button class="bth" @click="postData" :disabled="isDisabled">
       发布
     </button>
-    <div class="Spinner" v-show="isDisabled">
-      <Spinner />
-    </div>
+    <Spinner :isLoaded="isDisabled"/>
   </div>
 </template>
 
 <script>
 import wx from 'weixin-js-sdk'
-import { Picker, Toast, Spinner } from 'mint-ui'
+import { Picker, Toast } from 'mint-ui'
+import Spinner from './common/Spinner.vue'
 import Icon from './common/Icon.vue'
 export default {
   name: 'publish',
@@ -377,16 +376,5 @@ export default {
   .picker_container > .picker {
     background: #fff;
     width: 100%;
-  }
-  .Spinner {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,.6);
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
   }
 </style>
