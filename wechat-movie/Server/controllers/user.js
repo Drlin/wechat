@@ -6,7 +6,7 @@ const Redis = require('../api/redis.js')
 const jwt = require('koa-jwt')
 
 module.exports = {
-	getVerify: function *(next) {
+	*getVerify (next) {
 		const phoneNum = this.request.body.phoneNum;
 		let verifyCode = Sms.getCode();
 		try {
@@ -23,7 +23,7 @@ module.exports = {
 			}
 		}
 	},
-	validate: function *(next) {
+	*validate (next) {
 		let {verifyCode, phoneNum} = this.request.body;
 		const reply = yield Redis.getRedis(phoneNum)
 		if (verifyCode === reply.verifyCode) {
@@ -41,7 +41,7 @@ module.exports = {
 			}
 		}
 	},
-	signIn: function *(next) {
+	*signIn (next) {
 		let {phoneNum, userName, password} = this.request.body;
 		let user = yield User.findOne({ phoneNum }).exec();
 		if (user) {
@@ -76,7 +76,7 @@ module.exports = {
 		}
 		
 	},
-	signup: function *(next) {
+	*signup (next) {
 		let {phoneNum, password} = this.request.body;
 		let user = yield User.findOne({ phoneNum }).exec();
 		if (!user || !user.verifyed) {
@@ -100,14 +100,7 @@ module.exports = {
 			};
 		}
 	},
-	logout(req, res, next) {
-		delete req.session.user;
-		return res.json({
-			status: 0,
-			msg: '退出成功'
-		});
-	},
-	userCenter: function *(next) {
+	*userCenter (next) {
 		if (!this.state.user) {
 			return this.body = {
 				status: 1,
@@ -131,7 +124,7 @@ module.exports = {
 			data: {name, phoneNum, _id, role, portrait}
 		};
 	},
-	userUpdate: function *(next) {
+	*userUpdate (next) {
 		let userId = this.state.user;
 		const user = yield User.findOne({_id: userId._id}).exec();
 		let _id = user._id;
@@ -149,9 +142,9 @@ module.exports = {
 			msg: ' 更新成功'
 		}
 	},
-	lists(req, res, next) {
+	*lists() {
 		try {
-			let users = yield User.find({});
+			let users = yield User.find({}).exec();
 		} catch (e) {
 			return this.body = {
 				status: 1,
@@ -163,10 +156,21 @@ module.exports = {
 			data: users
 		}
 	},
-	adminRequired(req, res, next) {
+	*adminRequired (next) {
 		let userId = this.state.user;
 		const user = yield User.findOne({_id: userId._id}).exec();
 		if (user.role < 10 || !user.role) {
+			return this.body = {
+				status: 1,
+				msg: '无权限'
+			};
+		}
+		yield next;
+	},
+	*rootRequired (next) {
+		let userId = this.state.user;
+		const user = yield User.findOne({_id: userId._id}).exec();
+		if (user.role < 50 || !user.role) {
 			return this.body = {
 				status: 1,
 				msg: '无权限'

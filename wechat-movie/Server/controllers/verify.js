@@ -4,7 +4,7 @@ const Verify = require('../models/verify');
 const qiniu = require('../api/qiniu');
 
 module.exports = {
-	apply: function *() {
+	*apply () {
 		const from = this.state.user._id;
 		let obj = this.request.body;
 		let _verify = new Verify(Object.assign(obj, from));
@@ -37,6 +37,27 @@ module.exports = {
 			yield Verify.update({id: verify.id}, verify)
 		} catch (e) {
 			console.log(e);
+		}
+	},
+	*lists () {
+		let lists;
+		try {
+			lists 
+				= yield Verify.find({})
+							.populate({
+								path: 'catagory', 
+								select: {name: 1}
+							})
+							.exex();
+		} catch(e) {
+			this.body = {
+				status: 1,
+				msg: '查询失败'
+			}
+		}
+		this.body = {
+			status: 0,
+			msg: lists
 		}
 	}
 }

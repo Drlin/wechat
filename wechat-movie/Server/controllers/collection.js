@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Collection = require('../models/collection');
 
 module.exports = {
-	operate: function *(next) {
+	*operate (next) {
 		const from = this.state.user._id;
 		const miniappId = this.request.body.miniappId;
 		const _collection = new Collection({
@@ -45,7 +45,7 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
-	collectionList: function *(next) {
+	*collectionList (next) {
 		const from = this.state.user._id;
 		const miniappId = this.query.miniappId;
 		let collections = [];
@@ -62,7 +62,7 @@ module.exports = {
 			data: collections
 		}
 	},
-	userCollection: function *(next) {
+	*userCollection (next) {
 		const from = this.state.user._id;
 		try {
 			collections = 

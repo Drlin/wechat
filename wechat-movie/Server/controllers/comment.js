@@ -3,7 +3,7 @@ const Comment = require('../models/comment');
 const Miniapp = require('../models/miniapp');
 const {html_encode} =  require('../api/XSS');
 module.exports = {
-	create: function *(next) {
+	*create (next) {
 		let {content, star, miniappId} = this.request.body;
 		const from = this.state.user._id;
 		content = html_encode(content);
@@ -48,7 +48,7 @@ module.exports = {
 		}
 
 	},
-	lists: function *(next) {
+	*lists (next) {
 		const {miniappId} = this.query;
 		let comments = [];
 		try {

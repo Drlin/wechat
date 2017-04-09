@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Catagory = require('../models/catagory');
 
 module.exports = {
-	save: function *(next) {
+	*save (next) {
 		const catagoryObj = this.request.body;
 		if (!catagoryObj.name) {
 			return this.body = {
@@ -24,7 +24,7 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
-	catagorys: function *(next) {
+	*catagorys (next) {
 		let catagorys = [];
 		try {
 			catagorys = yield Catagory
@@ -41,7 +41,7 @@ module.exports = {
 			data: catagorys.splice(2, 20)
 		}
 	},
-	catagoryList: function *(next) {
+	*catagoryList (next) {
 		let {limit, page, catagoryId, catagoryName} = this.query;
 		limit = parseInt(limit, 10) || 10;
 		page = parseInt(page, 10) || 1;

@@ -56,4 +56,6 @@ module.exports = function(router) {
 	router.get('/api/verify/getConfig', Game.movie)
 
 	router.post('/api/verify/apply', Verify.apply)
+
+	router.get('/api/admin/lists', User.rootRequired, User.lists)
 }

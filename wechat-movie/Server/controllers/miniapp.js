@@ -8,7 +8,7 @@ const {errorType} = require('../middleware/middleware');
 const {saveToRank, getRank} = require('../api/redis.js');
 
 module.exports = {
-	create: function *(next) {
+	*create (next) {
 		const _Miniapp = new Miniapp(this.request.body);
 		try {
 			yield _Miniapp.save()
@@ -23,7 +23,7 @@ module.exports = {
 			msg: '保存成功'
 		}
 	},
-	detail: function *(next) {
+	*detail (next) {
 		const id = this.params.id;
 		if (!id) {
 			return this.body = {
@@ -46,7 +46,7 @@ module.exports = {
 			data: _Miniapp
 		}
 	},
-	search: function *(next) {
+	*search (next) {
 		const query = this.request.body.query;
 		if (!query) {
 			return this.body = {
@@ -72,7 +72,7 @@ module.exports = {
 			data
 		}
 	},
-	hotLists: function *(next) {
+	*hotLists (next) {
 		try {
 			let lists = yield getRank('movie_rank')
 			return this.body = {

@@ -6,7 +6,7 @@ const weixin = require('../../wechat/weixin')
 const Wechat = require('../../wechat/wechat')
 
 module.exports = {
-	hear: function *(next) {
+	*hear (next) {
 		this.middle = wechat(config.wechat, weixin.reply);
 		yield this.middle(next);
 	}
