@@ -23,11 +23,17 @@
         <img class="category" src="../../static/category.png" />
         <p>类别</p>
       </router-link>
-      <router-link class="nav-item" to="/recommend">
+      <router-link 
+        class="nav-item" 
+        :to="`/lists?key=推荐&value=推荐`" 
+      >
         <img class="recommend" src="../../static/recommend.png" />
         <p>每日小程序推荐</p>
       </router-link>
-      <router-link class="nav-item" to="/ranking">
+      <router-link 
+        class="nav-item" 
+        :to="`/lists?key=排行榜&value=排行榜`" 
+      >
         <img class="ranking" src="../../static/ranking.png" />
         <p>排行榜</p>
       </router-link>

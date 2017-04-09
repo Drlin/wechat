@@ -246,9 +246,9 @@ export default {
   .form-input-wrapper {
     display: flex;
     align-items: center;
-    flex: 0 0 55%;
+    flex: 0 0 52%;
     flex-direction: row;
-    height: 5rem;
+    height: 60px;
     padding: 0 1rem;
     background: #fff;
     border: 1px solid #ccc;
@@ -268,12 +268,14 @@ export default {
     outline: none;
   }
   .pass-button-vcode {
+    box-sizing: border-box;
     flex: 0 0 26%;
     justify-content: center;
     align-items: center;
     text-align: center;
     background: #fff;
     font-size: 1.4rem;
+    line-height: 58px;
     border: 1px solid #ccc;
   }
   .pass-button-vcode > span {

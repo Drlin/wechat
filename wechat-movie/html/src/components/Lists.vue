@@ -24,15 +24,18 @@ export default {
     'v-content': Content
   },
   created () {
-    this.$http.get(`/api/catagory/catagoryList?catagoryName=${this.query.key}`)
+    let catagoryName = this.query.key
+    this.$http.get(`/api/catagory/catagoryList?catagoryName=${catagoryName}`)
     .then((res) => {
       let {data, status} = res.body
       if (status === 0) {
         let miniapp = data.miniapp
-        miniapp.map((item) => {
-          item.catagory = {}
-          item.catagory.name = this.query.key
-        })
+        if (catagoryName !== '排行榜' || catagoryName !== '推荐') {
+          miniapp.map((item) => {
+            item.catagory = {}
+            item.catagory.name = this.query.key
+          })
+        }
         this.lists = miniapp
       }
     })

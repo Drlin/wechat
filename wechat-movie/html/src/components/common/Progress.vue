@@ -5,8 +5,7 @@
       <div class="list-item">
         <div 
           class="inner" 
-          :style="{width: total === 0 ? 0 : `${((value || 0)/total * 100)}%`}">
-  
+          :style="{width: total === 0 ? 0 : `${((rating[[0, 5, 4, 3, 2, 1][key]] || 0)/total * 100)}%`}">
         </div>
       </div>
     </li>
@@ -42,6 +41,5 @@ export default {
     width: 100%;
     height: 100%;
   }
-
   
 </style>
