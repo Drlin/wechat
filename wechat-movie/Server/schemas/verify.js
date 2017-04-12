@@ -28,9 +28,9 @@ const VerifySchema = new Schema({
     screenshot: [
         {type: String}
     ],
-    verifyed: {
-        type: Boolean,
-        default: false
+    status: {
+        type: Number,
+        default: 0
     },
     meta:{
         createAt: {

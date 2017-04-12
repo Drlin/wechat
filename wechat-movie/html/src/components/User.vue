@@ -7,7 +7,7 @@
       <div class="user-name">{{user.name}}</div>
     </div>
     <div class="entrance-wrap">
-      <router-link to="created">
+      <router-link to="upload">
         <span>
           我的发布
         </span>

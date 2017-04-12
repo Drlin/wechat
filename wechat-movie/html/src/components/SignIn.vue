@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrapper">
     <img class="logo-dom" src="../../static/time.jpg" alt="logo">
-    <div class="signIn-wrapper" v-if="!verifyed">
+    <div class="signIn-wrapper" v-if="verifyed">
       <input 
         class="text-input input" 
         maxlength="6" 
@@ -35,11 +35,11 @@
       <p class="checkPhone">{{user.phoneNum}}</p>
       <div class="form-input-vcode">
         <div class="form-input-wrapper">
-          <label 
+          <a 
             class="text-label"
           >
             验证码
-          </label>
+          </a>
           <input
             class="text-input-code" 
             v-model="verifyCode"
@@ -160,6 +160,10 @@ export default {
     },
     register () {
       let {phoneNum} = this.user
+      if (!this.verifyCode) {
+        Toast('请填写验证码')
+        return
+      }
       this.$http.post(`/api/user/validate`, {phoneNum, verifyCode: this.verifyCode})
       .then((res) => {
         let { status } = res.data
@@ -197,7 +201,6 @@ export default {
   .input {
     margin: 1.5rem 0 0 0;
     width: 100%;
-    line-height: 4.4rem;
     height: 4.4rem;
     border-radius: 2px;
     box-sizing: border-box;
@@ -240,28 +243,31 @@ export default {
   }
   .form-input-vcode {
     display: flex;
+    box-sizing: border-box;
     justify-content: space-between;
     width: 100%;
   }
   .form-input-wrapper {
     display: flex;
     align-items: center;
-    flex: 0 0 52%;
+    box-sizing: border-box;
+    flex: 1;
+    margin-right: 5px;
     flex-direction: row;
     height: 60px;
     padding: 0 1rem;
     background: #fff;
     border: 1px solid #ccc;
-    border-radius: 2px;
   }
   .text-label {
     flex: 0 0 5.5rem;
+    flex-shrink: 0;
     font-size: 1.6rem;
   }
   .text-input-code {
     flex: 1;
-    align-self: center;
     border: 0;
+    align-self: center;
     font-size: 1.6rem;
     color: #333;
     overflow: hidden;
@@ -269,13 +275,14 @@ export default {
   }
   .pass-button-vcode {
     box-sizing: border-box;
-    flex: 0 0 26%;
+    flex: 0 0 28%;
     justify-content: center;
     align-items: center;
     text-align: center;
     background: #fff;
     font-size: 1.4rem;
     line-height: 58px;
+    border-radius: 0;
     border: 1px solid #ccc;
   }
   .pass-button-vcode > span {

@@ -321,7 +321,6 @@ class Wechat {
           .pipe(fs.createWriteStream(`image/${media_id}.png`))
 
           stream.on('error', (err)=> {
-            console.log(4)
             reject(err)
           })
 

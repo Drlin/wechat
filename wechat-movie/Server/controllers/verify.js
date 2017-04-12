@@ -7,7 +7,7 @@ module.exports = {
 	*apply () {
 		const from = this.state.user._id;
 		let obj = this.request.body;
-		let _verify = new Verify(Object.assign(obj, from));
+		let _verify = new Verify(Object.assign(obj, {from}));
 		let verify;
 		try {
 			verify = yield _verify.save();
@@ -22,19 +22,20 @@ module.exports = {
 			}
 		}
 		try {
-			let {icon, qrcode, screenshot} = verify;
+			let {icon, qrcode, screenshot} = _verify;
 			let arr = []
-			verify.icon = yield qiniu.getMedia(icon);
-			verify.qrcode = yield qiniu.getMedia(qrcode);
+			_verify.icon = yield qiniu.getMedia(icon);
+			_verify.qrcode = yield qiniu.getMedia(qrcode);
 			for (let i = 0; i < screenshot.length; i++) {
 				 arr.push(yield qiniu.getMedia(screenshot[i]))
 			}
-			verify.screenshot = arr;
+			_verify.screenshot = arr;
 		} catch (e) {
 			console.log(e)
 		}
 		try {
-			yield Verify.update({id: verify.id}, verify)
+			yield Verify.remove({id: verify.id});
+			yield _verify.save();
 		} catch (e) {
 			console.log(e);
 		}
@@ -48,7 +49,7 @@ module.exports = {
 								path: 'catagory', 
 								select: {name: 1}
 							})
-							.exex();
+							.exec();
 		} catch(e) {
 			this.body = {
 				status: 1,
@@ -58,6 +59,29 @@ module.exports = {
 		this.body = {
 			status: 0,
 			msg: lists
+		}
+	},
+	*userLists () {
+		const from = this.state.user._id;
+		let lists;
+		try {
+			lists 
+				= yield Verify.find({from})
+							.populate({
+								path: 'catagory', 
+								select: {name: 1}
+							})
+							.exec();
+		} catch(e) {
+			console.log(e)
+			this.body = {
+				status: 1,
+				msg: '查询失败'
+			}
+		}
+		this.body = {
+			status: 0,
+			data: lists
 		}
 	}
 }

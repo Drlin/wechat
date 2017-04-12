@@ -216,6 +216,7 @@ export default {
       .then((res) => {
         this.isDisabled = false
         Toast('保存成功')
+        this.$router.push('upload')
       })
     },
     onValuesChange (picker, values) {

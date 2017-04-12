@@ -13,10 +13,11 @@ export default {
 </script>
 
 <style>
-body, p, div, h1, h2, h3, h4, h5,input, ul, li, a {
+body, p, div, h1, h2, h3, h4, h5, input, ul, li, a, label {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
 }
 html {
   font-size: 62.5%;

@@ -10,6 +10,7 @@ const Collection = resolve => require(['@/components/Collection.vue'], resolve)
 const Category = resolve => require(['@/components/Category.vue'], resolve)
 const Lists = resolve => require(['@/components/Lists.vue'], resolve)
 const Publish = resolve => require(['@/components/Publish.vue'], resolve)
+const Upload = resolve => require(['@/components/Upload.vue'], resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -63,6 +64,11 @@ export default new Router({
       path: '/publish',
       name: 'publish',
       component: Publish
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: Upload
     }
   ]
 })

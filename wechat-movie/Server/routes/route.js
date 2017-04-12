@@ -57,6 +57,8 @@ module.exports = function(router) {
 
 	router.post('/api/verify/apply', Verify.apply)
 
+	router.get('/api/verify/userLists', Verify.userLists)
+	
 	router.get('/api/verify/lists', User.rootRequired, Verify.lists)
 
 	router.get('/api/admin/lists', User.rootRequired, User.lists)

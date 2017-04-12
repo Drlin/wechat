@@ -91,7 +91,6 @@ export default {
   .input {
     margin: 1.5rem 0 0 0;
     width: 100%;
-    line-height: 4.4rem;
     height: 4.4rem;
     border-radius: 2px;
     box-sizing: border-box;
@@ -115,7 +114,9 @@ export default {
     color: #90b6ff;
   }
   .account-signin {
+    width: 12rem;
     display: inline-block;
+    text-align: center;
     margin: 5rem auto 0 auto;
     color: #367cff;
     font-size: 1.6rem;

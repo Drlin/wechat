@@ -123,6 +123,7 @@
       @closeModel="close"
     >
     </v-Model>
+    <Spinner :isLoaded="isDisabled"/>
   </div>
 </template>
 
@@ -134,13 +135,15 @@
   import Star from './common/Star'
   import Progress from './common/Progress'
   import {config} from './config/config'
+  import Spinner from './common/Spinner.vue'
   export default {
     components: {
       'v-Model': Model,
       'mt-popup': Popup,
       'Star': Star,
       'v-progress': Progress,
-      'Icon': Icon
+      'Icon': Icon,
+      Spinner
     },
     data () {
       return {
@@ -149,6 +152,7 @@
           rating: [],
           overall_rating: ''
         },
+        isDisabled: false,
         popupVisible: false,
         vis: false,
         picIndex: 0,
@@ -171,6 +175,7 @@
       }
     },
     created () {
+      this.isDisabled = true
       let miniappId = this.$route.params.id
       localStorage.getItem('token') && this.$http.get(`/api/collection/collectionList?miniappId=${miniappId}`)
       .then((res) => {
@@ -211,6 +216,7 @@
         })
         this.$http.get(`/api/miniapp/commentLists?miniappId=${miniappId}`)
         .then((res) => {
+          this.isDisabled = false
           let {data, status} = res.body
           if (status === 0) {
             this.comments = data
