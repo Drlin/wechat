@@ -27,7 +27,7 @@ timeout = (time) => {
 	})
 }
 
-function *filterHtml (html) {
+let *filterHtml = (html) => {
 	const $ = cheerio.load(html);
 	let name = $('.elps').text();
 	let description = $('.wx-info-content').find('p').text();
