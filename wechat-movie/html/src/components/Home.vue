@@ -56,7 +56,7 @@ export default {
       miniappArr: []
     }
   },
-  created () {
+  mounted () {
     let fetchArr = []
     this.dataArr.map((item) => {
       fetchArr.push(this.$http.get(`/api/catagory/catagoryList?catagoryName=${item}`))

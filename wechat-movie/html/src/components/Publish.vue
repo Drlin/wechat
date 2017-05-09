@@ -121,7 +121,7 @@ export default {
       ]
     }
   },
-  created () {
+  mounted () {
     let {href} = location
     this.$http.get(`/api/verify/getConfig?wechatHref=${href}`).then((res) => {
       let {status, params} = res.body

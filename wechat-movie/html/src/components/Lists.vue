@@ -27,7 +27,7 @@ export default {
     'v-content': Content,
     Spinner
   },
-  created () {
+  mounted () {
     let catagoryName = this.query.key
     this.isLoaded = true
     this.$http.get(`/api/catagory/catagoryList?catagoryName=${catagoryName}`)
