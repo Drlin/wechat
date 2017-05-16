@@ -22,6 +22,7 @@ randomFind = () => {
 		Promise.all(promises).then( (results) => {
 			resolve(results);
 		}).catch((e) => {
+			
 		})
 	})
 }
