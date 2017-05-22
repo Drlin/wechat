@@ -1,4 +1,86 @@
- 上线node项目的分享
+47.88.220.215(
 
-服务器选择阿里云
-备案流程 阿里云为例
+
+df -h
+
+gpasswd -a lin sudo  // 修改权限
+
+ALL=(ALL:ALL) ALL
+// 添加lin用户，并提升权限
+
+ ssh-keygen -t rsa -b 4096 -C "15195031911@163.com" //生成公钥私钥
+eval “$(ssh-agent -s)” 开启代理
+ssh-add ~/ .ssh/id_rsa 
+
+
+authorized_keys \\ 公钥放进来，就可以免密登陆
+
+
+
+chmod 600 authorized_keys 修改文件权限
+
+vi /etc/ssh/sshd_config \\ 修改服务器端口配置等
+修改端口 
+AllowUsers lin
+
+sudo visudo
+
+adduser lin 84913471000a
+
+
+sudo apt-get install vim openssl build-essential libssl-dev wget curl git 安装包依赖
+
+
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash nvm 就是一款常用的 Node 版本管理工具
+
+nvm use v6.9.5
+
+nvm alias default v6.9.5
+
+npm install -g cnpm --registry=https://registry.npm.taobao.org 指定淘宝镜象
+
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p 监听文件数量
+
+npm i pm2 webpack gulp grunt-cli -g
+
+
+
+pm2 start app.js 
+
+pm2 show app 
+
+
+sudo apt-get install nginx  安装nginx
+
+
+cd /etc/nginx
+
+cd conf.d
+
+vi lin.conf
+upstream lin {
+  server 127.0.0.1:8080;
+}
+server {
+  listen 80;
+  server_name localhost;
+  location / {
+            proxy_pass  https://lin;
+            proxy_redirect     off;
+            proxy_set_header   Host             $http_host;
+            proxy_set_header   X-Nginx-Proxy    true;
+            proxy_set_header   X-Real-IP        $remote_addr;
+            proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+  }
+}
+
+cd ..
+ sudo vi nginx.conf 
+
+
+sudo nginx -s reload
+
+
+
+
+
